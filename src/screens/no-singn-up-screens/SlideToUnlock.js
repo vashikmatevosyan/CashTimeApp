@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { DARK_BLUE, ORANGE, WHITE } from '../../theme/colors';
 import getStartIcon from '../../../assets/images/singup-login-screens/get-starat-row-icon.png';
-// create git branch
+
 function SlideToUnlock() {
   return (
     <View style={{ width: '100%', alignItems: 'center' }}>
