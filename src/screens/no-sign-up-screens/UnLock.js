@@ -8,6 +8,7 @@ import { INDIGO_BLUE, WHITE } from '../../theme/colors';
 import SvgComponentMainImage from '../../components/imagesSvgComponents/SvgComponentMainImage';
 
 function UnLock() {
+  console.log(StatusBar.currentHeight);
   return (
     <View style={styles.container}>
       <LogoView />
