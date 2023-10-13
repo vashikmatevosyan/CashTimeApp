@@ -2,6 +2,7 @@ import React from 'react';
 import {
   StatusBar, StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import {
   BLACK, DARK_BLUE, INDIGO_BLUE, WHITE,
 } from '../../theme/colors';
@@ -10,6 +11,7 @@ import SvgComponentSignUpMethodScreen
   from '../../components/imagesSvgComponents/SvgComponentSignUpMethodScreen';
 
 function SignUpMethod() {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <LogoView />
@@ -22,12 +24,12 @@ function SignUpMethod() {
         <SvgComponentSignUpMethodScreen />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity activeOpacity={0.5} style={styles.button}>
+        <TouchableOpacity onPress={() => navigation.navigate('SignUp' , { method: 'Employee' })} activeOpacity={0.5} style={styles.button}>
           <Text style={styles.buttonText}>
             Sign Up as a Employee
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.5} style={[styles.button, { backgroundColor: WHITE }]}>
+        <TouchableOpacity onPress={() => navigation.navigate('SignUp', { method: 'Employer' })} activeOpacity={0.5} style={[styles.button, { backgroundColor: WHITE }]}>
           <Text style={[styles.buttonText, { color: BLACK }]}>
             Sign Up as a Employer
           </Text>
