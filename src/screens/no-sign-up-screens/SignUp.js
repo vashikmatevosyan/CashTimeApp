@@ -20,6 +20,7 @@ function SignUp({ route }) {
       </View>
     </View>
   );
+  //ankap comment
 }
 const styles = StyleSheet.create({
   container: {
