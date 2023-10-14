@@ -64,3 +64,14 @@ yarn-error.log
 
 # testing
 /coverage
+
+yarn-debug.log*
+yarn.lock
+yarn-error.log*
+yarn.lock
+
+.env.local
+.env.development.local
+.env.test.local
+.env
+.env.production.local

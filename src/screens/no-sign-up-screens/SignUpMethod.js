@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StatusBar, StyleSheet, Text, TouchableOpacity, View,
+  StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -55,7 +55,7 @@ function SignUpMethod() {
 const styles = StyleSheet.create({
   signUpMethod: {
     backgroundColor: INDIGO_BLUE,
-    paddingTop: StatusBar.currentHeight || 0,
+    paddingTop: 10,
     flex: 1,
   },
   container: {
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
   },
   textContainer: {
+    marginTop: 20,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
