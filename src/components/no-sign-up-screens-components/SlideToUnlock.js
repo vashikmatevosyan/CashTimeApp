@@ -4,9 +4,9 @@ import {
   Text, View, StyleSheet,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { DARK_BLUE, ORANGE, WHITE } from '../../../theme/colors';
-import SvgComponentArrowRight from '../../imagesSvgComponents/SvgComponentArrowRight';
-import { RH, RW } from '../../../helpers/ratio';
+import { DARK_BLUE, ORANGE, WHITE } from '../../theme/colors';
+import SvgComponentArrowRight from '../imagesSvgComponents/SvgComponentArrowRight';
+import { RH, RW } from '../../helpers/ratio';
 
 function SlideToUnlock() {
   const navigation = useNavigation();

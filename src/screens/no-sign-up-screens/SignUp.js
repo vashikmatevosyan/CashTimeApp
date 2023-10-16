@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, StatusBar,
+  View, Text, StyleSheet,
 } from 'react-native';
 import { INDIGO_BLUE } from '../../theme/colors';
 import LogoView from '../../components/global/LogoView';
@@ -8,7 +8,6 @@ import SvgComponentSignUpPageImg from '../../components/imagesSvgComponents/SvgC
 
 function SignUp({ route }) {
   const { params } = route;
-  console.log(params);
   return (
     <View style={styles.container}>
       <LogoView />
@@ -26,7 +25,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     flex: 1,
     backgroundColor: INDIGO_BLUE,
-    paddingTop: StatusBar.currentHeight || 0,
+    paddingTop: 10,
   },
   imagesContainer: {
     flex: 2,
