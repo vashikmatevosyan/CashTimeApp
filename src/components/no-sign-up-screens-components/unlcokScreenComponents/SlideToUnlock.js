@@ -15,7 +15,7 @@ function SlideToUnlock() {
       <Slider
         childrenContainer={{ backgroundColor: WHITE }}
         onEndReached={() => {
-          navigation.navigate('SignUpMethod');
+          navigation.navigate('Messages');
         }}
         containerStyle={styles.containerStyle}
         sliderElement={(

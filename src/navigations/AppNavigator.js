@@ -6,6 +6,7 @@ import Home from '../screens/Home';
 import UnLock from '../screens/no-sign-up-screens/UnLock';
 import SignUpMethod from '../screens/no-sign-up-screens/SignUpMethod';
 import SignUp from '../screens/no-sign-up-screens/SignUp';
+import Messages from '../screens/Messages';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ function AppNavigator() {
             headerShown: false,
           }}
         >
+          <Stack.Screen name="Messages" component={Messages} />
           <Stack.Screen name="Unlock" component={UnLock} />
           <Stack.Screen name="SignUpMethod" component={SignUpMethod} />
           <Stack.Screen name="SignUp" component={SignUp} />
