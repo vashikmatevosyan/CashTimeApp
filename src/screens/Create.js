@@ -1,20 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
+import CreateJob from '../layouts/CreateJob';
 
 function Create() {
+  const role = 'gorcTvox';
   return (
-    <View>
-      <View style={styles.container}>
-        <Text>
-          Create
-        </Text>
-      </View>
+    <View style={{ flex: 1 }}>
+      {role === 'gorcTvox' && <CreateJob />}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {},
-});
 
 export default Create;

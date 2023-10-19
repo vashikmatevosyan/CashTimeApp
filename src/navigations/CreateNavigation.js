@@ -6,12 +6,14 @@ function CreateNavigation() {
   const Stack = createStackNavigator();
 
   return (
-    <Stack.Navigator screenOptions={{
-      headerShown: false,
-    }}
-    >
-      <Stack.Screen name="Create" component={Create} />
-    </Stack.Navigator>
+    <>
+      <Stack.Navigator screenOptions={{
+        headerShown: false,
+      }}
+      >
+        <Stack.Screen name="Create" component={Create} />
+      </Stack.Navigator>
+    </>
   );
 }
 
