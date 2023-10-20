@@ -4,7 +4,7 @@ import LogOutNavigation from './LogOutNavigation';
 import LogInNavigation from './LogInNavigation';
 
 function AppNavigator() {
-  const token = true;
+  const token = false;
   return (
     <NavigationContainer>
       {token ? <LogInNavigation /> : <LogOutNavigation />}
