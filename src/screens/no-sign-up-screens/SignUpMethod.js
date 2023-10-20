@@ -24,7 +24,7 @@ function SignUpMethod() {
         <SvgComponentSignUpMethodScreen />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('SignUp' , { method: 'Employee' })} activeOpacity={0.5} style={styles.button}>
+        <TouchableOpacity onPress={() => navigation.navigate('SignUp', { method: 'Employee' })} activeOpacity={0.5} style={styles.button}>
           <Text style={styles.buttonText}>
             Sign Up as a Employee
           </Text>

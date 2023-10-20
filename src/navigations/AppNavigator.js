@@ -6,13 +6,14 @@ import Home from '../screens/Home';
 import UnLock from '../screens/no-sign-up-screens/UnLock';
 import SignUpMethod from '../screens/no-sign-up-screens/SignUpMethod';
 import SignUp from '../screens/no-sign-up-screens/SignUp';
+import { INDIGO_BLUE } from '../theme/colors';
 
 const Stack = createStackNavigator();
 
 function AppNavigator() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar translucent backgroundColor="transparent" />
+      <StatusBar backgroundColor={INDIGO_BLUE} />
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
