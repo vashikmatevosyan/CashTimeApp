@@ -16,7 +16,7 @@ function BottomIconTitle({ text, active }) {
 const styles = StyleSheet.create({
   text: {
     fontFamily: 'Lato-SemiBold',
-    fontSize: RW(12 ),
+    fontSize: RW(12),
   },
 });
 

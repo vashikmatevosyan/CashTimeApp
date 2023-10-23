@@ -1,15 +1,18 @@
 import React, { useCallback, useState } from 'react';
 import {
+  FlatList,
   StatusBar,
-  StyleSheet, Text, TouchableOpacity, View,
+  StyleSheet, View,
 } from 'react-native';
-import { INDIGO_BLUE, ORANGE, WHITE } from '../theme/colors';
+import { INDIGO_BLUE } from '../theme/colors';
 import LogoView from '../components/global/LogoView';
-import { RH, RW } from '../helpers/ratio';
-import StepFirts from '../components/createJob/StepFirts';
+import { RH } from '../helpers/ratio';
+import StepFirst from '../components/createJob/StepFirst';
+import StepIndicator from '../components/global/StepIndicator';
+import CreateButtons from '../components/global/CreateButtons';
 
 function CreateJob() {
-  const number = [1, 2, 3, 4, 5, 6];
+  const numbers = [1, 2, 3, 4, 5, 6];
   const [step, setStep] = useState(1);
   const handleChangeStep = useCallback((method) => {
     if (method === '+' && step < 6) {
@@ -24,28 +27,22 @@ function CreateJob() {
       <View style={styles.container}>
         <LogoView />
         <View style={styles.indicatorWrapper}>
-          {number.map((e) => (
-            <View key={e} style={styles.numbersWrapper}>
-              {e !== 1 && <Text style={styles.line} />}
-              <View style={[styles.numberBack, { backgroundColor: step === e ? ORANGE : WHITE }]}>
-                <Text style={styles.number}>{e}</Text>
-              </View>
-            </View>
-          ))}
+          <FlatList
+            data={numbers}
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            scrollEnabled={false}
+            renderItem={({ item }) => (
+              <StepIndicator
+                number={item}
+                step={step}
+              />
+            )}
+          />
         </View>
-        {step === 1 && <StepFirts />}
-        <View style={styles.btnContainer}>
-          <TouchableOpacity onPress={() => handleChangeStep('-')}>
-            <Text style={styles.btn}>
-              Go Back
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleChangeStep('+')}>
-            <Text style={styles.btn}>
-              Skip For Now
-            </Text>
-          </TouchableOpacity>
-        </View>
+
+        {step === 1 && <StepFirst />}
+        <CreateButtons handleChangeStep={handleChangeStep} />
       </View>
     </View>
   );
@@ -55,7 +52,7 @@ const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: INDIGO_BLUE,
     flex: 1,
-    paddingTop: 10 + StatusBar.currentHeight,
+    paddingTop: RH(10) + StatusBar.currentHeight,
   },
   container: {
     width: '90%',
@@ -65,40 +62,9 @@ const styles = StyleSheet.create({
   },
   indicatorWrapper: {
     flexDirection: 'row',
+    width: '100%',
     justifyContent: 'center',
     marginTop: RH(80),
-  },
-  line: {
-    width: RW(20),
-    height: RH(1),
-    backgroundColor: WHITE,
-  },
-  numbersWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  numberBack: {
-    width: RW(50),
-    height: RH(50),
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  number: {
-    fontFamily: 'Lato-Regular',
-    fontSize: 24,
-  },
-  btn: {
-    fontFamily: 'Lato-Bold',
-    color: WHITE,
-    fontSize: 18,
-  },
-  btnContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 'auto',
-    marginBottom: RH(20),
   },
 });
 
