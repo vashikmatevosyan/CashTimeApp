@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { RW } from '../../helpers/ratio';
+import { RH, RW } from '../../helpers/ratio';
 import { BLACK, ORANGE } from '../../theme/colors';
 
 function BottomIconTitle({ text, active }) {
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: 'Lato-SemiBold',
     fontSize: RW(14),
+    marginTop: RH(15),
   },
 });
 

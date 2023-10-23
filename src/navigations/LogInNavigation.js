@@ -16,6 +16,10 @@ function LogInNavigation() {
   const Tab = createBottomTabNavigator();
   const screenOptions = {
     headerShown: false,
+    tabBarHideOnKeyboard: true,
+    tabBarStyle: {
+      padding: 10, height: 70, display: 'flex', flexDirection: 'row', alignItems: 'center',
+    },
   };
 
   return (
