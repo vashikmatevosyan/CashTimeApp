@@ -1,19 +1,14 @@
-import React from 'react';
-import {
+import React from 'react'; import {
   StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import {
+import { useNavigation } from '@react-navigation/native'; import {
   BLACK, DARK_BLUE, INDIGO_BLUE, WHITE,
 } from '../../theme/colors';
-import LogoView from '../../components/global/LogoView';
-import SvgComponentSignUpMethodScreen
-  from '../../components/imagesSvgComponents/SvgComponentSignUpMethodScreen';
-import { RW } from '../../helpers/ratio';
+import LogoView from '../../components/global/LogoView'; import SvgComponentSignUpMethodScreen
+  from '../../components/imagesSvgComponents/SvgComponentSignUpMethodScreen'; import { RW } from '../../helpers/ratio';
 
 function SignUpMethod() {
-  const navigation = useNavigation();
-  return (
+  const navigation = useNavigation(); return (
     <View style={styles.signUpMethod}>
       <View style={styles.container}>
         <LogoView />
@@ -51,7 +46,6 @@ function SignUpMethod() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   signUpMethod: {
     backgroundColor: INDIGO_BLUE,
@@ -114,5 +108,4 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
   },
 });
-
 export default SignUpMethod;
