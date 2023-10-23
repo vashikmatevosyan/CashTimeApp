@@ -34,6 +34,7 @@ function StepFirst() {
           Facebook ad specialist needed for product launch
         </Text>
       </View>
+      <TextInput style={styles.input} />
     </View>
   );
 }
