@@ -107,11 +107,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: INDIGO_BLUE,
     paddingTop: 10,
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
-    // flex: 1,
-    // backgroundColor: INDIGO_BLUE,
-    // paddingTop: StatusBar.currentHeight || 0,
   },
   container: {
     width: '90%',
