@@ -1,19 +1,19 @@
 import React from 'react';
 import {
-  StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View,
+  StatusBar, StyleSheet, Text, Image, TextInput, TouchableOpacity, View, ScrollView,
 } from 'react-native';
-import { Image } from 'react-native-svg';
 import { BLACK, INDIGO_BLUE, WHITE } from '../theme/colors';
 import SvgComponentAvatar from '../components/imagesSvgComponents/SvgComponentAvatar';
 import { RH, RW } from '../helpers/ratio';
 import SvgComponentSearchIcon from '../components/imagesSvgComponents/SvgComponentSearchIcon';
+import avatarImage from '../../assets/images/avatar.png';
 
-function Messages() {
+function Messages({ navigation }) {
   return (
     <View style={styles.messages}>
       <View style={styles.container}>
         <View style={styles.messages__top}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={styles.messages__top__button}>
               Back
             </Text>
@@ -27,11 +27,96 @@ function Messages() {
           <SvgComponentSearchIcon style={styles.input__icon} />
           <TextInput placeholder="Search Chats" style={styles.input} />
         </View>
-        <View style={styles.users}>
-          <View style={styles.users__block}>
-            <Image src="" alt="" />
-          </View>
-        </View>
+        <ScrollView style={styles.users} showsVerticalScrollIndicator={false}>
+          <TouchableOpacity style={styles.users__block} onPress={() => navigation.navigate('MessagesChat')}>
+            <Image
+              style={{ width: 58, height: 58, borderRadius: 58 }}
+              source={avatarImage}
+              alt=""
+            />
+            <View style={{ marginLeft: 10 }}>
+              <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: BLACK }}>Amanelia M.</Text>
+              <Text style={{
+                fontFamily: 'Lato-Regular', fontSize: 14, color: BLACK, marginTop: 3,
+              }}
+              >
+                I’ll Be there in 3 minutes
+              </Text>
+            </View>
+            <Text style={{
+              marginLeft: 'auto', fontFamily: 'Lato-Regular', fontSize: 10, color: BLACK,
+            }}
+            >
+              2min ago
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.users__block}>
+            <Image
+              style={{ width: 58, height: 58, borderRadius: 58 }}
+              source={avatarImage}
+              alt=""
+            />
+            <View style={{ marginLeft: 10 }}>
+              <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: BLACK }}>Amanelia M.</Text>
+              <Text style={{
+                fontFamily: 'Lato-Regular', fontSize: 14, color: BLACK, marginTop: 3,
+              }}
+              >
+                I’ll Be there in 3 minutes
+              </Text>
+            </View>
+            <Text style={{
+              marginLeft: 'auto', fontFamily: 'Lato-Regular', fontSize: 10, color: BLACK,
+            }}
+            >
+              2min ago
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.users__block}>
+            <Image
+              style={{ width: 58, height: 58, borderRadius: 58 }}
+              source={avatarImage}
+              alt=""
+            />
+            <View style={{ marginLeft: 10 }}>
+              <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: BLACK }}>Amanelia M.</Text>
+              <Text style={{
+                fontFamily: 'Lato-Regular', fontSize: 14, color: BLACK, marginTop: 3,
+              }}
+              >
+                I’ll Be there in 3 minutes
+              </Text>
+            </View>
+            <Text style={{
+              marginLeft: 'auto', fontFamily: 'Lato-Regular', fontSize: 10, color: BLACK,
+            }}
+            >
+              2min ago
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.users__block}>
+            <Image
+              style={{ width: 58, height: 58, borderRadius: 58 }}
+              source={avatarImage}
+              alt=""
+            />
+            <View style={{ marginLeft: 10 }}>
+              <Text style={{ fontFamily: 'Lato-Bold', fontSize: 20, color: BLACK }}>Amanelia M.</Text>
+              <Text style={{
+                fontFamily: 'Lato-Regular', fontSize: 14, color: BLACK, marginTop: 3,
+              }}
+              >
+                I’ll Be there in 3 minutes
+              </Text>
+            </View>
+            <Text style={{
+              marginLeft: 'auto', fontFamily: 'Lato-Regular', fontSize: 10, color: BLACK,
+            }}
+            >
+              2min ago
+            </Text>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
     </View>
   );
@@ -55,7 +140,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: RH(30),
+    alignItems: 'center',
   },
   messages__top__button: {
     color: INDIGO_BLUE,
@@ -85,6 +170,22 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 20,
     height: RH(50),
+  },
+  users: {
+    width: '100%',
+    position: 'relative',
+    marginTop: RH(10),
+    flexDirection: 'column',
+  },
+  users__block: {
+    width: '100%',
+    position: 'relative',
+    marginBottom: RH(10),
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: RH(20),
+    borderRadius: 22,
+    backgroundColor: '#D9D9D9',
   },
 });
 
