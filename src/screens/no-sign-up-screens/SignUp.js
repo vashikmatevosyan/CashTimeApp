@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import SelectDropdown from 'react-native-select-dropdown';
 import {
-  View, Text, StyleSheet, StatusBar,
-  TextInput, Button, TouchableOpacity,
+  View, Text, StyleSheet,
+  TextInput, TouchableOpacity,
 } from 'react-native';
 import {
   BLACK, DARK_BLUE, INDIGO_BLUE, WHITE,
@@ -17,37 +17,39 @@ import SvgComponentGoogle from '../../components/imagesSvgComponents/SvgComponen
 
 function SignUp({ route }) {
   const { params } = route;
-  console.log(params);
+  const [errorText, setErrorText] = useState('Error Text');
   const countries = ['Egypt', 'Canada', 'Australia',
     'Ireland', 'Egypt', 'Canada', 'Australia', 'Ireland',
     'Egypt', 'Canada', 'Australia', 'Ireland', 'Egypt', 'Canada', 'Australia', 'Ireland'];
   const dropdownStyles = {
-    // Custom styles for the dropdown container
     borderWidth: 2,
     borderColor: INDIGO_BLUE,
     borderRadius: 10,
     backgroundColor: 'lightgray',
     width: RW(335),
-    maxHeight: RH(350), // Set a maximum height for the dropdown
+    maxHeight: RH(350),
+    textAlign: 'left',
   };
   const inputStyles = {
-    width: RW(335), // Set the custom width here
-    height: RH(37),
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: RW(335),
+    height: RH(45),
     backgroundColor: WHITE,
     borderColor: '#FFFFFF',
-    marginBottom: RH(15),
+    // marginBottom: RH(15),
     color: BLACK,
     borderRadius: 8,
+    textAlign: 'left',
   };
   const rowStyles = {
-    // Custom styles for individual dropdown items
     padding: 10,
     borderBottomWidth: 1,
     borderColor: 'gray',
+    textAlign: 'left',
   };
 
   return (
-
     <View style={styles.signUp}>
       <View style={styles.container}>
         <LogoView />
@@ -59,8 +61,11 @@ function SignUp({ route }) {
         </View>
         <View>
           <TextInput style={styles.input} />
+          <Text style={styles.errorText}>{errorText || ''}</Text>
           <TextInput style={styles.input} />
+          <Text style={styles.errorText}>{errorText || ''}</Text>
           <TextInput style={styles.input} />
+          <Text style={styles.errorText}>{errorText || ''}</Text>
           <SelectDropdown
             data={countries}
             onSelect={(selectedItem, index) => {
@@ -77,11 +82,14 @@ function SignUp({ route }) {
               padding: 0,
               margin: 0,
               marginHorizontal: 0,
+              alignSelf: 'flex-start',
             }}
           />
+          <Text style={styles.errorText}>{errorText || ''}</Text>
           <View style={styles.input}>
             <PhoneNumberInput />
           </View>
+          <Text style={styles.errorText}>{errorText || ''}</Text>
         </View>
         <View style={styles.gradientBox}>
           <SvgComponentGradientSignUp />
@@ -112,7 +120,6 @@ const styles = StyleSheet.create({
     width: '90%',
     marginLeft: 'auto',
     marginRight: 'auto',
-    // justifyContent: 'space-around',
     alignItems: 'center',
     // flex: 1,
   },
@@ -124,18 +131,20 @@ const styles = StyleSheet.create({
   titleText: {
     fontFamily: 'Lato-Bold',
     fontSize: RW(32),
+    marginTop: RH(50),
     color: '#FFF',
     marginBottom: RH(15),
   },
   input: {
+    textAlign: 'left',
     alignSelf: 'stretch',
     fontFamily: 'Lato-Semi Bold',
     // borderWidth: 1,
     width: RW(335),
-    height: RH(37),
+    height: RH(45),
     backgroundColor: WHITE,
     borderColor: '#FFFFFF',
-    marginBottom: RH(15),
+    // marginBottom: RH(15),
     color: BLACK,
     borderRadius: 8,
     fontSize: 14,
@@ -193,6 +202,12 @@ const styles = StyleSheet.create({
     fontSize: RW(14),
     color: '#FFF',
     marginBottom: RH(15),
+  },
+  errorText: {
+    fontFamily: 'Lato-Semi Bold',
+    fontSize: RW(14),
+    color: '#E31515',
+    // textAlign: 'center',
   },
 });
 

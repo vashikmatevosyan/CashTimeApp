@@ -1,43 +1,48 @@
 import React from 'react';
-import {
-  StatusBar, StyleSheet, Text, View,
-} from 'react-native';
-import SlideToUnlock from '../../components/no-sign-up-screens-components/unlcokScreenComponents/SlideToUnlock';
+import { StyleSheet, Text, View } from 'react-native';
+import SlideToUnlock from '../../components/no-sign-up-screens-components/SlideToUnlock';
 import LogoView from '../../components/global/LogoView';
 import { INDIGO_BLUE, WHITE } from '../../theme/colors';
 import SvgComponentMainImage from '../../components/imagesSvgComponents/SvgComponentMainImage';
+import { RW } from '../../helpers/ratio';
 
 function UnLock() {
   return (
-    <View style={styles.container}>
-      <LogoView />
-      <View style={styles.imagesContainer}>
-        <SvgComponentMainImage />
+    <View style={styles.unLock}>
+      <View style={styles.container}>
+        <LogoView />
+        <View style={styles.imagesContainer}>
+          <SvgComponentMainImage />
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>
+            Welcome To CashApp
+          </Text>
+        </View>
+        <SlideToUnlock />
       </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.text}>
-          Welcome To CashApp
-        </Text>
-      </View>
-      <SlideToUnlock />
     </View>
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  unLock: {
     flex: 1,
     backgroundColor: INDIGO_BLUE,
-    paddingTop: StatusBar.currentHeight || 0,
+    paddingTop: 10,
+  },
+  container: {
+    width: '90%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    justifyContent: 'space-around',
+    flex: 1,
   },
   text: {
     textAlign: 'left',
     color: WHITE,
-    fontFamily: 'Lato,sans-serif',
-    fontSize: 42,
+    fontFamily: 'Lato-Bold',
+    fontSize: RW(42),
     fontStyle: 'normal',
-    fontWeight: '800',
   },
   textContainer: {
     width: '95%',
@@ -47,6 +52,7 @@ const styles = StyleSheet.create({
   imagesContainer: {
     flex: 1,
     width: '100%',
+    marginTop: 20,
     alignItems: 'center',
   },
 });

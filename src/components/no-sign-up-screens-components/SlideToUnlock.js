@@ -4,8 +4,9 @@ import {
   Text, View, StyleSheet,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { DARK_BLUE, ORANGE, WHITE } from '../../../theme/colors';
-import SvgComponentArrowRight from '../../imagesSvgComponents/SvgComponentArrowRight';
+import { DARK_BLUE, ORANGE, WHITE } from '../../theme/colors';
+import SvgComponentArrowRight from '../imagesSvgComponents/SvgComponentArrowRight';
+import { RH, RW } from '../../helpers/ratio';
 
 function SlideToUnlock() {
   const navigation = useNavigation();
@@ -41,10 +42,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: DARK_BLUE,
-    fontFamily: 'Poppins,sans-serif',
-    fontSize: 18,
+    fontFamily: 'Lato-Bold',
+    fontSize: RW(18),
     fontStyle: 'normal',
-    fontWeight: '700',
     marginLeft: '70%',
   },
   sliderContainer: {
@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '95%',
-    height: 60,
+    width: '100%',
+    height: RH(70),
   },
 });
 export default SlideToUnlock;
