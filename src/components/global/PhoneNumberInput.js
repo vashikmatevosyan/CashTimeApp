@@ -20,7 +20,7 @@ function PhoneNumberInput() {
   const phoneInput = useRef(null);
   const input = {
     width: RW(335),
-    height: RH(37),
+    height: RH(45),
     // backgroundColor: WHITE,
     borderColor: '#FFFFFF',
     margin: 0,
@@ -104,11 +104,21 @@ function PhoneNumberInput() {
           }}
           withDarkTheme
           withShadow
-          autoFocus
           containerStyle={input}
           textContainerStyle={container}
           textInputStyle={textInput}
           codeTextStyle={codeTextStyle}
+          placeholderTextColor="red"
+          // textInputProps={{
+          //   placeholder: 'Enter your phone number',
+          //   placeholderTextColor: 'gray', // Customize the color of the placeholder text
+          //   style: {
+          //     fontSize: 16, // Customize the font size
+          //     color: 'black', // Customize the color of the input text
+          //   },
+          // }}
+          placeholder="phone number"
+          textInputProps={{ placeholderTextColor: BLACK }}
         />
         {/* <TouchableOpacity */}
         {/*      // style={styles.button} */}
