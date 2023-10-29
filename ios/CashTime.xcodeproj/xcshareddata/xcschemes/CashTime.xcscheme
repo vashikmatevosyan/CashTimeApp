@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "CashTimeApp.app"
-               BlueprintName = "CashTimeApp"
-               ReferencedContainer = "container:CashTimeApp.xcodeproj">
+               BuildableName = "CashTime.app"
+               BlueprintName = "CashTime"
+               ReferencedContainer = "container:CashTime.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "CashTimeAppTests.xctest"
-               BlueprintName = "CashTimeAppTests"
-               ReferencedContainer = "container:CashTimeApp.xcodeproj">
+               BuildableName = "CashTimeTests.xctest"
+               BlueprintName = "CashTimeTests"
+               ReferencedContainer = "container:CashTime.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "CashTimeApp.app"
-            BlueprintName = "CashTimeApp"
-            ReferencedContainer = "container:CashTimeApp.xcodeproj">
+            BuildableName = "CashTime.app"
+            BlueprintName = "CashTime"
+            ReferencedContainer = "container:CashTime.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "CashTimeApp.app"
-            BlueprintName = "CashTimeApp"
-            ReferencedContainer = "container:CashTimeApp.xcodeproj">
+            BuildableName = "CashTime.app"
+            BlueprintName = "CashTime"
+            ReferencedContainer = "container:CashTime.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
