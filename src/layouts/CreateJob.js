@@ -23,7 +23,6 @@ function CreateJob() {
   }, [step]);
   return (
     <View style={styles.wrapper}>
-      <StatusBar translucent backgroundColor="transparent" />
       <View style={styles.container}>
         <LogoView />
         <View style={styles.indicatorWrapper}>

@@ -1,16 +1,49 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
+  FlatList,
+  Image,
   ScrollView,
   StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import {
   BLACK, INDIGO_BLUE, ORANGE, WHITE,
 } from '../theme/colors';
 import { RH, RW } from '../helpers/ratio';
 import SvgComponentAvatar from '../components/imagesSvgComponents/SvgComponentAvatar';
 import SvgComponentSendIcon from '../components/imagesSvgComponents/SvgComponentSendIcon';
+import SvgComponentCameraIcon from '../components/imagesSvgComponents/SvgComponentCameraIcon';
+import SvgComponentGalleryIcon from '../components/imagesSvgComponents/SvgComponentGalleryIcon';
 
 function MessagesChat({ navigation }) {
+  const [files, setFiles] = useState([]);
+  const handleGallery = useCallback(() => {
+    const options = {
+      storageOptions: {
+        path: 'image',
+      },
+    };
+    launchImageLibrary(options, (response) => {
+      setFiles([...files, response]);
+    });
+  }, [files]);
+
+  const handleCamera = useCallback(() => {
+    const options = {
+      storageOptions: {
+        path: 'image',
+      },
+    };
+    launchCamera(options, (response) => {
+      setFiles([...files, response]);
+    });
+  }, [files]);
+
+  const filesForMessage = files.map((file) => ({
+    key: file.assets[0].uri,
+    uri: file.assets[0].uri,
+  }));
+
   return (
     <View style={styles.messagesChat}>
       <View style={styles.container}>
@@ -37,8 +70,26 @@ function MessagesChat({ navigation }) {
             </Text>
           </View>
         </ScrollView>
+        <FlatList
+          data={filesForMessage}
+          renderItem={({ item }) => (
+            <Image
+              source={{ uri: item.uri }}
+              style={{ width: 40, height: 40, margin: 2 }}
+            />
+          )}
+          keyExtractor={(item) => item.key}
+          style={{ width: '100%' }}
+          horizontal
+        />
         <View style={styles.form}>
           <TextInput style={styles.form__input} placeholder="Type message" />
+          <TouchableOpacity onPress={handleCamera} style={{ position: 'absolute', right: RH(80) }}>
+            <SvgComponentCameraIcon />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleGallery} style={{ position: 'absolute', right: RH(45) }}>
+            <SvgComponentGalleryIcon />
+          </TouchableOpacity>
           <TouchableOpacity>
             <SvgComponentSendIcon style={styles.form__icon} />
           </TouchableOpacity>
@@ -80,6 +131,7 @@ const styles = StyleSheet.create({
   },
   chat: {
     width: '100%',
+    height: '100%',
     paddingTop: 30,
   },
   chat__left: {
@@ -114,6 +166,7 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'relative',
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingBottom: RH(10),
@@ -125,6 +178,7 @@ const styles = StyleSheet.create({
     paddingTop: RH(5),
     paddingBottom: RH(5),
     paddingLeft: RH(10),
+    paddingRight: RH(80),
     backgroundColor: '#D9D9D9',
     borderRadius: 8,
   },
