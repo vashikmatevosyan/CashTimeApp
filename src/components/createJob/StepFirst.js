@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, TextInput,
+  StyleSheet, Text, View,
 } from 'react-native';
-import { BLACK, WHITE } from '../../theme/colors';
+import { WHITE } from '../../theme/colors';
 import { RH, RW } from '../../helpers/ratio';
+import CreateJobsTitles from './CreateJobsTitles';
+import JobsInputs from './JobsInputs';
+import UltraSmallText from './UltraSmallText';
 
 function StepFirst() {
   const [text, setText] = useState('');
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>
-        Write a title for your job post
-      </Text>
-      <TextInput value={text} onChangeText={setText} style={styles.input} />
-      <Text style={[styles.titles, { marginTop: RH(20) }]}>
-        Example titles
-      </Text>
+      <CreateJobsTitles title="Write a title for your job post" align="center" />
+      <JobsInputs top={RH(20)} value={text} setValue={setText} width="100%" />
+      <UltraSmallText text="Example titles" top={RH(20)} size={RW(18)} />
       <View style={styles.titlesBox}>
         <Text style={styles.dot} />
         <Text style={[styles.titles, { width: RW(300) }]}>
@@ -43,23 +42,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
     marginTop: RH(40),
-  },
-  text: {
-    color: WHITE,
-    fontSize: RW(24),
-    fontFamily: 'Lato-Bold',
-    textAlign: 'center',
-  },
-  input: {
-    borderWidth: 1,
-    backgroundColor: WHITE,
-    borderColor: WHITE,
-    borderRadius: 8,
-    fontFamily: 'Lato-Regular',
-    color: BLACK,
-    fontSize: RW(16),
-    marginTop: RH(20),
-    width: RW(380),
+    width: '95%',
   },
   titles: {
     marginTop: RH(10),
