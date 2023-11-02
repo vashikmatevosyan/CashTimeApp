@@ -42,6 +42,7 @@ function LogInNavigation() {
         options={{
           title: () => null,
           tabBarIcon: () => <SvgComponentCircleIcon />,
+          tabBarStyle: { display: 'none' },
         }}
       />
       <Tab.Screen

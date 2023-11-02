@@ -82,12 +82,16 @@ const styles = StyleSheet.create({
     width: RW(50),
     height: RH(50),
     borderRadius: 50,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   number: {
     fontFamily: 'Lato-Regular',
-    fontSize: 24,
+    fontSize: RW(24),
+    marginBottom: RH(2),
+    textAlign: 'center',
+    width: '100%',
   },
   btn: {
     fontFamily: 'Lato-Bold',
