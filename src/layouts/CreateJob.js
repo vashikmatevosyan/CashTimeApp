@@ -10,10 +10,12 @@ import { RH } from '../helpers/ratio';
 import StepFirst from '../components/createJob/StepFirst';
 import StepIndicator from '../components/global/StepIndicator';
 import CreateButtons from '../components/global/CreateButtons';
+import StepThird from '../components/createJob/StepThird';
+import StepFourth from '../components/createJob/StepFourth';
 
 function CreateJob() {
   const numbers = [1, 2, 3, 4, 5, 6];
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(4);
   const handleChangeStep = useCallback((method) => {
     if (method === '+' && step < 6) {
       setStep((prevState) => prevState + 1);
@@ -41,6 +43,8 @@ function CreateJob() {
         </View>
 
         {step === 1 && <StepFirst />}
+        {step === 3 && <StepThird />}
+        {step === 4 && <StepFourth />}
         <CreateButtons handleChangeStep={handleChangeStep} />
       </View>
     </View>
