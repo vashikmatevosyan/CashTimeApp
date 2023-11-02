@@ -1,16 +1,21 @@
 import React, { useCallback, useState } from 'react';
 import {
+  FlatList,
   StatusBar,
-  StyleSheet, Text, TouchableOpacity, View,
+  StyleSheet, View,
 } from 'react-native';
-import { INDIGO_BLUE, ORANGE, WHITE } from '../theme/colors';
+import { INDIGO_BLUE, WHITE } from '../theme/colors';
 import LogoView from '../components/global/LogoView';
 import { RH, RW } from '../helpers/ratio';
-import StepFirts from '../components/createJob/StepFirts';
+import StepFirst from '../components/createJob/StepFirst';
+import StepIndicator from '../components/global/StepIndicator';
+import CreateButtons from '../components/global/CreateButtons';
+import StepThird from '../components/createJob/StepThird';
+import StepFourth from '../components/createJob/StepFourth';
 
 function CreateJob() {
-  const number = [1, 2, 3, 4, 5, 6];
-  const [step, setStep] = useState(1);
+  const numbers = [1, 2, 3, 4, 5, 6];
+  const [step, setStep] = useState(4);
   const handleChangeStep = useCallback((method) => {
     if (method === '+' && step < 6) {
       setStep((prevState) => prevState + 1);
@@ -20,32 +25,27 @@ function CreateJob() {
   }, [step]);
   return (
     <View style={styles.wrapper}>
-      <StatusBar translucent backgroundColor="transparent" />
       <View style={styles.container}>
         <LogoView />
         <View style={styles.indicatorWrapper}>
-          {number.map((e) => (
-            <View key={e} style={styles.numbersWrapper}>
-              {e !== 1 && <Text style={styles.line} />}
-              <View style={[styles.numberBack, { backgroundColor: step === e ? ORANGE : WHITE }]}>
-                <Text style={styles.number}>{e}</Text>
-              </View>
-            </View>
-          ))}
+          <FlatList
+            data={numbers}
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            scrollEnabled={false}
+            renderItem={({ item }) => (
+              <StepIndicator
+                number={item}
+                step={step}
+              />
+            )}
+          />
         </View>
-        {step === 1 && <StepFirts />}
-        <View style={styles.btnContainer}>
-          <TouchableOpacity onPress={() => handleChangeStep('-')}>
-            <Text style={styles.btn}>
-              Go Back
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleChangeStep('+')}>
-            <Text style={styles.btn}>
-              Skip For Now
-            </Text>
-          </TouchableOpacity>
-        </View>
+
+        {step === 1 && <StepFirst />}
+        {step === 3 && <StepThird />}
+        {step === 4 && <StepFourth />}
+        <CreateButtons handleChangeStep={handleChangeStep} />
       </View>
     </View>
   );
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: INDIGO_BLUE,
     flex: 1,
-    paddingTop: 10 + StatusBar.currentHeight,
+    paddingTop: RH(10) + StatusBar.currentHeight,
   },
   container: {
     width: '90%',
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   },
   indicatorWrapper: {
     flexDirection: 'row',
+    width: '100%',
     justifyContent: 'center',
     marginTop: RH(80),
   },
