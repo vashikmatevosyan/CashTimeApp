@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { RH } from '../../helpers/ratio';
 import CreateJobsTitles from './CreateJobsTitles';
 import SelectPriceMethodCheckbox from './SelectPriceMethodCheckbox';
 import PriceMinMaxInputs from './PriceMinMaxInputs';
+import FixedPriceInputs from './FixedPriceInputs';
 
 function StepFourth() {
   const methods = ['Hourly Rate', 'Project Budget'];
@@ -11,6 +12,7 @@ function StepFourth() {
   const [priceTo, setPriceTo] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [selectedMethod, setSelectedMethod] = useState('Hourly Rate');
+  // console.log(priceFrom, priceTo, selectedMethod, maxPrice);
   return (
     <View style={styles.container}>
       <CreateJobsTitles title="Tell us about your budget." align="center" />
@@ -25,12 +27,14 @@ function StepFourth() {
         ))}
       </View>
       <View>
-        <PriceMinMaxInputs
-          priceFrom={priceFrom}
-          setPriceFrom={setPriceFrom}
-          priceTo={priceTo}
-          setPriceTo={setPriceTo}
-        />
+        {selectedMethod === 'Hourly Rate' ? (
+          <PriceMinMaxInputs
+            priceFrom={priceFrom}
+            setPriceFrom={setPriceFrom}
+            priceTo={priceTo}
+            setPriceTo={setPriceTo}
+          />
+        ) : <FixedPriceInputs maxPrice={maxPrice} setMaxPrice={setMaxPrice} />}
       </View>
     </View>
   );

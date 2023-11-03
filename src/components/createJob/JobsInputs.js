@@ -7,7 +7,7 @@ function JobsInputs({
   value, setValue, width, keyboardType = 'default', top,
 }) {
   return (
-    <View style={{width: '100%' }}>
+    <View style={{ width: '100%' }}>
       <TextInput
         keyboardType={keyboardType}
         value={value}
