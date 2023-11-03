@@ -9,11 +9,11 @@ import JobsInputs from './JobsInputs';
 import UltraSmallText from './UltraSmallText';
 
 function StepFirst() {
-  const [text, setText] = useState('');
+  const [jobTitle, setJobTitle] = useState('');
   return (
     <View style={styles.container}>
       <CreateJobsTitles title="Write a title for your job post" align="center" />
-      <JobsInputs top={RH(20)} value={text} setValue={setText} width="100%" />
+      <JobsInputs top={RH(20)} value={jobTitle} setValue={setJobTitle} width="100%" />
       <UltraSmallText text="Example titles" top={RH(20)} size={RW(18)} />
       <View style={styles.titlesBox}>
         <Text style={styles.dot} />

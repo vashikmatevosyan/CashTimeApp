@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import SelectDropdown from 'react-native-select-dropdown';
 import {
   View, Text, StyleSheet,
-  TextInput, TouchableOpacity,
+  TextInput, TouchableOpacity, ScrollView,
 } from 'react-native';
 import {
   BLACK, DARK_BLUE, INDIGO_BLUE, WHITE,
@@ -17,7 +17,7 @@ import SvgComponentGoogle from '../../components/imagesSvgComponents/SvgComponen
 
 function SignUp({ route }) {
   const { params } = route;
-  const [errorText, setErrorText] = useState('Error Text');
+  const [errorText, setErrorText] = useState(false);
   const countries = ['Egypt', 'Canada', 'Australia',
     'Ireland', 'Egypt', 'Canada', 'Australia', 'Ireland',
     'Egypt', 'Canada', 'Australia', 'Ireland', 'Egypt', 'Canada', 'Australia', 'Ireland'];
@@ -48,9 +48,9 @@ function SignUp({ route }) {
     borderColor: 'gray',
     textAlign: 'left',
   };
-
+  const ref = useRef();
   return (
-    <View style={styles.signUp}>
+    <ScrollView ref={ref} style={styles.signUp}>
       <View style={styles.container}>
         <LogoView />
         <View style={styles.imagesContainer}>
@@ -60,12 +60,34 @@ function SignUp({ route }) {
           <Text style={styles.titleText}>Sign Up</Text>
         </View>
         <View>
-          <TextInput style={styles.input} />
+          <View style={styles.input}>
+            <PhoneNumberInput />
+          </View>
+
           <Text style={styles.errorText}>{errorText || ''}</Text>
-          <TextInput style={styles.input} />
+          <TextInput
+            keyboardType="email-address"
+            placeholder="Email"
+            placeholderTextColor="black"
+            style={styles.input}
+            onFocus={() => ref.current.scrollToEnd({ animated: true })}
+          />
           <Text style={styles.errorText}>{errorText || ''}</Text>
-          <TextInput style={styles.input} />
+          <TextInput
+            placeholder="Password"
+            placeholderTextColor="black"
+            style={styles.input}
+            onFocus={() => ref.current.scrollToEnd({ animated: true })}
+          />
           <Text style={styles.errorText}>{errorText || ''}</Text>
+          <TextInput
+            placeholder="Location"
+            placeholderTextColor="black"
+            style={styles.input}
+            onFocus={() => ref.current.scrollToEnd({ animated: true })}
+          />
+          <Text style={styles.errorText}>{errorText || ''}</Text>
+
           <SelectDropdown
             data={countries}
             onSelect={(selectedItem, index) => {
@@ -80,15 +102,11 @@ function SignUp({ route }) {
             buttonTextStyle={{
               fontSize: 14,
               padding: 0,
-              margin: 0,
+              marginTop: 10,
               marginHorizontal: 0,
               alignSelf: 'flex-start',
             }}
           />
-          <Text style={styles.errorText}>{errorText || ''}</Text>
-          <View style={styles.input}>
-            <PhoneNumberInput />
-          </View>
           <Text style={styles.errorText}>{errorText || ''}</Text>
         </View>
         <View style={styles.gradientBox}>
@@ -106,7 +124,7 @@ function SignUp({ route }) {
           <TouchableOpacity style={{ marginBottom: 15 }} title="Already have an Account? Log in"><Text style={styles.signUpText}>Already have an Account? Log in</Text></TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -150,7 +168,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingTop: 0,
     paddingBottom: 0,
-    paddingLeft: 5,
+    paddingLeft: 10,
     paddingRight: 5,
     textDecorationLine: 'none',
     overflow: 'hidden',

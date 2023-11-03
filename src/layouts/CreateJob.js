@@ -12,10 +12,12 @@ import StepIndicator from '../components/global/StepIndicator';
 import CreateButtons from '../components/global/CreateButtons';
 import StepThird from '../components/createJob/StepThird';
 import StepFourth from '../components/createJob/StepFourth';
+import StepFive from '../components/createJob/StepFive';
+import StepSix from '../components/createJob/StepSix';
 
 function CreateJob() {
   const numbers = [1, 2, 3, 4, 5, 6];
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(6);
   const handleChangeStep = useCallback((method) => {
     if (method === '+' && step < 6) {
       setStep((prevState) => prevState + 1);
@@ -45,6 +47,8 @@ function CreateJob() {
         {step === 1 && <StepFirst />}
         {step === 3 && <StepThird />}
         {step === 4 && <StepFourth />}
+        {step === 5 && <StepFive />}
+        {step === 6 && <StepSix />}
         <CreateButtons handleChangeStep={handleChangeStep} />
       </View>
     </View>

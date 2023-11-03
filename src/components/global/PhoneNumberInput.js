@@ -12,6 +12,7 @@ import { RH, RW } from '../../helpers/ratio';
 import { BLACK, WHITE } from '../../theme/colors';
 // import { Colors } from "react-native/Libraries/NewAppScreen";
 
+
 function PhoneNumberInput() {
   const [value, setValue] = useState('');
   const [formattedValue, setFormattedValue] = useState('');
@@ -141,7 +142,6 @@ const styles = StyleSheet.create({
     height: RH(37),
     backgroundColor: WHITE,
     borderColor: '#FFFFFF',
-    // marginBottom: RH(15),
     color: BLACK,
     borderRadius: 8,
     overflow: 'hidden',
