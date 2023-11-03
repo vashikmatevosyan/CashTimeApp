@@ -1,4 +1,5 @@
 import React from 'react'; import {
+  StatusBar,
   StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; import {
@@ -49,7 +50,7 @@ function SignUpMethod() {
 const styles = StyleSheet.create({
   signUpMethod: {
     backgroundColor: INDIGO_BLUE,
-    paddingTop: 10,
+    paddingTop: StatusBar.currentHeight + 10,
     flex: 1,
   },
   container: {

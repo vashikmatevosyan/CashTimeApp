@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StatusBar, StyleSheet, Text, View,
+} from 'react-native';
 import SlideToUnlock from '../../components/no-sign-up-screens-components/SlideToUnlock';
 import LogoView from '../../components/global/LogoView';
 import { INDIGO_BLUE, WHITE } from '../../theme/colors';
@@ -28,7 +30,7 @@ const styles = StyleSheet.create({
   unLock: {
     flex: 1,
     backgroundColor: INDIGO_BLUE,
-    paddingTop: 10,
+    paddingTop: StatusBar.currentHeight + 10,
   },
   container: {
     width: '90%',
