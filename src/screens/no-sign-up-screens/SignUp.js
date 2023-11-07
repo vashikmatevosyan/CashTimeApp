@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import SelectDropdown from 'react-native-select-dropdown';
 import {
   View, Text, StyleSheet,
-  TextInput, TouchableOpacity, ScrollView,
+  TextInput, TouchableOpacity, ScrollView, StatusBar,
 } from 'react-native';
 import {
   BLACK, DARK_BLUE, INDIGO_BLUE, WHITE,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   signUp: {
     flex: 1,
     backgroundColor: INDIGO_BLUE,
-    paddingTop: 10,
+    paddingTop: StatusBar.currentHeight + 10,
   },
   container: {
     width: '90%',

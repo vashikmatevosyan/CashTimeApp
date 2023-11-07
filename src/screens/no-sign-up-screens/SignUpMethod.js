@@ -9,7 +9,8 @@ import LogoView from '../../components/global/LogoView'; import SvgComponentSign
   from '../../components/imagesSvgComponents/SvgComponentSignUpMethodScreen'; import { RW } from '../../helpers/ratio';
 
 function SignUpMethod() {
-  const navigation = useNavigation(); return (
+  const navigation = useNavigation();
+  return (
     <View style={styles.signUpMethod}>
       <View style={styles.container}>
         <LogoView />
@@ -37,7 +38,7 @@ function SignUpMethod() {
           <Text style={styles.loginText}>
             Already have an Account?
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Text style={[styles.loginText, { textDecorationLine: 'underline', marginLeft: 5 }]}>
               Log in
             </Text>
