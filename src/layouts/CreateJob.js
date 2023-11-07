@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
-  FlatList,
+  Dimensions,
+  FlatList, ScrollView,
   StatusBar,
   StyleSheet, View,
 } from 'react-native';
@@ -15,6 +16,8 @@ import StepFourth from '../components/createJob/StepFourth';
 import StepFive from '../components/createJob/StepFive';
 import StepSix from '../components/createJob/StepSix';
 
+const screenHeight = Dimensions.get('window').height;
+
 function CreateJob() {
   const numbers = [1, 2, 3, 4, 5, 6];
   const [step, setStep] = useState(6);
@@ -26,7 +29,10 @@ function CreateJob() {
     }
   }, [step]);
   return (
-    <View style={styles.wrapper}>
+    <ScrollView
+      contentContainerStyle={{ height: RH(screenHeight) }}
+      style={styles.wrapper}
+    >
       <View style={styles.container}>
         <LogoView />
         <View style={styles.indicatorWrapper}>
@@ -51,7 +57,7 @@ function CreateJob() {
         {step === 6 && <StepSix />}
         <CreateButtons handleChangeStep={handleChangeStep} />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -65,7 +71,9 @@ const styles = StyleSheet.create({
     width: '90%',
     marginLeft: 'auto',
     marginRight: 'auto',
+    // marginTop: 50,
     flex: 1,
+    // height: screenHeight,
   },
   indicatorWrapper: {
     flexDirection: 'row',

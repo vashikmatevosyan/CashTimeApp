@@ -5,7 +5,7 @@ import LogOutNavigation from './LogOutNavigation';
 import LogInNavigation from './LogInNavigation';
 
 function AppNavigator() {
-  const token = false;
+  const token = true;
   return (
     <NavigationContainer>
       <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />

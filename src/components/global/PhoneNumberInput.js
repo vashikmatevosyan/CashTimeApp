@@ -19,7 +19,7 @@ function PhoneNumberInput() {
   const [showMessage, setShowMessage] = useState(false);
   const phoneInput = useRef(null);
   const input = {
-    width: RW(335),
+    width: '100%',
     height: RH(45),
     // backgroundColor: WHITE,
     borderColor: '#FFFFFF',

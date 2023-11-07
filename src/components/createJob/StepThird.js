@@ -16,30 +16,26 @@ function StepThird() {
     <View style={styles.container}>
       <CreateJobsTitles title="What level of experience will it need?" align="center" />
       <View>
-        <FlatList
-          data={levels}
-          renderItem={({ item }) => (
-            <View style={styles.checkboxContainer}>
-              <SmallTextsCreateJob text={item} size={18} />
-              <CheckBox
-                onPress={() => setChecked(item)}
-                right
-                checked
-                containerStyle={styles.checkbox}
-                checkedIcon={(
-                  <CheckBoxIcon
-                    checked={checked === item}
-                    bw={65}
-                    bh={65}
-                    sh={35}
-                    sw={35}
-                  />
-)}
-              />
-            </View>
-          )}
-          keyExtractor={(item) => item}
-        />
+        {levels.map((e) => (
+          <View key={e} style={styles.checkboxContainer}>
+            <SmallTextsCreateJob text={e} size={18} />
+            <CheckBox
+              onPress={() => setChecked(e)}
+              right
+              checked
+              containerStyle={styles.checkbox}
+              checkedIcon={(
+                <CheckBoxIcon
+                  checked={checked === e}
+                  bw={65}
+                  bh={65}
+                  sh={35}
+                  sw={35}
+                />
+              )}
+            />
+          </View>
+        ))}
       </View>
     </View>
   );
