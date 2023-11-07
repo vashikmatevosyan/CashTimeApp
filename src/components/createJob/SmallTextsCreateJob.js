@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   text: {
     color: BLACK,
     fontFamily: 'Lato-SemiBold',
-    fontWeight: '800',
+    fontWeight: '700',
   },
 });
 
