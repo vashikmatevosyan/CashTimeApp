@@ -11,9 +11,11 @@ import SvgComponentDefaultImage from '../imagesSvgComponents/SvgComponentDefault
 import SmallTextsCreateJob from './SmallTextsCreateJob';
 import SvgComponentArrowSelect from '../imagesSvgComponents/SvgComponentArrowSelect';
 
-function StepSix() {
+function StepSix({ countries }) {
+  const [selectCountry, setSelectCountry] = useState('');
   const [file, setFile] = useState({});
   const [fileSrc, setFileSrc] = useState('');
+  console.log(selectCountry);
   const handleGallery = useCallback(() => {
     const options = {
       storageOptions: {
@@ -22,18 +24,11 @@ function StepSix() {
     };
     launchImageLibrary(options, (response) => {
       setFile(response);
-      setFileSrc(response?.assets[0]?.uri);
+      if (response?.assets) {
+        setFileSrc(response?.assets[0]?.uri);
+      }
     });
   }, [file, fileSrc]);
-  const data = [
-    { label: '1', value: 'Mobiles' },
-    { label: '2', value: 'Appliances' },
-    { label: '3', value: 'Cameras' },
-    { label: '4', value: 'Computers' },
-    { label: '5', value: 'Vegetables' },
-    { label: '6', value: 'Diary Products' },
-    { label: '7', value: 'Drinks' },
-  ];
 
   return (
     <View style={styles.container}>
@@ -58,8 +53,9 @@ function StepSix() {
         <SelectList
           arrowicon={<SvgComponentArrowSelect />}
           boxStyles={styles.select}
-          setSelected={() => {}}
-          data={data}
+          setSelected={(label) => setSelectCountry(label)}
+          data={countries}
+          renderItem={({ item }) => <Text>{item.label}</Text>}
           placeholder="Select Country"
           save="value"
           searchPlaceholder="Search Country"

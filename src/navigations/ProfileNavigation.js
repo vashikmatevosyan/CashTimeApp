@@ -1,5 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { View, Text } from 'react-native';
 import Profile from '../screens/Profile';
 
 function ProfileNavigation() {
@@ -7,7 +8,15 @@ function ProfileNavigation() {
 
   return (
     <Stack.Navigator screenOptions={{
-      headerShown: false,
+      headerShown: true,
+      headerTitleAlign: 'center',
+      headerLeft: () => (
+        <View>
+          <Text>
+            Back
+          </Text>
+        </View>
+      ),
     }}
     >
       <Stack.Screen name="Profile" component={Profile} />

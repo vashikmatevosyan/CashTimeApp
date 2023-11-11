@@ -3,10 +3,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { WHITE } from '../../theme/colors';
 import { RW } from '../../helpers/ratio';
 
-function CreateJobsTitles({ title, align }) {
+function CreateJobsTitles({
+  title, align, width = '100%', color = WHITE,
+}) {
   return (
-    <View>
-      <Text style={[styles.text, { textAlign: align }]}>
+    <View style={{ alignItems: 'center' }}>
+      <Text style={[styles.text, { textAlign: align, width, color }]}>
         {title}
       </Text>
     </View>
@@ -15,9 +17,9 @@ function CreateJobsTitles({ title, align }) {
 
 const styles = StyleSheet.create({
   text: {
-    color: WHITE,
     fontSize: RW(24),
     fontFamily: 'Lato-Bold',
+    width: '70%',
   },
 });
 
