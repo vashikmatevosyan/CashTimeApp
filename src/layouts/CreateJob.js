@@ -18,24 +18,34 @@ import StepFive from '../components/createJob/StepFive';
 import StepSix from '../components/createJob/StepSix';
 import { getCountries } from '../store/actions/utils';
 import StepTwo from '../components/createJob/StepTwo';
+import setJobFormData from '../store/actions/createJobForm';
+import FinallyView from '../components/createJob/FinallyView';
 
 const screenHeight = Dimensions.get('window').height;
 
 function CreateJob() {
   const dispatch = useDispatch();
+  const [localData, setLocalData] = useState({});
+  const [step, setStep] = useState(1);
+  const countries = useSelector((state) => state.utils.countries);
+  const numbers = [1, 2, 3, 4, 5, 6];
   useEffect(() => {
     dispatch(getCountries());
   }, []);
-  const countries = useSelector((state) => state.utils.countries);
-  const numbers = [1, 2, 3, 4, 5, 6];
-  const [step, setStep] = useState(2);
+  const handleDataFromChild = (childData) => {
+    setLocalData((prevData) => ({
+      ...prevData,
+      ...childData,
+    }));
+  };
   const handleChangeStep = useCallback((method) => {
-    if (method === '+' && step < 6) {
+    if (method === '+' && step < 7) {
       setStep((prevState) => prevState + 1);
+      dispatch(setJobFormData({ data: localData }));
     } else if (method === '-' && step > 1) {
       setStep((prevState) => prevState - 1);
     }
-  }, [step]);
+  }, [step, localData]);
   return (
     <ScrollView
       contentContainerStyle={{ height: RH(screenHeight) }}
@@ -43,6 +53,7 @@ function CreateJob() {
     >
       <View style={styles.container}>
         <LogoView />
+        {step <= 6 && (
         <View style={styles.indicatorWrapper}>
           <FlatList
             data={numbers}
@@ -57,14 +68,15 @@ function CreateJob() {
             )}
           />
         </View>
-
-        {step === 1 && <StepFirst />}
-        {step === 2 && <StepTwo />}
-        {step === 3 && <StepThird />}
-        {step === 4 && <StepFourth />}
-        {step === 5 && <StepFive />}
-        {step === 6 && <StepSix countries={countries} />}
-        <CreateButtons handleChangeStep={handleChangeStep} />
+        )}
+        {step === 1 && <StepFirst onData={handleDataFromChild} />}
+        {step === 2 && <StepTwo onData={handleDataFromChild} />}
+        {step === 3 && <StepThird onData={handleDataFromChild} />}
+        {step === 4 && <StepFourth onData={handleDataFromChild} />}
+        {step === 5 && <StepFive onData={handleDataFromChild} />}
+        {step === 6 && <StepSix onData={handleDataFromChild} countries={countries} />}
+        {step === 7 && <FinallyView />}
+        {step <= 6 && <CreateButtons handleChangeStep={handleChangeStep} />}
       </View>
     </ScrollView>
   );

@@ -13,10 +13,11 @@ import {
 } from '../../theme/colors';
 import JobsInputs from './JobsInputs';
 
-function StepTwo() {
+function StepTwo({ onData }) {
   const dispatch = useDispatch();
   const skills = useSelector((state) => state.utils.skills);
-  const [selectedSkills, setSelectedSkills] = useState([]);
+  const secondFormArray = useSelector((state) => state.createJobForm.dataFromChild2) ?? [];
+  const [selectedSkills, setSelectedSkills] = useState(secondFormArray || []);
   const [inputValue, setInputValue] = useState('');
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -26,6 +27,9 @@ function StepTwo() {
       clearTimeout(timer);
     };
   }, [inputValue]);
+  useEffect(() => {
+    onData({ dataFromChild2: selectedSkills });
+  }, [selectedSkills]);
   const handleAddSkill = useCallback((skill) => {
     const lowerCaseSelectedSkills = selectedSkills.map((s) => s.skill.toLowerCase());
     const lowerCaseSkill = skill.toLowerCase();
@@ -38,7 +42,6 @@ function StepTwo() {
   const handleSkillDelete = useCallback((e) => {
     setSelectedSkills(selectedSkills.filter((item) => item.id !== e));
   }, [selectedSkills]);
-  console.log(selectedSkills);
   return (
     <View style={styles.container}>
       <CreateJobsTitles width="70%" title="What are the main skills required for your work?" align="center" />

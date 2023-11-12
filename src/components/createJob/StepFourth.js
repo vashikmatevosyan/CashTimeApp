@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { RH } from '../../helpers/ratio';
 import CreateJobsTitles from './CreateJobsTitles';
 import SelectPriceMethodCheckbox from './SelectPriceMethodCheckbox';
 import PriceMinMaxInputs from './PriceMinMaxInputs';
 import FixedPriceInputs from './FixedPriceInputs';
 
-function StepFourth() {
+function StepFourth({ onData }) {
   const methods = ['Hourly Rate', 'Project Budget'];
-  const [priceFrom, setPriceFrom] = useState('');
-  const [priceTo, setPriceTo] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
-  const [selectedMethod, setSelectedMethod] = useState('Hourly Rate');
-  // console.log(priceFrom, priceTo, selectedMethod, maxPrice);
+  const fourthFormPrice = useSelector((state) => state.createJobForm.dataFromChild4) ?? {};
+  const [selectedMethod, setSelectedMethod] = useState(fourthFormPrice.method || 'Hourly Rate');
+  const [priceFrom, setPriceFrom] = useState(fourthFormPrice.priceFrom || '');
+  const [priceTo, setPriceTo] = useState(fourthFormPrice.priceTo || '');
+  const [maxPrice, setMaxPrice] = useState(fourthFormPrice.maxPrice || '');
+  useEffect(() => {
+    onData({
+      dataFromChild4: {
+        method: selectedMethod,
+        priceFrom: priceFrom || null,
+        priceTo: priceTo || null,
+        maxPrice: maxPrice || null,
+      },
+    });
+  }, [priceFrom, priceTo, maxPrice, selectedMethod]);
   return (
     <View style={styles.container}>
       <CreateJobsTitles title="Tell us about your budget." align="center" />

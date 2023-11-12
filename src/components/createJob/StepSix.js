@@ -15,7 +15,6 @@ function StepSix({ countries }) {
   const [selectCountry, setSelectCountry] = useState('');
   const [file, setFile] = useState({});
   const [fileSrc, setFileSrc] = useState('');
-  console.log(selectCountry);
   const handleGallery = useCallback(() => {
     const options = {
       storageOptions: {
