@@ -76,4 +76,3 @@ yarn.lock
 .env
 .env.production.local
 
-config.js
