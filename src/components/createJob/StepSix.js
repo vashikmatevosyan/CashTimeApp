@@ -1,6 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import {
-  StyleSheet, View, Text, TouchableOpacity, Image,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SelectList } from 'react-native-dropdown-select-list';
@@ -10,11 +14,20 @@ import { GREY, ORANGE, WHITE } from '../../theme/colors';
 import SvgComponentDefaultImage from '../imagesSvgComponents/SvgComponentDefaultImage';
 import SmallTextsCreateJob from './SmallTextsCreateJob';
 import SvgComponentArrowSelect from '../imagesSvgComponents/SvgComponentArrowSelect';
+import AddressAutocomplete from '../global/AddressAutocomplete';
 
 function StepSix({ countries }) {
-  const [selectCountry, setSelectCountry] = useState('');
   const [file, setFile] = useState({});
-  const [fileSrc, setFileSrc] = useState('');
+  const [selectedImageUri, setSelectedImageUri] = useState('');
+  const [selectCountry, setSelectCountry] = useState('');
+  const [address, setAddress] = useState({
+    latitude: '',
+    longitude: '',
+    fullAddress: '',
+    location: '',
+  });
+  const [phoneNumber, setPhoneNumber] = useState('');
+
   const handleGallery = useCallback(() => {
     const options = {
       storageOptions: {
@@ -24,54 +37,56 @@ function StepSix({ countries }) {
     launchImageLibrary(options, (response) => {
       setFile(response);
       if (response?.assets) {
-        setFileSrc(response?.assets[0]?.uri);
+        setSelectedImageUri(response?.assets[0]?.uri);
       }
     });
-  }, [file, fileSrc]);
+  }, [file, selectedImageUri]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageBlock}>
-        {fileSrc ? (
-          <Image
-            source={{ uri: fileSrc }}
-            style={styles.image}
+      <View style={styles.content}>
+        <View style={styles.imageBlock}>
+          {selectedImageUri ? (
+            <Image
+              source={{ uri: selectedImageUri }}
+              style={styles.image}
+            />
+          ) : <SvgComponentDefaultImage />}
+        </View>
+        <TouchableOpacity onPress={handleGallery} style={styles.uploadTextBlock}>
+          <Text style={styles.uploadText}>+</Text>
+          <Text style={styles.uploadText}>Upload a Picture</Text>
+        </TouchableOpacity>
+        <View style={styles.selectBlock}>
+          <SmallTextsCreateJob text="Country*" />
+          <SelectList
+            arrowicon={<SvgComponentArrowSelect />}
+            boxStyles={styles.select}
+            setSelected={(label) => setSelectCountry(label)}
+            data={countries}
+            renderItem={({ item }) => <Text>{item.label}</Text>}
+            placeholder="Select Country"
+            save="value"
+            searchPlaceholder="Search Country"
+            notFoundText="Country Not Found"
           />
-        ) : <SvgComponentDefaultImage />}
-      </View>
-      <TouchableOpacity onPress={handleGallery} style={styles.uploadTextBlock}>
-        <Text style={styles.uploadText}>
-          +
-        </Text>
-        <Text style={styles.uploadText}>
-          Upload a Picture
-        </Text>
-      </TouchableOpacity>
-      <View style={styles.selectBlock}>
-        <SmallTextsCreateJob text="Country*" />
-        <SelectList
-          arrowicon={<SvgComponentArrowSelect />}
-          boxStyles={styles.select}
-          setSelected={(label) => setSelectCountry(label)}
-          data={countries}
-          renderItem={({ item }) => <Text>{item.label}</Text>}
-          placeholder="Select Country"
-          save="value"
-          searchPlaceholder="Search Country"
-          notFoundText="Country Nor Fount"
-        />
-      </View>
-      <View style={{ marginTop: RH(10) }}>
-        <SmallTextsCreateJob text="Phone" />
-        <View style={{ height: 50 }}>
-          <PhoneInput
-            defaultCode="AM"
-            codeTextStyle={styles.inputText}
-            flagButtonStyle={{ padding: 0, margin: 0 }}
-            textInputStyle={styles.inputText}
-            textContainerStyle={{ borderRadius: 20, height: 50, backgroundColor: GREY }}
-            containerStyle={{ backgroundColor: GREY, borderRadius: 10 }}
-          />
+        </View>
+        <View style={{ marginTop: RH(15) }}>
+          <SmallTextsCreateJob text="Street Address* (won’t show on profile)" />
+          <AddressAutocomplete height={100} marginTop={10} />
+        </View>
+        <View style={{ marginTop: RH(10) }}>
+          <SmallTextsCreateJob text="Phone" />
+          <View style={{ height: 50 }}>
+            <PhoneInput
+              defaultCode="AM"
+              codeTextStyle={styles.inputText}
+              flagButtonStyle={{ padding: 0, margin: 0 }}
+              textInputStyle={styles.inputText}
+              textContainerStyle={{ borderRadius: 20, height: 50, backgroundColor: GREY }}
+              containerStyle={{ backgroundColor: GREY, borderRadius: 10 }}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -82,9 +97,12 @@ const styles = StyleSheet.create({
   container: {
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginTop: RH(40),
+    marginTop: RH(15),
     width: '95%',
     position: 'relative',
+    flex: 1,
+  },
+  content: {
     backgroundColor: WHITE,
     borderRadius: 25,
     padding: 10,
@@ -132,7 +150,6 @@ const styles = StyleSheet.create({
   inputText: {
     fontSize: 16,
     fontFamily: 'Lato-Regular',
-    // fontWeight: 400,
     padding: 0,
     margin: 0,
   },

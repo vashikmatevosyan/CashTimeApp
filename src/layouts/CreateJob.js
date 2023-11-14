@@ -46,6 +46,9 @@ function CreateJob() {
       setStep((prevState) => prevState - 1);
     }
   }, [step, localData]);
+  const handleGetBack = useCallback(() => {
+    setStep(1);
+  }, [step]);
   return (
     <ScrollView
       contentContainerStyle={{ height: RH(screenHeight) }}
@@ -75,7 +78,7 @@ function CreateJob() {
         {step === 4 && <StepFourth onData={handleDataFromChild} />}
         {step === 5 && <StepFive onData={handleDataFromChild} />}
         {step === 6 && <StepSix onData={handleDataFromChild} countries={countries} />}
-        {step === 7 && <FinallyView />}
+        {step === 7 && <FinallyView getBack={handleGetBack} />}
         {step <= 6 && <CreateButtons handleChangeStep={handleChangeStep} />}
       </View>
     </ScrollView>

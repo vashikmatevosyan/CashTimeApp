@@ -8,3 +8,4 @@ export const INDIGO_BLUE = '#4A62B6';
 
 export const BLACK = '#000000';
 export const GREY = '#D9D9D9';
+export const LIGHT_GREY = '#EDECEC';
