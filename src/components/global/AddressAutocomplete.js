@@ -2,17 +2,16 @@ import React, { useState } from 'react';
 import {
   View, TextInput, StyleSheet, Text, TouchableOpacity, ScrollView,
 } from 'react-native';
+import { AUTOCOMPLETE_KEY, AUTOCOMPLETE_URI } from '@env';
 import { RH } from '../../helpers/ratio';
 import { GREY } from '../../theme/colors';
-import { autocomplete_key, autocomplete_uri } from '../../../config';
 
 function AddressAutocomplete({ height, marginTop = 0 }) {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-
   const handleInputChange = async (text) => {
     setQuery(text);
-    const apiUrl = `${autocomplete_uri + text}&key=${autocomplete_key}`;
+    const apiUrl = `${AUTOCOMPLETE_URI + text}&key=${AUTOCOMPLETE_KEY}`;
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
