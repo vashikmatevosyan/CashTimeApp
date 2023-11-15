@@ -41,7 +41,7 @@ function StepSix({ countries }) {
       }
     });
   }, [file, selectedImageUri]);
-
+  console.log(address, '999999999');
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -73,7 +73,7 @@ function StepSix({ countries }) {
         </View>
         <View style={{ marginTop: RH(15) }}>
           <SmallTextsCreateJob text="Street Address* (won’t show on profile)" />
-          <AddressAutocomplete height={100} marginTop={10} />
+          <AddressAutocomplete setAddress={setAddress} height={100} marginTop={10} />
         </View>
         <View style={{ marginTop: RH(10) }}>
           <SmallTextsCreateJob text="Phone" />
