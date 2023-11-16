@@ -6,8 +6,10 @@ import { AUTOCOMPLETE_KEY, AUTOCOMPLETE_URI, AUTOCOMPLETE_PLACES_URI } from '@en
 import { RH } from '../../helpers/ratio';
 import { GREY } from '../../theme/colors';
 
-function AddressAutocomplete({ height, marginTop = 0, setAddress }) {
-  const [query, setQuery] = useState('');
+function AddressAutocomplete({
+  height, marginTop = 0, setAddress, defaultValue,
+}) {
+  const [query, setQuery] = useState(defaultValue);
   const [suggestions, setSuggestions] = useState([]);
 
   const handleInputChange = async (text) => {
@@ -41,8 +43,8 @@ function AddressAutocomplete({ height, marginTop = 0, setAddress }) {
           latitude: location.lat,
           longitude: location.lng,
           fullAddress: data.result.name,
-          country: country.long_name,
-          city: city.long_name,
+          country: country?.long_name,
+          city: city?.long_name,
         });
       }
     } catch (error) {

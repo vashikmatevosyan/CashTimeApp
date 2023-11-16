@@ -1,4 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, {
+  useCallback, useEffect, useState,
+} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +11,7 @@ import {
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SelectList } from 'react-native-dropdown-select-list';
 import PhoneInput from 'react-native-phone-number-input';
+import { useSelector } from 'react-redux';
 import { RH, RW } from '../../helpers/ratio';
 import { GREY, ORANGE, WHITE } from '../../theme/colors';
 import SvgComponentDefaultImage from '../imagesSvgComponents/SvgComponentDefaultImage';
@@ -16,17 +19,20 @@ import SmallTextsCreateJob from './SmallTextsCreateJob';
 import SvgComponentArrowSelect from '../imagesSvgComponents/SvgComponentArrowSelect';
 import AddressAutocomplete from '../global/AddressAutocomplete';
 
-function StepSix({ countries }) {
+function StepSix({ countries, onData }) {
+  const sixtyFormObj = useSelector((state) => state.createJobForm.dataFromChild6) ?? {};
   const [file, setFile] = useState({});
-  const [selectedImageUri, setSelectedImageUri] = useState('');
-  const [selectCountry, setSelectCountry] = useState('');
+  const [selectedImageUri, setSelectedImageUri] = useState(sixtyFormObj.selectedPhoto || '');
+  const [selectCountry, setSelectCountry] = useState(sixtyFormObj.selectCountry || '');
   const [address, setAddress] = useState({
-    latitude: '',
-    longitude: '',
-    fullAddress: '',
-    location: '',
+    latitude: sixtyFormObj.address.latitude || '',
+    longitude: sixtyFormObj.address.longitude || '',
+    fullAddress: sixtyFormObj.address.fullAddress || '',
+    country: sixtyFormObj.address.country || '',
+    city: sixtyFormObj.address.city || '',
   });
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState(sixtyFormObj.phoneNumber || '');
+  const [value, setValue] = useState(sixtyFormObj.phoneNumberValue || '');
 
   const handleGallery = useCallback(() => {
     const options = {
@@ -35,13 +41,23 @@ function StepSix({ countries }) {
       },
     };
     launchImageLibrary(options, (response) => {
-      setFile(response);
+      setFile(response.assets[0]);
       if (response?.assets) {
         setSelectedImageUri(response?.assets[0]?.uri);
       }
     });
   }, [file, selectedImageUri]);
-  console.log(address, '999999999');
+  useEffect(() => {
+    onData({
+      dataFromChild6: {
+        selectCountry,
+        address,
+        selectedPhoto: selectedImageUri,
+        phoneNumber,
+        phoneNumberValue: value,
+      },
+    }, file);
+  }, [selectCountry, address, file, phoneNumber, selectedImageUri]);
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -60,6 +76,7 @@ function StepSix({ countries }) {
         <View style={styles.selectBlock}>
           <SmallTextsCreateJob text="Country*" />
           <SelectList
+            defaultOption={{ key: selectCountry, value: selectCountry }}
             arrowicon={<SvgComponentArrowSelect />}
             boxStyles={styles.select}
             setSelected={(label) => setSelectCountry(label)}
@@ -73,12 +90,20 @@ function StepSix({ countries }) {
         </View>
         <View style={{ marginTop: RH(15) }}>
           <SmallTextsCreateJob text="Street Address* (won’t show on profile)" />
-          <AddressAutocomplete setAddress={setAddress} height={100} marginTop={10} />
+          <AddressAutocomplete
+            defaultValue={sixtyFormObj.address.fullAddress || ''}
+            setAddress={setAddress}
+            height={100}
+            marginTop={10}
+          />
         </View>
         <View style={{ marginTop: RH(10) }}>
           <SmallTextsCreateJob text="Phone" />
           <View style={{ height: 50 }}>
             <PhoneInput
+              value={value}
+              onChangeText={setValue}
+              onChangeFormattedText={setPhoneNumber}
               defaultCode="AM"
               codeTextStyle={styles.inputText}
               flagButtonStyle={{ padding: 0, margin: 0 }}

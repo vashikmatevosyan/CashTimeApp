@@ -27,16 +27,18 @@ function CreateJob() {
   const dispatch = useDispatch();
   const [localData, setLocalData] = useState({});
   const [step, setStep] = useState(1);
+  const [file, setFile] = useState({});
   const countries = useSelector((state) => state.utils.countries);
   const numbers = [1, 2, 3, 4, 5, 6];
   useEffect(() => {
     dispatch(getCountries());
   }, []);
-  const handleDataFromChild = (childData) => {
+  const handleDataFromChild = (childData, x) => {
     setLocalData((prevData) => ({
       ...prevData,
       ...childData,
     }));
+    setFile(x);
   };
   const handleChangeStep = useCallback((method) => {
     if (method === '+' && step < 7) {
@@ -78,7 +80,7 @@ function CreateJob() {
         {step === 4 && <StepFourth onData={handleDataFromChild} />}
         {step === 5 && <StepFive onData={handleDataFromChild} />}
         {step === 6 && <StepSix onData={handleDataFromChild} countries={countries} />}
-        {step === 7 && <FinallyView getBack={handleGetBack} />}
+        {step === 7 && <FinallyView file={file} getBack={handleGetBack} />}
         {step <= 6 && <CreateButtons handleChangeStep={handleChangeStep} />}
       </View>
     </ScrollView>
