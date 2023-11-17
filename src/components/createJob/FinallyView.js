@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  StyleSheet, View, Text, TouchableOpacity, ScrollView,
+  StyleSheet, View, Text, TouchableOpacity, ScrollView, Image,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RH, RW } from '../../helpers/ratio';
@@ -33,12 +33,18 @@ function FinallyView({ getBack, file }) {
   useEffect(() => {
     setDataForRequest({ ...dataForUpdate, file });
   }, [dataForUpdate, file]);
-
+  console.log(file);
   const handlePostJob = useCallback(async () => {
-    const { payload } = await dispatch(createJobRequestFromPending({
-      data: JSON.stringify(dataForRequest),
-      jobImage: file,
-    }));
+    const formData = new FormData();
+    formData.append('jobImage', {
+      uri: file.uri,
+      type: file.type,
+      name: file.fileName,
+    });
+    formData.append('data', JSON.stringify(dataForRequest));
+
+    const { payload } = await dispatch(createJobRequestFromPending(formData));
+    console.log(payload);
   }, [dataForRequest, file]);
 
   const getPriceRange = () => {
@@ -64,7 +70,7 @@ function FinallyView({ getBack, file }) {
         <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.finallyRow}>
             <View style={styles.imageBlock}>
-              <SvgComponentDefaultImage />
+              {!file.uri ? <SvgComponentDefaultImage /> : <Image source={{ uri: file.uri }} />}
             </View>
             <TouchableOpacity onPress={() => getBack()}>
               <SvgComponentPain />

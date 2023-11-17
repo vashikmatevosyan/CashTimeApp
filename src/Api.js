@@ -13,6 +13,8 @@ class Api {
   }
 
   static createJob(data) {
+    const body = new FormData();
+    body.append('jobImage', data.jobImage);
     return api.post('/jobs/job-create', data, {
       headers: {
         'Content-Type': 'multipart/form-data',
