@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View, Text, StyleSheet, StatusBar, TextInput, TouchableOpacity,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   BLACK, DARK_BLUE, INDIGO_BLUE, WHITE,
 } from '../../theme/colors';
@@ -12,10 +13,16 @@ import SvgComponentGradientSignUp
 import SvgComponentGradientSignUpLeft
   from '../../components/imagesSvgComponents/SvgComponentGradientSignUpLeft';
 import SvgComponentLogin from '../../components/imagesSvgComponents/SvgComponentLogin';
+import { loginRequest } from '../../store/actions/users';
 
-function Login(props) {
+function Login() {
+  const dispatch = useDispatch();
   const [errorText, setErrorText] = useState(false);
-
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const handleSubmit = useCallback(async () => {
+    const { payload } = await dispatch(loginRequest({ email, password }));
+  }, [email, password]);
   return (
     <View style={styles.logIn}>
       <View style={styles.container}>
@@ -27,14 +34,19 @@ function Login(props) {
         </View>
         <View>
           <TextInput
-            placeholder="Username or  Email"
+            keyboardType="email-address"
+            placeholder="Email"
+            value={email}
             placeholderTextColor="black"
             style={styles.input}
+            onChangeText={setEmail}
           />
           <Text style={styles.errorText}>{errorText || ''}</Text>
           <TextInput
             keyboardType="visible-password"
             placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
             placeholderTextColor="black"
             style={styles.input}
           />
@@ -46,7 +58,7 @@ function Login(props) {
           <SvgComponentGradientSignUpLeft />
         </TouchableOpacity>
         <View>
-          <TouchableOpacity title="Create my Account" style={styles.createBtn}><Text style={styles.signUpText}>Continue with Email</Text></TouchableOpacity>
+          <TouchableOpacity onPress={handleSubmit} title="Create my Account" style={styles.createBtn}><Text style={styles.signUpText}>Continue with Email</Text></TouchableOpacity>
         </View>
         <View style={styles.svgContainer}><SvgComponentLogin /></View>
       </View>

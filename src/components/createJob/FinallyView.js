@@ -15,7 +15,7 @@ import SvgComponentPain from '../imagesSvgComponents/SvgComponentPain';
 import CreateJobsTitles from './CreateJobsTitles';
 import { createJobRequestFromPending } from '../../store/actions/jobsRequest';
 
-function FinallyView({ getBack, file }) {
+function FinallyView({ getBack, file = { x: 4 } }) {
   const dispatch = useDispatch();
   const dataFromChild1 = useSelector((state) => state.createJobForm.dataFromChild1);
   const dataFromChild2 = useSelector((state) => state.createJobForm.dataFromChild2);
@@ -33,18 +33,19 @@ function FinallyView({ getBack, file }) {
   useEffect(() => {
     setDataForRequest({ ...dataForUpdate, file });
   }, [dataForUpdate, file]);
-  console.log(file);
   const handlePostJob = useCallback(async () => {
     const formData = new FormData();
-    formData.append('jobImage', {
-      uri: file.uri,
-      type: file.type,
-      name: file.fileName,
-    });
+    if (Object.keys(file).length > 0) {
+      formData.append('jobImage', {
+        uri: file.uri,
+        type: file.type,
+        name: file.fileName,
+      });
+    }
     formData.append('data', JSON.stringify(dataForRequest));
-
+    console.log(formData.jobImage, 'form');
     const { payload } = await dispatch(createJobRequestFromPending(formData));
-    console.log(payload);
+    console.log(payload, 999);
   }, [dataForRequest, file]);
 
   const getPriceRange = () => {
@@ -70,7 +71,13 @@ function FinallyView({ getBack, file }) {
         <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.finallyRow}>
             <View style={styles.imageBlock}>
-              {!file.uri ? <SvgComponentDefaultImage /> : <Image source={{ uri: file.uri }} />}
+              {!file.uri ? <SvgComponentDefaultImage />
+                : (
+                  <Image
+                    style={styles.imageBlock}
+                    source={{ uri: file.uri }}
+                  />
+                )}
             </View>
             <TouchableOpacity onPress={() => getBack()}>
               <SvgComponentPain />

@@ -79,7 +79,7 @@ function CreateJob() {
         {step === 3 && <StepThird onData={handleDataFromChild} />}
         {step === 4 && <StepFourth onData={handleDataFromChild} />}
         {step === 5 && <StepFive onData={handleDataFromChild} />}
-        {step === 6 && <StepSix onData={handleDataFromChild} countries={countries} />}
+        {step === 6 && <StepSix file={file} onData={handleDataFromChild} countries={countries} />}
         {step === 7 && <FinallyView file={file} getBack={handleGetBack} />}
         {step <= 6 && <CreateButtons handleChangeStep={handleChangeStep} />}
       </View>

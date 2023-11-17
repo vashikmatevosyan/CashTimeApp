@@ -7,21 +7,20 @@ import { RH } from '../../helpers/ratio';
 import { GREY } from '../../theme/colors';
 
 function AddressAutocomplete({
-  height, marginTop = 0, setAddress, defaultValue,
+  height, marginTop = 0, setAddress, defaultValue, code = 'AM',
 }) {
   const [query, setQuery] = useState(defaultValue);
   const [suggestions, setSuggestions] = useState([]);
-
   const handleInputChange = async (text) => {
     setQuery(text);
-    const apiUrl = `${AUTOCOMPLETE_URI + text}&key=${AUTOCOMPLETE_KEY}`;
+    const apiUrl = `${AUTOCOMPLETE_URI + text}&key=${AUTOCOMPLETE_KEY}&components=country:${code?.toUpperCase()}`;
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
       if (data.predictions) {
         const addresses = data.predictions.map((prediction) => ({
           description: prediction.description,
-          placeId: prediction.place_id, // Добавляем place_id
+          placeId: prediction.place_id,
         }));
         setSuggestions(addresses);
       }

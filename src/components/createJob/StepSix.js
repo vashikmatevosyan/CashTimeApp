@@ -19,11 +19,12 @@ import SmallTextsCreateJob from './SmallTextsCreateJob';
 import SvgComponentArrowSelect from '../imagesSvgComponents/SvgComponentArrowSelect';
 import AddressAutocomplete from '../global/AddressAutocomplete';
 
-function StepSix({ countries, onData }) {
+function StepSix({ countries, onData, file: image }) {
   const sixtyFormObj = useSelector((state) => state.createJobForm.dataFromChild6) ?? {};
-  const [file, setFile] = useState({});
+  const [file, setFile] = useState(image || {});
   const [selectedImageUri, setSelectedImageUri] = useState(sixtyFormObj.selectedPhoto || '');
   const [selectCountry, setSelectCountry] = useState(sixtyFormObj.selectCountry || '');
+  const [code, setCode] = useState('AM');
   const [address, setAddress] = useState({
     latitude: sixtyFormObj.address.latitude || '',
     longitude: sixtyFormObj.address.longitude || '',
@@ -62,9 +63,9 @@ function StepSix({ countries, onData }) {
     <View style={styles.container}>
       <View style={styles.content}>
         <View style={styles.imageBlock}>
-          {selectedImageUri ? (
+          {file.uri ? (
             <Image
-              source={{ uri: selectedImageUri }}
+              source={{ uri: file.uri }}
               style={styles.image}
             />
           ) : <SvgComponentDefaultImage />}
@@ -79,7 +80,10 @@ function StepSix({ countries, onData }) {
             defaultOption={{ key: selectCountry, value: selectCountry }}
             arrowicon={<SvgComponentArrowSelect />}
             boxStyles={styles.select}
-            setSelected={(label) => setSelectCountry(label)}
+            setSelected={(label) => {
+              setSelectCountry(label);
+              setCode(countries.filter((e) => e.value === label)[0]?.label);
+            }}
             data={countries}
             renderItem={({ item }) => <Text>{item.label}</Text>}
             placeholder="Select Country"
@@ -94,6 +98,7 @@ function StepSix({ countries, onData }) {
             defaultValue={sixtyFormObj.address.fullAddress || ''}
             setAddress={setAddress}
             height={100}
+            code={code}
             marginTop={10}
           />
         </View>
