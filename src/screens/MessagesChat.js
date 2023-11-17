@@ -24,7 +24,9 @@ function MessagesChat({ navigation }) {
       },
     };
     launchImageLibrary(options, (response) => {
-      setFiles([...files, response]);
+      if (response && response.assets && response.assets.length > 0) {
+        setFiles([...files, response]);
+      }
     });
   }, [files]);
 
@@ -35,7 +37,9 @@ function MessagesChat({ navigation }) {
       },
     };
     launchCamera(options, (response) => {
-      setFiles([...files, response]);
+      if (response && response.assets && response.assets.length > 0) {
+        setFiles([...files, response]);
+      }
     });
   }, [files]);
 
