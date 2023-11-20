@@ -10,12 +10,10 @@ import NoInternetScreen from '../screens/NoInternetScreen';
 function AppNavigator() {
   const token = useSelector((state) => state.users.token);
   const [isConnected, setIsConnected] = useState(true);
-
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
       setIsConnected(state.isConnected);
     });
-
     return () => {
       unsubscribe();
     };
