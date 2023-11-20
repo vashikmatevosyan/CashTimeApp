@@ -27,6 +27,7 @@ function AppNavigator() {
       />
     );
   }
+
   return (
     <NavigationContainer>
       <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
