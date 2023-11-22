@@ -3,6 +3,7 @@ import {
   loginRequest,
 } from '../actions/users';
 import { storage } from '../../helpers/Storage';
+
 const initialState = {
   token: storage.getString('token') || '',
   profile: {},

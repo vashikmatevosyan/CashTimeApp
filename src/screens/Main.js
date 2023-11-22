@@ -4,15 +4,68 @@ import {
   StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
 import MapView from 'react-native-maps';
+import { CheckBox } from 'react-native-elements';
+import Calendar from 'react-native-calendars/src/calendar';
 import SvgComponentAvatar from '../components/imagesSvgComponents/SvgComponentAvatar';
-import { DARK_BLUE, INDIGO_BLUE, WHITE } from '../theme/colors';
+import {
+  DARK_BLUE, INDIGO_BLUE, ORANGE, WHITE,
+} from '../theme/colors';
 import { RH, RW } from '../helpers/ratio';
 import SvgComponentSearchIcon from '../components/imagesSvgComponents/SvgComponentSearchIcon';
 import SvgComponentFilterIcon from '../components/imagesSvgComponents/SvgComponentFilterIcon';
+import AddressAutocomplete from '../components/global/AddressAutocomplete';
+
+const experienceLevel = ['Entry Level', 'Intermediate', 'Expert'];
 
 function Main() {
   const [activeComponent, setActiveComponent] = useState('map');
   const [openFilterModal, setOpenFilterModal] = useState(false);
+  const [hourlyCheckbox, setHourlyCheckbox] = useState(true);
+  const [selectedDay, setSelectedDay] = useState([]);
+  const [checkBoxStates, setCheckBoxStates] = useState(
+    experienceLevel.map(() => false),
+  );
+
+  const handleCheckBoxPress = (index) => {
+    const newCheckBoxStates = [...checkBoxStates];
+    newCheckBoxStates[index] = !newCheckBoxStates[index];
+    setCheckBoxStates(newCheckBoxStates);
+  };
+
+  const markedDates = selectedDay.reduce((acc, date) => {
+    acc[date] = { selected: true, selectedColor: ORANGE };
+    return acc;
+  }, {});
+
+  const handleCalendarDayPress = (day) => {
+    if (!selectedDay[0]) {
+      setSelectedDay([day.dateString]);
+    } else {
+      const [startDate] = selectedDay;
+      const currentDate = day.dateString;
+
+      if (currentDate > startDate) {
+        const datesBetween = getDatesBetween(new Date(startDate), new Date(currentDate));
+        const newSelectedDates = [...datesBetween, currentDate];
+
+        setSelectedDay(newSelectedDates);
+      } else {
+        setSelectedDay([currentDate]);
+      }
+    }
+  };
+
+  const getDatesBetween = (startDate, endDate) => {
+    const dates = [];
+    const currentDate = new Date(startDate);
+
+    while (currentDate.getTime() <= endDate.getTime()) {
+      dates.push(currentDate.toISOString().split('T')[0]);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
+  };
 
   return (
     <>
@@ -179,17 +232,152 @@ function Main() {
         </View>
       </View>
       {openFilterModal ? (
-        <View style={styles.main__modal}>
+        <ScrollView style={styles.main__modal}>
           <TouchableOpacity
             style={styles.main__modal__close}
             onPress={() => setOpenFilterModal(false)}
           >
-            <Text style={{ fontSize: RW(24), color: '#fff' }}>X</Text>
+            <Text style={{ fontSize: RW(20), color: '#000' }}>X</Text>
           </TouchableOpacity>
-          <View>
-            <Text>Experience level</Text>
+          <View style={{ marginTop: RH(100) }}>
+            <Text style={{
+              marginLeft: RW(25), fontFamily: 'Lato-Regular', fontSize: RW(20), color: WHITE,
+            }}
+            >
+              Experience level
+            </Text>
+            {experienceLevel.map((e, index) => (
+              <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: -15 }}>
+                <CheckBox
+                  onPress={() => handleCheckBoxPress(index)}
+                  checked={checkBoxStates[index]}
+                  containerStyle={styles.checkbox}
+                  iconType="material-community"
+                  checkedIcon="checkbox-marked"
+                  uncheckedIcon="checkbox-blank-outline"
+                  checkedColor={ORANGE}
+                />
+                <Text style={{ color: WHITE, marginLeft: 10 }}>{e}</Text>
+              </View>
+            ))}
           </View>
-        </View>
+          <View style={{ marginTop: RH(50) }}>
+            <Text style={{
+              marginLeft: RW(25), fontFamily: 'Lato-Regular', fontSize: RW(20), color: WHITE,
+            }}
+            >
+              Job Type
+            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <CheckBox
+                  onPress={() => setHourlyCheckbox(true)}
+                  checked={hourlyCheckbox}
+                  containerStyle={styles.checkbox}
+                  iconType="material-community"
+                  checkedIcon="checkbox-marked"
+                  uncheckedIcon="checkbox-blank-outline"
+                  checkedColor={ORANGE}
+                />
+                <Text style={{ color: WHITE, marginLeft: 10 }}>Hourly</Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <CheckBox
+                  onPress={() => setHourlyCheckbox(false)}
+                  checked={!hourlyCheckbox}
+                  containerStyle={styles.checkbox}
+                  iconType="material-community"
+                  checkedIcon="checkbox-marked"
+                  uncheckedIcon="checkbox-blank-outline"
+                  checkedColor={ORANGE}
+                />
+                <Text style={{ color: WHITE, marginLeft: 10 }}>Per Project</Text>
+              </View>
+            </View>
+            {hourlyCheckbox ? (
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: RW(25) }}>
+                <TextInput
+                  keyboardType="numeric"
+                  placeholder="min"
+                  style={{
+                    width: RW(70), height: RH(30), padding: 5, backgroundColor: WHITE,
+                  }}
+                />
+                <Text style={{ color: WHITE, marginLeft: 5, marginRight: 10, }}>/hr</Text>
+                <TextInput
+                  keyboardType="numeric"
+                  placeholder="max"
+                  style={{
+                    width: RW(70), height: RH(30), padding: 5, backgroundColor: WHITE,
+                  }}
+                />
+                <Text style={{ color: WHITE, marginLeft: 5 }}>/hr</Text>
+              </View>
+            ) : (
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: RW(25) }}>
+                <TextInput
+                  keyboardType="numeric"
+                  placeholder="min"
+                  style={{
+                    width: RW(70), height: RH(30), padding: 5, backgroundColor: WHITE,
+                  }}
+                />
+                <Text style={{ color: WHITE, marginLeft: 5, marginRight: 20 }}>$/hr</Text>
+                <TextInput
+                  keyboardType="numeric"
+                  placeholder="max"
+                  style={{
+                    width: RW(70), height: RH(30), padding: 5, backgroundColor: WHITE,
+                  }}
+                />
+                <Text style={{ color: WHITE, marginLeft: 5 }}>$/hr</Text>
+              </View>
+            )}
+          </View>
+          <View style={{ marginTop: RH(50), marginLeft: RW(25) }}>
+            <Text style={{
+              fontFamily: 'Lato-Regular', fontSize: RW(20), color: WHITE, marginBottom: RH(20),
+            }}
+            >
+              Date Picker
+            </Text>
+            <Calendar
+              style={{
+                borderWidth: 1,
+                borderColor: 'gray',
+                width: '90%',
+              }}
+              onDayPress={handleCalendarDayPress}
+              markedDates={markedDates}
+            />
+          </View>
+          <View style={{ width: '80%', marginTop: RH(30), marginLeft: RW(25) }}>
+            <Text style={{
+              fontFamily: 'Lato-Regular', fontSize: RW(20), color: WHITE, marginBottom: RH(10),
+            }}
+            >
+              Client Location
+            </Text>
+            <AddressAutocomplete height={200} defaultValue="" marginTop={0} />
+          </View>
+          <View style={{
+            width: '80%', marginTop: RH(30), marginBottom: 20, marginLeft: RW(25),
+          }}
+          >
+            <Text style={{
+              fontFamily: 'Lato-Regular', fontSize: RW(20), color: WHITE, marginBottom: RH(10),
+            }}
+            >
+              Categories
+            </Text>
+            <TextInput
+              placeholder="Select a Category"
+              style={{
+                width: '100%', height: 50, padding: 5, backgroundColor: '#D9D9D9', borderRadius: 8,
+              }}
+            />
+          </View>
+        </ScrollView>
       ) : null}
     </>
   );
@@ -278,9 +466,19 @@ const styles = StyleSheet.create({
     backgroundColor: INDIGO_BLUE,
   },
   main__modal__close: {
+    width: 30,
+    height: 30,
+    borderRadius: 30,
+    backgroundColor: WHITE,
     position: 'absolute',
     right: RW(30),
     top: RH(60),
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkbox: {
+    width: 15,
   },
 });
 

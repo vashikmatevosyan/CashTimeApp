@@ -7,7 +7,7 @@ import { RH } from '../../helpers/ratio';
 import { GREY } from '../../theme/colors';
 
 function AddressAutocomplete({
-  height, marginTop = 0, setAddress, defaultValue, code = 'AM',
+  height, marginTop = 0, setAddress, defaultValue = '', code = 'AM',
 }) {
   const [query, setQuery] = useState(defaultValue);
   const [suggestions, setSuggestions] = useState([]);
