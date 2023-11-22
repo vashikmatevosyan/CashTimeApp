@@ -20,6 +20,7 @@ import { getCountries } from '../store/actions/utils';
 import StepTwo from '../components/createJob/StepTwo';
 import setJobFormData from '../store/actions/createJobForm';
 import FinallyView from '../components/createJob/FinallyView';
+import { storage } from '../helpers/Storage';
 
 const screenHeight = Dimensions.get('window').height;
 

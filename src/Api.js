@@ -13,6 +13,10 @@ api.interceptors.request.use((config) => {
 }, (error) => Promise.reject(error));
 
 class Api {
+  static noticeList(page, limit) {
+    return api.get(`/notice/list?page=${page}&limit=${limit}`);
+  }
+
   static login(email, password, type) {
     return api.post('/users/login', {
       email,
@@ -30,8 +34,6 @@ class Api {
   }
 
   static createJob(data) {
-    const body = new FormData();
-    body.append('jobImage', data.jobImage);
     return api.post('/jobs/job-create', data, {
       headers: {
         'Content-Type': 'multipart/form-data',
