@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Image,
   ScrollView,
   StatusBar, StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import SvgComponentAvatar from '../components/imagesSvgComponents/SvgComponentAvatar';
 import {
   BLACK, INDIGO_BLUE, ORANGE, WHITE,
 } from '../theme/colors';
 import { RH, RW } from '../helpers/ratio';
-import avatarImage from '../../assets/images/avatar.png';
+import { noticeList } from '../store/actions/notice';
 
 function Offer({ navigation }) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(noticeList({ page: 1, limit: 10 }));
+  }, []);
+  const noticesList = useSelector((state) => state.notices.notices) || [];
+  console.log(noticesList);
   return (
     <View style={styles.offer}>
       <View style={styles.container}>
@@ -27,147 +35,58 @@ function Offer({ navigation }) {
           <SvgComponentAvatar />
         </View>
         <ScrollView style={styles.offer__content}>
-          <View style={styles.offer__block}>
-            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ fontFamily: 'Lato-Bold', fontSize: 24, color: '#fff' }}>House Cleaning</Text>
+          {noticesList.map((e) => (
+            <View key={e.id} style={styles.offer__block}>
+              <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{ fontFamily: 'Lato-Bold', fontSize: 24, color: '#fff' }}>House Cleaning</Text>
+                <View>
+                  <Image
+                    style={{ width: 58, height: 58, borderRadius: 58 }}
+                    source={{ uri: `http://192.168.31.139:4000${e['userFrom.avatar']}` }}
+                    alt="user"
+                  />
+                  <Text style={{ fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff' }}>{`${e['userFrom.firstName']} ${e['userFrom.lastName']}`}</Text>
+                </View>
+              </View>
               <View>
-                <Image
-                  style={{ width: 58, height: 58, borderRadius: 58 }}
-                  source={avatarImage}
-                  alt=""
-                />
-                <Text style={{ fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff' }}>Monica Jess</Text>
+                <Text style={{
+                  fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff', marginBottom: 5,
+                }}
+                >
+                  {moment(e.createdAt).format('YYYY-MM-DD HH:mm')}
+                </Text>
+                {e['userFrom.city'] && e['userFrom.country'] ? (
+                  <Text style={{
+                    fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff', marginBottom: 25,
+                  }}
+                  >
+                    {e['userFrom.city']}
+                    {e['userFrom.country']}
+                  </Text>
+                ) : null}
+                {/* <Text style={{ */}
+                {/*   fontFamily: 'Lato-Bold', fontSize: 20, color: '#fff', marginBottom: 5, */}
+                {/* }} */}
+                {/* > */}
+                {/*   4000 AMD */}
+                {/* </Text> */}
+              </View>
+              <View>
+                <TouchableOpacity style={{
+                  width: '100%', border: '1px solid #E17A01', backgroundColor: ORANGE, padding: 10, borderRadius: 108, marginTop: 50,
+                }}
+                >
+                  <Text style={{ fontFamily: 'Roboto-Regular', color: '#fff', textAlign: 'center' }}>Confirm</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{
+                  width: '100%', borderColor: '#fff', borderStyle: 'solid', borderWidth: 1, backgroundColor: 'transparent', padding: 10, borderRadius: 108, marginTop: 10,
+                }}
+                >
+                  <Text style={{ fontFamily: 'Roboto-Regular', color: '#fff', textAlign: 'center' }}>Delete</Text>
+                </TouchableOpacity>
               </View>
             </View>
-            <View>
-              <Text style={{
-                fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff', marginBottom: 5,
-              }}
-              >
-                12:00-13:00
-              </Text>
-              <Text style={{
-                fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff', marginBottom: 25,
-              }}
-              >
-                Gyumri, Armenia
-              </Text>
-              <Text style={{
-                fontFamily: 'Lato-Bold', fontSize: 20, color: '#fff', marginBottom: 5,
-              }}
-              >
-                4000 AMD
-              </Text>
-            </View>
-            <View>
-              <TouchableOpacity style={{
-                width: '100%', border: '1px solid #E17A01', backgroundColor: ORANGE, padding: 10, borderRadius: 108, marginTop: 50,
-              }}
-              >
-                <Text style={{ fontFamily: 'Roboto-Regular', color: '#fff', textAlign: 'center' }}>Confirm</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={{
-                width: '100%', borderColor: '#fff', borderStyle: 'solid', borderWidth: 1, backgroundColor: 'transparent', padding: 10, borderRadius: 108, marginTop: 10,
-              }}
-              >
-                <Text style={{ fontFamily: 'Roboto-Regular', color: '#fff', textAlign: 'center' }}>Delete</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.offer__block}>
-            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ fontFamily: 'Lato-Bold', fontSize: 24, color: '#fff' }}>House Cleaning</Text>
-              <View>
-                <Image
-                  style={{ width: 58, height: 58, borderRadius: 58 }}
-                  source={avatarImage}
-                  alt=""
-                />
-                <Text style={{ fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff' }}>Monica Jess</Text>
-              </View>
-            </View>
-            <View>
-              <Text style={{
-                fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff', marginBottom: 5,
-              }}
-              >
-                12:00-13:00
-              </Text>
-              <Text style={{
-                fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff', marginBottom: 25,
-              }}
-              >
-                Gyumri, Armenia
-              </Text>
-              <Text style={{
-                fontFamily: 'Lato-Bold', fontSize: 20, color: '#fff', marginBottom: 5,
-              }}
-              >
-                4000 AMD
-              </Text>
-            </View>
-            <View>
-              <TouchableOpacity style={{
-                width: '100%', border: '1px solid #E17A01', backgroundColor: ORANGE, padding: 10, borderRadius: 108, marginTop: 50,
-              }}
-              >
-                <Text style={{ fontFamily: 'Roboto-Regular', color: '#fff', textAlign: 'center' }}>Confirm</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={{
-                width: '100%', borderColor: '#fff', borderStyle: 'solid', borderWidth: 1, backgroundColor: 'transparent', padding: 10, borderRadius: 108, marginTop: 10,
-              }}
-              >
-                <Text style={{ fontFamily: 'Roboto-Regular', color: '#fff', textAlign: 'center' }}>Delete</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.offer__block}>
-            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ fontFamily: 'Lato-Bold', fontSize: 24, color: '#fff' }}>House Cleaning</Text>
-              <View>
-                <Image
-                  style={{ width: 58, height: 58, borderRadius: 58 }}
-                  source={avatarImage}
-                  alt=""
-                />
-                <Text style={{ fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff' }}>Monica Jess</Text>
-              </View>
-            </View>
-            <View>
-              <Text style={{
-                fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff', marginBottom: 5,
-              }}
-              >
-                12:00-13:00
-              </Text>
-              <Text style={{
-                fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff', marginBottom: 25,
-              }}
-              >
-                Gyumri, Armenia
-              </Text>
-              <Text style={{
-                fontFamily: 'Lato-Bold', fontSize: 20, color: '#fff', marginBottom: 5,
-              }}
-              >
-                4000 AMD
-              </Text>
-            </View>
-            <View>
-              <TouchableOpacity style={{
-                width: '100%', border: '1px solid #E17A01', backgroundColor: ORANGE, padding: 10, borderRadius: 108, marginTop: 50,
-              }}
-              >
-                <Text style={{ fontFamily: 'Roboto-Regular', color: '#fff', textAlign: 'center' }}>Confirm</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={{
-                width: '100%', borderColor: '#fff', borderStyle: 'solid', borderWidth: 1, backgroundColor: 'transparent', padding: 10, borderRadius: 108, marginTop: 10,
-              }}
-              >
-                <Text style={{ fontFamily: 'Roboto-Regular', color: '#fff', textAlign: 'center' }}>Delete</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          ))}
         </ScrollView>
       </View>
     </View>
