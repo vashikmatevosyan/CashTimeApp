@@ -13,6 +13,10 @@ api.interceptors.request.use((config) => {
 }, (error) => Promise.reject(error));
 
 class Api {
+  static jobListFromUsersMap(city) {
+    return api.get(`/jobs/jobs-list-map?city=${city}`);
+  }
+
   static noticeList(page, limit) {
     return api.get(`/notice/list?page=${page}&limit=${limit}`);
   }

@@ -100,6 +100,8 @@ function StepSix({ countries, onData, file: image }) {
             height={100}
             code={code}
             marginTop={10}
+            bg={GREY}
+            radius={10}
           />
         </View>
         <View style={{ marginTop: RH(10) }}>

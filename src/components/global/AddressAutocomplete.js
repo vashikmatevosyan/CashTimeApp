@@ -7,7 +7,7 @@ import { RH } from '../../helpers/ratio';
 import { GREY } from '../../theme/colors';
 
 function AddressAutocomplete({
-  height, marginTop = 0, setAddress, defaultValue = '', code = 'AM',
+  height, marginTop = 0, setAddress, defaultValue = '', code = 'AM', bg, radius = 0,
 }) {
   const [query, setQuery] = useState(defaultValue);
   const [suggestions, setSuggestions] = useState([]);
@@ -62,7 +62,7 @@ function AddressAutocomplete({
         placeholder="Enter address"
         value={query}
         onChangeText={handleInputChange}
-        style={styles.inputText}
+        style={[styles.inputText, { backgroundColor: bg, borderRadius: radius }]}
       />
       <ScrollView style={{ maxHeight: RH(height) }}>
         {suggestions.map((item, index) => (
@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato-Regular',
     padding: 10,
     margin: 0,
-    backgroundColor: GREY,
     height: 50,
     borderRadius: 10,
     borderWidth: 0,

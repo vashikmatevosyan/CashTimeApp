@@ -1,23 +1,29 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ScrollView,
   StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { CheckBox } from 'react-native-elements';
 import Calendar from 'react-native-calendars/src/calendar';
+import { useDispatch, useSelector } from 'react-redux';
 import SvgComponentAvatar from '../components/imagesSvgComponents/SvgComponentAvatar';
 import {
-  DARK_BLUE, INDIGO_BLUE, ORANGE, WHITE,
+  DARK_BLUE, GREY, INDIGO_BLUE, ORANGE, WHITE,
 } from '../theme/colors';
 import { RH, RW } from '../helpers/ratio';
-import SvgComponentSearchIcon from '../components/imagesSvgComponents/SvgComponentSearchIcon';
 import SvgComponentFilterIcon from '../components/imagesSvgComponents/SvgComponentFilterIcon';
 import AddressAutocomplete from '../components/global/AddressAutocomplete';
+import { jobListFromUsersMap } from '../store/actions/jobsRequest';
+import SvgComponentMapMarker from '../components/imagesSvgComponents/SvgComponentMapMarker';
+import SvgComponentSearchIcon from '../components/imagesSvgComponents/SvgComponentSearchIcon';
+import { tabBarVisible } from '../store/actions/app';
 
 const experienceLevel = ['Entry Level', 'Intermediate', 'Expert'];
 
 function Main() {
+  const dispatch = useDispatch();
+  const [selectedJob, setSelectedJob] = useState('');
   const [activeComponent, setActiveComponent] = useState('map');
   const [openFilterModal, setOpenFilterModal] = useState(false);
   const [hourlyCheckbox, setHourlyCheckbox] = useState(true);
@@ -26,6 +32,9 @@ function Main() {
     experienceLevel.map(() => false),
   );
 
+  useEffect(() => {
+    dispatch(jobListFromUsersMap({ city: 'Gyumri' }));
+  }, []);
   const handleCheckBoxPress = (index) => {
     const newCheckBoxStates = [...checkBoxStates];
     newCheckBoxStates[index] = !newCheckBoxStates[index];
@@ -66,7 +75,11 @@ function Main() {
 
     return dates;
   };
-
+  const handleSeenSingleJob = useCallback((id, bool) => {
+    setSelectedJob(id);
+    dispatch(tabBarVisible(bool));
+  }, [selectedJob]);
+  const jobs = useSelector((state) => state.jobsRequest.jobListFromUsers);
   return (
     <>
       <View style={styles.main}>
@@ -106,18 +119,50 @@ function Main() {
             <View style={styles.main__map}>
               <View style={styles.map__input__block}>
                 <SvgComponentSearchIcon style={styles.map__input__icon} />
-                <TextInput placeholder="Location" style={styles.map__input} />
+                <AddressAutocomplete defaultValue="" marginTop={0} height={150} bg={GREY} code="AM" />
+                {/* <TextInput placeholder="Location" style={styles.map__input} /> */}
               </View>
               <View style={styles.main__map__block}>
                 <MapView
+                  onPress={() => handleSeenSingleJob('', true)}
                   initialRegion={{
-                    latitude: 40.0706185,
-                    longitude: 45.0407411,
+                    latitude: 40.17779403680006,
+                    longitude: 44.512565494382685,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   }}
                   style={{ width: '100%', height: '100%' }}
-                />
+                >
+                  {jobs.length > 0 ? jobs.map((job) => (
+                    <Marker
+                      onPress={() => handleSeenSingleJob(job.id, false)}
+                      key={job.id}
+                      coordinate={{
+                        latitude: job?.geometry?.coordinates[1],
+                        longitude: job?.geometry?.coordinates[0],
+                      }}
+                    >
+                      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <SvgComponentMapMarker checked={selectedJob === job.id} />
+                        <View style={styles.markerBlock}>
+                          <Text
+                            style={[styles.markerText,
+                              { color: selectedJob === job.id ? DARK_BLUE : ORANGE },
+                            ]}
+                          >
+                            {job.title}
+                          </Text>
+                        </View>
+                      </View>
+                    </Marker>
+                  )) : null}
+                </MapView>
+              </View>
+              <View style={{
+                backgroundColor: 'red', width: '100%', height: 300, position: 'absolute', bottom: 0,
+              }}
+              >
+                <Text>hello</Text>
               </View>
             </View>
           ) : (
@@ -303,7 +348,7 @@ function Main() {
                     width: RW(70), height: RH(30), padding: 5, backgroundColor: WHITE,
                   }}
                 />
-                <Text style={{ color: WHITE, marginLeft: 5, marginRight: 10, }}>/hr</Text>
+                <Text style={{ color: WHITE, marginLeft: 5, marginRight: 10 }}>/hr</Text>
                 <TextInput
                   keyboardType="numeric"
                   placeholder="max"
@@ -358,7 +403,7 @@ function Main() {
             >
               Client Location
             </Text>
-            <AddressAutocomplete height={200} defaultValue="" marginTop={0} />
+            <AddressAutocomplete bg={WHITE} height={200} defaultValue="" marginTop={0} />
           </View>
           <View style={{
             width: '80%', marginTop: RH(30), marginBottom: 20, marginLeft: RW(25),
@@ -373,7 +418,7 @@ function Main() {
             <TextInput
               placeholder="Select a Category"
               style={{
-                width: '100%', height: 50, padding: 5, backgroundColor: '#D9D9D9', borderRadius: 8,
+                width: '100%', height: 50, padding: 5, backgroundColor: WHITE, borderRadius: 8,
               }}
             />
           </View>
@@ -414,12 +459,12 @@ const styles = StyleSheet.create({
   map__input__block: {
     width: '100%',
     position: 'relative',
-    marginTop: RH(20),
+    // marginTop: RH(20),
   },
   map__input__icon: {
     position: 'absolute',
-    left: 20,
-    top: RH(17),
+    right: 30,
+    top: RH(20),
     zIndex: 1,
   },
   map__input: {
@@ -479,6 +524,19 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     width: 15,
+  },
+  markerBlock: {
+    backgroundColor: '#D9D9D9',
+    borderRadius: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  markerText: {
+    padding: 15,
+    fontSize: 14,
+    fontFamily: 'Lato-Bold',
+    fontWeight: '400',
+    fontStyle: 'normal',
   },
 });
 
