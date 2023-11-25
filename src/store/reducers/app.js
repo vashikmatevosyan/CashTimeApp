@@ -4,7 +4,7 @@ import {
 } from '../actions/app';
 
 const initialState = {
-  tabBarIsVisible: true,
+  tabBarIsVisible: false,
 };
 
 export default createReducer(initialState, (builder) => {

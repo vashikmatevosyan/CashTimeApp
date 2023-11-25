@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
+  Image,
   ScrollView,
   StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
@@ -9,6 +10,7 @@ import Calendar from 'react-native-calendars/src/calendar';
 import { useDispatch, useSelector } from 'react-redux';
 import SvgComponentAvatar from '../components/imagesSvgComponents/SvgComponentAvatar';
 import {
+  BLACK,
   DARK_BLUE, GREY, INDIGO_BLUE, ORANGE, WHITE,
 } from '../theme/colors';
 import { RH, RW } from '../helpers/ratio';
@@ -18,6 +20,8 @@ import { jobListFromUsersMap } from '../store/actions/jobsRequest';
 import SvgComponentMapMarker from '../components/imagesSvgComponents/SvgComponentMapMarker';
 import SvgComponentSearchIcon from '../components/imagesSvgComponents/SvgComponentSearchIcon';
 import { tabBarVisible } from '../store/actions/app';
+import SvgComponentPrice from '../components/imagesSvgComponents/SvgComponentPrice';
+import SvgComponentLocation from '../components/imagesSvgComponents/SvgComponentLocation';
 
 const experienceLevel = ['Entry Level', 'Intermediate', 'Expert'];
 
@@ -159,10 +163,131 @@ function Main() {
                 </MapView>
               </View>
               <View style={{
-                backgroundColor: 'red', width: '100%', height: 300, position: 'absolute', bottom: 0,
+                backgroundColor: WHITE,
+                width: '100%',
+                height: RH(370),
+                // position: 'absolute',
+                // bottom: 0,
+                marginTop: 'auto',
+                borderRadius: 30,
               }}
               >
-                <Text>hello</Text>
+                <View style={{
+                  marginHorizontal: 25,
+                }}
+                >
+                  <View style={{
+                    marginTop: 10,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                  }}
+                  >
+                    <Text style={{
+                      color: DARK_BLUE,
+                      fontSize: 24,
+                      fontStyle: 'normal',
+                      fontFamily: 'Lato-Bold',
+                      fontWeight: '700',
+                      marginRight: 5,
+                    }}
+                    >
+                      Amalia Martirosyan.
+                    </Text>
+                    <Text style={{
+                      color: DARK_BLUE,
+                      fontSize: 14,
+                      fontStyle: 'italic',
+                      fontWeight: '400',
+                      fontFamily: 'Lato-Bold',
+                    }}
+                    >
+                      BabySitter
+                    </Text>
+                  </View>
+
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View>
+                      <Text style={[styles.singleJobInfo, { marginTop: 10 }]}>
+                        Expert
+                      </Text>
+                      <View style={{
+                        flexDirection: 'row',
+                        marginTop: 10,
+                      }}
+                      >
+                        <SvgComponentPrice />
+                        <Text style={styles.singleJobInfo}>Price</Text>
+                      </View>
+                      <View>
+                        <View style={{
+                          flexDirection: 'row',
+                          marginTop: 10,
+                        }}
+                        >
+                          <SvgComponentLocation />
+                          <Text style={styles.singleJobInfo}>Location</Text>
+                        </View>
+                      </View>
+                    </View>
+                    <Image
+                      style={{ width: 80, height: 80, borderRadius: 25 }}
+                      source={{ uri: 'https://picsum.photos/200/300' }}
+                    />
+                  </View>
+                </View>
+                <TouchableOpacity style={{
+                  backgroundColor: WHITE,
+                  borderRadius: 50,
+                  width: '90%',
+                  alignContent: 'center',
+                  alignSelf: 'center',
+                  alignItems: 'center',
+                  borderWidth: 1,
+                  borderStyle: 'solid',
+                  borderColor: DARK_BLUE,
+                  height: 40,
+                  justifyContent: 'center',
+                  marginTop: 20,
+                }}
+                >
+                  <Text style={{
+                    color: DARK_BLUE,
+                    fontSize: 14,
+                    fontStyle: 'normal',
+                    fontWeight: '500',
+                    fontFamily: 'Roboto-Medium',
+                  }}
+                  >
+                    Close
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{
+                  backgroundColor: DARK_BLUE,
+                  borderRadius: 50,
+                  width: '90%',
+                  alignContent: 'center',
+                  alignSelf: 'center',
+                  alignItems: 'center',
+                  borderWidth: 1,
+                  borderStyle: 'solid',
+                  borderColor: DARK_BLUE,
+                  height: 40,
+                  justifyContent: 'center',
+                  marginTop: 20,
+                }}
+                >
+                  <Text style={{
+                    color: WHITE,
+                    fontSize: 14,
+                    fontStyle: 'normal',
+                    fontWeight: '500',
+                    fontFamily: 'Roboto-Medium',
+                  }}
+                  >
+                    Confirm
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           ) : (
@@ -429,6 +554,14 @@ function Main() {
 }
 
 const styles = StyleSheet.create({
+  singleJobInfo: {
+    color: DARK_BLUE,
+    fontSize: 14,
+    fontStyle: 'normal',
+    fontWeight: '400',
+    fontFamily: 'Lato-Regular',
+    // marginTop: 7,
+  },
   main: {
     backgroundColor: WHITE,
     paddingTop: StatusBar.currentHeight || 0,
