@@ -1,9 +1,9 @@
 import React from 'react';
 import {Text, View} from "react-native";
 
-function CreateCv(props) {
+function CreateCv() {
     return (
-        <View><Text>DSFB</Text></View>
+        <View><Text>DSFvxcbgb fb cB</Text></View>
     );
 }
 
