@@ -10,13 +10,12 @@ import Calendar from 'react-native-calendars/src/calendar';
 import { useDispatch, useSelector } from 'react-redux';
 import SvgComponentAvatar from '../components/imagesSvgComponents/SvgComponentAvatar';
 import {
-  BLACK,
   DARK_BLUE, GREY, INDIGO_BLUE, ORANGE, WHITE,
 } from '../theme/colors';
 import { RH, RW } from '../helpers/ratio';
 import SvgComponentFilterIcon from '../components/imagesSvgComponents/SvgComponentFilterIcon';
 import AddressAutocomplete from '../components/global/AddressAutocomplete';
-import { jobListFromUsersMap } from '../store/actions/jobsRequest';
+import { jobListFromUsersMap, singleJobInfo } from '../store/actions/jobsRequest';
 import SvgComponentMapMarker from '../components/imagesSvgComponents/SvgComponentMapMarker';
 import SvgComponentSearchIcon from '../components/imagesSvgComponents/SvgComponentSearchIcon';
 import { tabBarVisible } from '../store/actions/app';
@@ -32,10 +31,10 @@ function Main() {
   const [openFilterModal, setOpenFilterModal] = useState(false);
   const [hourlyCheckbox, setHourlyCheckbox] = useState(true);
   const [selectedDay, setSelectedDay] = useState([]);
+  const [singleJobShow, setSingleJobShow] = useState(false);
   const [checkBoxStates, setCheckBoxStates] = useState(
     experienceLevel.map(() => false),
   );
-
   useEffect(() => {
     dispatch(jobListFromUsersMap({ city: 'Gyumri' }));
   }, []);
@@ -79,11 +78,23 @@ function Main() {
 
     return dates;
   };
-  const handleSeenSingleJob = useCallback((id, bool) => {
+  const handleSeenSingleJob = useCallback((id, bool, show) => {
     setSelectedJob(id);
     dispatch(tabBarVisible(bool));
+    dispatch(singleJobInfo(id));
+    setSingleJobShow(show);
   }, [selectedJob]);
+
   const jobs = useSelector((state) => state.jobsRequest.jobListFromUsers);
+  const singleJob = useSelector((state) => state.jobsRequest.singleJob);
+  const getPriceRange = () => {
+    if (singleJob.priceMinHourly && singleJob.priceMaxHourly) {
+      return `${singleJob.priceMinHourly}$-${singleJob.priceMaxHourly}$`;
+    } if (singleJob.priceMinHourly) {
+      return `${singleJob.priceMinHourly}$`;
+    }
+    return '';
+  };
   return (
     <>
       <View style={styles.main}>
@@ -128,7 +139,7 @@ function Main() {
               </View>
               <View style={styles.main__map__block}>
                 <MapView
-                  onPress={() => handleSeenSingleJob('', true)}
+                  onPress={() => handleSeenSingleJob('', true, false)}
                   initialRegion={{
                     latitude: 40.17779403680006,
                     longitude: 44.512565494382685,
@@ -139,7 +150,7 @@ function Main() {
                 >
                   {jobs.length > 0 ? jobs.map((job) => (
                     <Marker
-                      onPress={() => handleSeenSingleJob(job.id, false)}
+                      onPress={() => handleSeenSingleJob(job.id, false, true)}
                       key={job.id}
                       coordinate={{
                         latitude: job?.geometry?.coordinates[1],
@@ -162,133 +173,157 @@ function Main() {
                   )) : null}
                 </MapView>
               </View>
-              <View style={{
-                backgroundColor: WHITE,
-                width: '100%',
-                height: RH(370),
-                // position: 'absolute',
-                // bottom: 0,
-                marginTop: 'auto',
-                borderRadius: 30,
-              }}
-              >
+              {Object.keys(singleJob).length > 0 && singleJobShow ? (
                 <View style={{
-                  marginHorizontal: 25,
+                  backgroundColor: WHITE,
+                  width: '100%',
+                  position: 'absolute',
+                  bottom: 0,
+                  paddingBottom: 30,
+                  // height: RH(370),
+                  // marginTop: 'auto',
+                  borderRadius: 30,
                 }}
                 >
                   <View style={{
-                    marginTop: 10,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    flexWrap: 'wrap',
+                    marginHorizontal: 25,
                   }}
                   >
-                    <Text style={{
-                      color: DARK_BLUE,
-                      fontSize: 24,
-                      fontStyle: 'normal',
-                      fontFamily: 'Lato-Bold',
-                      fontWeight: '700',
-                      marginRight: 5,
+                    <View style={{
+                      marginTop: 10,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      flexWrap: 'wrap',
                     }}
                     >
-                      Amalia Martirosyan.
-                    </Text>
-                    <Text style={{
-                      color: DARK_BLUE,
-                      fontSize: 14,
-                      fontStyle: 'italic',
-                      fontWeight: '400',
-                      fontFamily: 'Lato-Bold',
-                    }}
-                    >
-                      BabySitter
-                    </Text>
-                  </View>
-
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <View>
-                      <Text style={[styles.singleJobInfo, { marginTop: 10 }]}>
-                        Expert
-                      </Text>
-                      <View style={{
-                        flexDirection: 'row',
-                        marginTop: 10,
+                      <Text style={{
+                        color: DARK_BLUE,
+                        fontSize: 24,
+                        fontStyle: 'normal',
+                        fontFamily: 'Lato-Bold',
+                        fontWeight: '700',
+                        marginRight: 5,
                       }}
                       >
-                        <SvgComponentPrice />
-                        <Text style={styles.singleJobInfo}>Price</Text>
-                      </View>
+                        {singleJob['creator.firstName']}
+                        {' '}
+                        {singleJob['creatoe.lastName']}
+                      </Text>
+                      <Text style={{
+                        color: DARK_BLUE,
+                        fontSize: 14,
+                        fontStyle: 'italic',
+                        fontWeight: '400',
+                        fontFamily: 'Lato-Bold',
+                      }}
+                      >
+                        {singleJob.title}
+                      </Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                       <View>
+                        <Text style={[styles.singleJobInfo, { marginTop: 10 }]}>
+                          {singleJob.experience}
+                        </Text>
                         <View style={{
                           flexDirection: 'row',
                           marginTop: 10,
+                          alignItems: 'center',
                         }}
                         >
-                          <SvgComponentLocation />
-                          <Text style={styles.singleJobInfo}>Location</Text>
+                          <SvgComponentPrice />
+                          <Text style={[styles.singleJobInfo, { marginHorizontal: 10 }]}>
+                            Price
+                          </Text>
+                          <Text>
+                            { singleJob.priceFixed ? `${singleJob.priceFixed}$` - 'fixed' : `${getPriceRange()}/hr`}
+                          </Text>
+                        </View>
+                        <View>
+                          <View style={{
+                            flexDirection: 'row',
+                            marginTop: 10,
+                            alignItems: 'flex-start',
+                          }}
+                          >
+                            <SvgComponentLocation />
+                            <Text
+                              style={[styles.singleJobInfo, { marginHorizontal: 10 }]}
+                            >
+                              Location
+                            </Text>
+                            <Text style={{
+                              maxWidth: '50%',
+                            }}
+                            >
+                              {`${singleJob.country}, ${singleJob.city} (Gyumri's Fish Restaurant (Cherkezi Dzor))` }
+                            </Text>
+                          </View>
                         </View>
                       </View>
+                      <Image
+                        style={{ width: 80, height: 80, borderRadius: 25 }}
+                        source={{ uri: `http://192.168.10.141:4000${singleJob.jobPhoto}` }}
+                      />
                     </View>
-                    <Image
-                      style={{ width: 80, height: 80, borderRadius: 25 }}
-                      source={{ uri: 'https://picsum.photos/200/300' }}
-                    />
                   </View>
+                  <TouchableOpacity
+                    onPress={() => handleSeenSingleJob('', true, false)}
+                    style={{
+                      backgroundColor: WHITE,
+                      borderRadius: 50,
+                      width: '90%',
+                      alignContent: 'center',
+                      alignSelf: 'center',
+                      alignItems: 'center',
+                      borderWidth: 1,
+                      borderStyle: 'solid',
+                      borderColor: DARK_BLUE,
+                      height: 40,
+                      justifyContent: 'center',
+                      marginTop: 20,
+                    }}
+                  >
+                    <Text style={{
+                      color: DARK_BLUE,
+                      fontSize: 14,
+                      fontStyle: 'normal',
+                      fontWeight: '500',
+                      fontFamily: 'Roboto-Medium',
+                    }}
+                    >
+                      Close
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{
+                    backgroundColor: DARK_BLUE,
+                    borderRadius: 50,
+                    width: '90%',
+                    alignContent: 'center',
+                    alignSelf: 'center',
+                    alignItems: 'center',
+                    borderWidth: 1,
+                    borderStyle: 'solid',
+                    borderColor: DARK_BLUE,
+                    height: 40,
+                    justifyContent: 'center',
+                    marginTop: 20,
+                  }}
+                  >
+                    <Text style={{
+                      color: WHITE,
+                      fontSize: 14,
+                      fontStyle: 'normal',
+                      fontWeight: '500',
+                      fontFamily: 'Roboto-Medium',
+                    }}
+                    >
+                      Confirm
+                    </Text>
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={{
-                  backgroundColor: WHITE,
-                  borderRadius: 50,
-                  width: '90%',
-                  alignContent: 'center',
-                  alignSelf: 'center',
-                  alignItems: 'center',
-                  borderWidth: 1,
-                  borderStyle: 'solid',
-                  borderColor: DARK_BLUE,
-                  height: 40,
-                  justifyContent: 'center',
-                  marginTop: 20,
-                }}
-                >
-                  <Text style={{
-                    color: DARK_BLUE,
-                    fontSize: 14,
-                    fontStyle: 'normal',
-                    fontWeight: '500',
-                    fontFamily: 'Roboto-Medium',
-                  }}
-                  >
-                    Close
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{
-                  backgroundColor: DARK_BLUE,
-                  borderRadius: 50,
-                  width: '90%',
-                  alignContent: 'center',
-                  alignSelf: 'center',
-                  alignItems: 'center',
-                  borderWidth: 1,
-                  borderStyle: 'solid',
-                  borderColor: DARK_BLUE,
-                  height: 40,
-                  justifyContent: 'center',
-                  marginTop: 20,
-                }}
-                >
-                  <Text style={{
-                    color: WHITE,
-                    fontSize: 14,
-                    fontStyle: 'normal',
-                    fontWeight: '500',
-                    fontFamily: 'Roboto-Medium',
-                  }}
-                  >
-                    Confirm
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              ) : null}
             </View>
           ) : (
             <View style={styles.main__filter}>
@@ -587,6 +622,7 @@ const styles = StyleSheet.create({
   main__content: {
     width: '100%',
     position: 'relative',
+    flex: 1,
     marginTop: RH(20),
   },
   map__input__block: {

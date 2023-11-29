@@ -13,6 +13,10 @@ api.interceptors.request.use((config) => {
 }, (error) => Promise.reject(error));
 
 class Api {
+  static singleJobInfo(id) {
+    return api.get(`/jobs/job-singe-info?id=${id}`);
+  }
+
   static jobListFromUsersMap(city) {
     return api.get(`/jobs/jobs-list-map?city=${city}`);
   }
