@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { storage } from './helpers/Storage';
-// 192.168.10.141
+// 192.168.31.100
+// 192.168.5.54
 const api = axios.create({
-  baseURL: 'http://192.168.10.141:4000',
+  baseURL: 'http://192.168.31.100:4000',
 });
 api.interceptors.request.use((config) => {
   const token = storage.getString('token');
@@ -19,6 +20,10 @@ class Api {
       password,
       type,
     });
+  }
+
+  static getProfile() {
+    return api.get('/users/profile');
   }
 
   static getCountries() {
