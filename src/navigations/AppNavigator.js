@@ -8,7 +8,8 @@ import LogInNavigation from './LogInNavigation';
 import NoInternetScreen from '../screens/NoInternetScreen';
 
 function AppNavigator() {
-  const token = useSelector((state) => state.users.token) || true;
+  // const token = useSelector((state) => state.users.token);
+  const token = false;
   const [isConnected, setIsConnected] = useState(true);
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {

@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
-  loginRequest,
+  loginRequest, registerRequest,
 } from '../actions/users';
 import { storage } from '../../helpers/Storage';
 
@@ -13,6 +13,14 @@ export default createReducer(initialState, (builder) => {
   builder.addCase(loginRequest.fulfilled, (state, action) => {
     const { token, user } = action.payload;
     storage.set('token', token);
+    state.profile = user;
+    state.token = token;
+  });
+  builder.addCase(registerRequest.fulfilled, (state, action) => {
+    const { token, user } = action.payload;
+    if (token) {
+      storage.set('token', token);
+    }
     state.profile = user;
     state.token = token;
   });

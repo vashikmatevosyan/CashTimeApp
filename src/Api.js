@@ -2,7 +2,7 @@ import axios from 'axios';
 import { storage } from './helpers/Storage';
 // 192.168.10.141
 const api = axios.create({
-  baseURL: 'http://192.168.31.139:4000',
+  baseURL: 'http://192.168.31.114:4000',
 });
 api.interceptors.request.use((config) => {
   const token = storage.getString('token');
@@ -13,6 +13,14 @@ api.interceptors.request.use((config) => {
 }, (error) => Promise.reject(error));
 
 class Api {
+  static register(data) {
+    return api.post('/users/register', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+
   static login(email, password, type) {
     return api.post('/users/login', {
       email,
