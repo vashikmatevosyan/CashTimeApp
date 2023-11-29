@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import {
-  TextInput, View, StyleSheet, Text, TouchableOpacity, FlatList,
+  TextInput, View, StyleSheet, Text, TouchableOpacity, FlatList, Image,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import PhoneInput from 'react-native-phone-number-input';
@@ -10,12 +10,19 @@ import { RH, RW } from '../../helpers/ratio';
 import {
   BLACK, INDIGO_BLUE, ORANGE, WHITE,
 } from '../../theme/colors';
+import avatarImage from '../../../assets/images/avatar.png';
 
 function ProfileEditModal(props) {
   const { onpress } = props;
   const countries = ['Egypt', 'Canada', 'Australia',
     'Ireland', 'Egypt', 'Canada', 'Australia', 'Ireland',
     'Egypt', 'Canada', 'Australia', 'Ireland', 'Egypt', 'Canada', 'Australia', 'Ireland'];
+  const options = [
+    'Beginner(Level A1)',
+    'Intermediate(Level B1)',
+    'Upper-Intermediate(Level B2)',
+    'Advanced(Level C1)',
+    'Mastery(Level C2)'];
   const [value, setValue] = useState('');
   const [formattedValue, setFormattedValue] = useState('');
   const [skillInfo, setSkillInfo] = useState('');
@@ -100,8 +107,53 @@ function ProfileEditModal(props) {
     borderColor: 'gray',
     textAlign: 'left',
   };
+  const dropdownDropdownStyles = {
+    borderWidth: 2,
+    borderColor: INDIGO_BLUE,
+    borderRadius: 10,
+    backgroundColor: 'lightgray',
+    width: RW(335),
+    maxHeight: RH(350),
+    textAlign: 'left',
+  };
+  const dropdownInputStyles = {
+    // position: 'absolute',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: '49%',
+    zIndex: 100,
+    height: RH(40),
+    backgroundColor: '#D9D9D9',
+    borderColor: '#D9D9D9',
+    marginTop: RH(5),
+    // margin: 'auto',
+    color: BLACK,
+    borderRadius: 8,
+    textAlign: 'left',
+    // top: 0,
+    // left: 0,
+    // right: 0,
+    // bottom: 0,
+  };
+  const dropdownRowStyles = {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: 'gray',
+    textAlign: 'left',
+  };
   return (
     <View style={styles.inputView}>
+      <View style={styles.imgView}>
+        <Image source={avatarImage} style={styles.imgViewImg} />
+      </View>
+      <View style={styles.plusViewForLanguages}>
+        <TouchableOpacity style={styles.avatarBtn}>
+          <Text style={styles.avatarBtnText}>Profile Avatar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.avatarBtn}>
+          <Text style={styles.avatarBtnText}>Delete Avatar</Text>
+        </TouchableOpacity>
+      </View>
       <Text style={styles.labelText}>First Name*</Text>
       <TextInput style={styles.input} />
       <Text style={styles.labelText}>Last Name*</Text>
@@ -191,19 +243,40 @@ function ProfileEditModal(props) {
         </View>
       ) : null}
       <Text style={styles.labelText}>Education*</Text>
-      <View style={styles.plusView}>
-        <TextInput style={styles.input} />
+      <View style={styles.plusViewForLanguages}>
+        <TextInput style={styles.inputForLanguages} />
+        <TextInput style={styles.inputForLanguages} />
         <TouchableOpacity style={styles.plusBtn}>
           <Text style={styles.plusBtnText}>+</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.labelText}>Languages*</Text>
-      <View style={styles.plusView}>
-        <TextInput style={styles.input} />
+      <View style={styles.plusViewForLanguages}>
+        <SelectDropdown
+          data={options}
+          onSelect={(selectedItem, index) => {
+            console.log(selectedItem, index);
+          }}
+          style={styles.dropdownInput}
+          // buttonStyle={{ backgroundColor: WHITE }}
+          rowStyle={dropdownRowStyles}
+          dropdownStyle={dropdownDropdownStyles}
+          buttonStyle={dropdownInputStyles}
+          defaultButtonText="Search of Servcie"
+          buttonTextStyle={{
+            fontSize: 14,
+            padding: 0,
+            marginTop: 10,
+            marginHorizontal: 0,
+            alignSelf: 'flex-start',
+          }}
+        />
+        <TextInput style={styles.inputForLanguages} />
         <TouchableOpacity style={styles.plusBtn}>
           <Text style={styles.plusBtnText}>+</Text>
         </TouchableOpacity>
       </View>
+
       <TouchableOpacity onPress={sendUserInfo} style={styles.saveBtn}>
         <Text style={styles.saveBtnText}>Save</Text>
       </TouchableOpacity>
@@ -216,8 +289,37 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: RH(20),
   },
+  imgView: {
+    width: RW(120),
+    height: RH(120),
+    backgroundColor: 'transparent',
+    borderRadius: 60,
+    alignSelf: 'center',
+  },
+  imgViewImg: {
+    width: RW(120),
+    height: RH(120),
+    borderRadius: 60,
+    overflow: 'hidden',
+  },
   input: {
     width: '100%',
+    height: RH(40),
+    marginTop: RH(5),
+    backgroundColor: '#D9D9D9',
+    borderRadius: 8,
+    color: BLACK,
+  },
+  inputForLanguages: {
+    width: '49%',
+    height: RH(40),
+    marginTop: RH(5),
+    backgroundColor: '#D9D9D9',
+    borderRadius: 8,
+    color: BLACK,
+  },
+  dropdownInput: {
+    width: '50%',
     height: RH(40),
     marginTop: RH(5),
     backgroundColor: '#D9D9D9',
@@ -232,6 +334,11 @@ const styles = StyleSheet.create({
     // marginTop: RH(5),
     // backgroundColor: '#D9D9D9',
     // borderRadius: 8,
+  },
+  plusViewForLanguages: {
+    position: 'relative',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   plusBtn: {
     width: RW(40),
@@ -257,11 +364,26 @@ const styles = StyleSheet.create({
   saveBtn: {
     width: '100%',
     height: RH(40),
-    backgroundColor: ORANGE,
+    backgroundColor: '#D9D9D9',
+    borderRadius: 100,
+    marginTop: 20,
+    marginBottom: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarBtn: {
+    width: '49%',
+    height: RH(40),
+    backgroundColor: WHITE,
     borderRadius: 100,
     marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  avatarBtnText: {
+    color: ORANGE,
+    fontFamily: 'Lato-Bold',
+    fontSize: 14,
   },
   saveBtnText: {
     color: WHITE,
