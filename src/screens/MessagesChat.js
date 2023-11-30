@@ -17,6 +17,7 @@ import SvgComponentGalleryIcon from '../components/imagesSvgComponents/SvgCompon
 
 function MessagesChat({ navigation }) {
   const [files, setFiles] = useState([]);
+  const [fullImages, setFullImages] = useState(false);
   const handleGallery = useCallback(() => {
     const options = {
       storageOptions: {
@@ -24,7 +25,9 @@ function MessagesChat({ navigation }) {
       },
     };
     launchImageLibrary(options, (response) => {
-      setFiles([...files, response]);
+      if (response && response.assets && response.assets.length > 0) {
+        setFiles([...files, response]);
+      }
     });
   }, [files]);
 
@@ -35,7 +38,9 @@ function MessagesChat({ navigation }) {
       },
     };
     launchCamera(options, (response) => {
-      setFiles([...files, response]);
+      if (response && response.assets && response.assets.length > 0) {
+        setFiles([...files, response]);
+      }
     });
   }, [files]);
 
@@ -47,6 +52,13 @@ function MessagesChat({ navigation }) {
       uri: file?.assets[0].uri,
     }));
   }
+
+  const handleDelete = useCallback((index) => {
+    const updatedFiles = [...files];
+    updatedFiles.splice(index, 1);
+    setFiles(updatedFiles);
+    setFullImages(false);
+  }, [files, fullImages]);
 
   return (
     <View style={styles.messagesChat}>
@@ -76,11 +88,24 @@ function MessagesChat({ navigation }) {
         </ScrollView>
         <FlatList
           data={filesForMessage}
-          renderItem={({ item }) => (
-            <Image
-              source={{ uri: item.uri }}
-              style={{ width: 40, height: 40, margin: 2 }}
-            />
+          renderItem={({ item, index }) => (
+            <View style={{
+              width: 40, height: 40, position: 'relative', margin: 2,
+            }}
+            >
+              <Image
+                source={{ uri: item.uri }}
+                style={{ width: 40, height: 40 }}
+              />
+              <TouchableOpacity
+                style={{
+                  position: 'absolute', top: -5, right: 0, zIndex: 1,
+                }}
+                onPress={() => handleDelete(index)}
+              >
+                <Text>X</Text>
+              </TouchableOpacity>
+            </View>
           )}
           keyExtractor={(item) => item.key}
           style={{ width: '100%' }}

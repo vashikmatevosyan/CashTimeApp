@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import { WHITE } from '../../theme/colors';
 import { RH, RW } from '../../helpers/ratio';
 import CreateJobsTitles from './CreateJobsTitles';
 import JobsInputs from './JobsInputs';
 import UltraSmallText from './UltraSmallText';
 
-function StepFirst() {
-  const [text, setText] = useState('');
+function StepFirst({ onData }) {
+  const data = useSelector((state) => state.createJobForm.dataFromChild1);
+  const [jobTitle, setJobTitle] = useState(data || '');
+  useEffect(() => {
+    onData({ dataFromChild1: jobTitle || null });
+  }, [jobTitle]);
   return (
     <View style={styles.container}>
       <CreateJobsTitles title="Write a title for your job post" align="center" />
-      <JobsInputs top={RH(20)} value={text} setValue={setText} width="100%" />
+      <JobsInputs top={RH(20)} value={jobTitle} setValue={setJobTitle} width="100%" />
       <UltraSmallText text="Example titles" top={RH(20)} size={RW(18)} />
       <View style={styles.titlesBox}>
         <Text style={styles.dot} />

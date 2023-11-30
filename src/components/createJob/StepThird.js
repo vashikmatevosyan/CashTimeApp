@@ -1,45 +1,46 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet, View, FlatList,
+  StyleSheet, View,
 } from 'react-native';
 import { CheckBox } from 'react-native-elements';
+import { useSelector } from 'react-redux';
 import CreateJobsTitles from './CreateJobsTitles';
 import { RH } from '../../helpers/ratio';
 import CheckBoxIcon from './CheckBoxIcon';
 import { WHITE } from '../../theme/colors';
 import SmallTextsCreateJob from './SmallTextsCreateJob';
 
-function StepThird() {
-  const [checked, setChecked] = useState('Entry');
+function StepThird({ onData }) {
+  const thirdFormLevel = useSelector((state) => state.createJobForm.dataFromChild3) ?? '';
+  const [checked, setChecked] = useState(thirdFormLevel || 'Entry');
   const levels = ['Entry', 'Intermediate', 'Expert'];
+  useEffect(() => {
+    onData({ dataFromChild3: checked });
+  }, [checked]);
   return (
     <View style={styles.container}>
       <CreateJobsTitles title="What level of experience will it need?" align="center" />
       <View>
-        <FlatList
-          data={levels}
-          renderItem={({ item }) => (
-            <View style={styles.checkboxContainer}>
-              <SmallTextsCreateJob text={item} size={18} />
-              <CheckBox
-                onPress={() => setChecked(item)}
-                right
-                checked
-                containerStyle={styles.checkbox}
-                checkedIcon={(
-                  <CheckBoxIcon
-                    checked={checked === item}
-                    bw={65}
-                    bh={65}
-                    sh={35}
-                    sw={35}
-                  />
-)}
-              />
-            </View>
-          )}
-          keyExtractor={(item) => item}
-        />
+        {levels.map((e) => (
+          <View key={e} style={styles.checkboxContainer}>
+            <SmallTextsCreateJob text={e} size={18} />
+            <CheckBox
+              onPress={() => setChecked(e)}
+              right
+              checked
+              containerStyle={styles.checkbox}
+              checkedIcon={(
+                <CheckBoxIcon
+                  checked={checked === e}
+                  bw={65}
+                  bh={65}
+                  sh={35}
+                  sw={35}
+                />
+              )}
+            />
+          </View>
+        ))}
       </View>
     </View>
   );

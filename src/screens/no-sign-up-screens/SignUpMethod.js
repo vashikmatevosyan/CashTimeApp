@@ -1,4 +1,5 @@
 import React from 'react'; import {
+  StatusBar,
   StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; import {
@@ -8,7 +9,8 @@ import LogoView from '../../components/global/LogoView'; import SvgComponentSign
   from '../../components/imagesSvgComponents/SvgComponentSignUpMethodScreen'; import { RW } from '../../helpers/ratio';
 
 function SignUpMethod() {
-  const navigation = useNavigation(); return (
+  const navigation = useNavigation();
+  return (
     <View style={styles.signUpMethod}>
       <View style={styles.container}>
         <LogoView />
@@ -36,7 +38,7 @@ function SignUpMethod() {
           <Text style={styles.loginText}>
             Already have an Account?
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Text style={[styles.loginText, { textDecorationLine: 'underline', marginLeft: 5 }]}>
               Log in
             </Text>
@@ -49,7 +51,7 @@ function SignUpMethod() {
 const styles = StyleSheet.create({
   signUpMethod: {
     backgroundColor: INDIGO_BLUE,
-    paddingTop: 10,
+    paddingTop: StatusBar.currentHeight + 10,
     flex: 1,
   },
   container: {
