@@ -2,8 +2,9 @@ import axios from 'axios';
 import { storage } from './helpers/Storage';
 // 192.168.31.100
 // 192.168.5.54
+// 192.168.31.139 techno
 const api = axios.create({
-  baseURL: 'http://192.168.31.114:4000',
+  baseURL: 'http://192.168.31.139:4000',
 });
 api.interceptors.request.use((config) => {
   const token = storage.getString('token');
