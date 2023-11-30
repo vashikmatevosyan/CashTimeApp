@@ -1,20 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  StyleSheet, View, Text, StatusBar, TouchableOpacity, ScrollView,
+  StyleSheet, View, Text, StatusBar, TouchableOpacity, ScrollView, Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  BLACK, INDIGO_BLUE, ORANGE, WHITE,
+  BLACK, INDIGO_BLUE, LIGHT_GREY, ORANGE, WHITE,
 } from '../theme/colors';
 import { RH, RW } from '../helpers/ratio';
 import SvgComponentEclips from '../components/imagesSvgComponents/SvgComponentEclips';
 import SvgComponentDefaultImage from '../components/imagesSvgComponents/SvgComponentDefaultImage';
 import SvgComponentLocationIcon from '../components/imagesSvgComponents/SvgComponentLocationIcon';
+// import { getProfile } from '../store/actions/users';
+
 // import SvgComponentEditIcon from '../components/imagesSvgComponents/SvgComponentEditIcon';
 // import SvgComponentPriceIcon from '../components/imagesSvgComponents/SvgComponentPriceIcon';
 
 function Profile() {
   const navigation = useNavigation();
+
+  const userInfo = useSelector((state) => state.users.profile);
+  const cvInfo = userInfo.createdCvs;
+  console.log(cvInfo);
   return (
     <ScrollView contentContainerStyle={styles.profile}>
 
@@ -28,29 +35,76 @@ function Profile() {
           </View>
           <View style={styles.accountInfo}>
             <View style={styles.accountAvatar}>
-              <SvgComponentDefaultImage />
+              {userInfo.avatar ? (
+                <Image
+                  style={styles.accountAvatar}
+                  source={{ uri: `http://192.168.31.100:4000${userInfo.avatar}` }}
+                />
+              )
+
+                : <SvgComponentDefaultImage /> }
             </View>
             <View style={styles.accountUserInfo}>
-              <Text style={styles.accountUserName}>Amanelia M.</Text>
+              <Text style={styles.accountUserName}>
+                {userInfo.firstName}
+                {' '}
+                {userInfo.lastName}
+              </Text>
               <View style={styles.locationView}>
                 <SvgComponentLocationIcon />
-                <Text style={styles.accountUserLocationVisit}>
-                  Yerevan, Armenia
-                </Text>
+                {userInfo.country ? (
+                  <Text style={styles.accountUserLocationVisit}>
+                    {userInfo.country}
+                    {' '}
+                    {userInfo.city ? userInfo.city : null}
+                  </Text>
+                ) : null}
               </View>
               <Text style={styles.accountUserLocationVisit}>11:34 am Local Time</Text>
             </View>
           </View>
           <View style={styles.specialInfo}>
-            <View style={styles.specialInfoMarginBox}>
-              <Text style={styles.specialInfoTitle}>Baby Sitter</Text>
-              <Text style={styles.specialInfoText}>Specialized In</Text>
-            </View>
-            <Text style={styles.specialInfoTitleMargin}>9000 AMD Hourly</Text>
+            {cvInfo?.experience ? (
+              <View style={styles.specialInfoMarginBox}>
+                <Text style={styles.specialInfoTitle}>{cvInfo.experience}</Text>
+                <Text style={styles.specialInfoText}>Specialized In</Text>
+              </View>
+            ) : null}
             <Text style={styles.specialInfoTitleMargin}>Expert</Text>
             <Text style={styles.specialInfoTitleMargin}>Skills</Text>
+            {cvInfo?.skills ? (
+              <View style={styles.skills}>
+                {cvInfo?.skills.map((e) => (
+                  <View key={e.id} style={styles.skillBox}>
+                    <Text style={styles.skillText}>{e.skill}</Text>
+                  </View>
+                ))}
+              </View>
+            ) : null}
             <Text style={styles.specialInfoTitleMargin}>Education</Text>
+            {cvInfo?.school ? (
+              <View style={styles.skills}>
+                <View style={styles.skillBox}>
+                  <Text style={styles.skillText}>
+                    {cvInfo.school}
+                    {cvInfo.degree ? ` - ${cvInfo.degree}` : null}
+                  </Text>
+                </View>
+              </View>
+            ) : null}
             <Text style={styles.specialInfoTitleMargin}>Languages</Text>
+            {cvInfo?.language ? (
+              <View style={styles.skills}>
+                {cvInfo?.language.map((e) => (
+                  <View key={e.id} style={styles.skillBox}>
+                    <Text style={styles.skillText}>
+                      {e.language}
+                      {e.level ? ` - ${e.level}` : null}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            ) : null}
           </View>
           <TouchableOpacity onPress={() => navigation.navigate('ProfileEdit')} style={styles.editBtn}>
             <Text style={styles.editBtnText}>Edit profile</Text>
@@ -99,6 +153,25 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  skills: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  skillBox: {
+    backgroundColor: LIGHT_GREY,
+    marginRight: 5,
+    borderRadius: 25,
+    marginBottom: 10,
+  },
+  skillText: {
+    color: 'rgba(0, 0, 0, 0.50)',
+    fontFamily: 'Lato-Regular',
+    fontSize: 14,
+    fontStyle: 'normal',
+    fontWeight: '400',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
   accountInfo: {
     width: '100%',
     flexDirection: 'row',
@@ -117,7 +190,8 @@ const styles = StyleSheet.create({
   accountUserName: {
     color: '#031054',
     fontFamily: 'Lato-Bold',
-    fontSize: 20,
+    fontSize: RW(20),
+    marginBottom: 5,
   },
   accountUserLocationVisit: {
     color: INDIGO_BLUE,

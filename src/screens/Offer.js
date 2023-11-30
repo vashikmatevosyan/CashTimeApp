@@ -38,26 +38,26 @@ function Offer({ navigation }) {
           {noticesList.map((e) => (
             <View key={e.id} style={styles.offer__block}>
               <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ fontFamily: 'Lato-Bold', fontSize: 24, color: '#fff' }}>House Cleaning</Text>
+                <Text style={{ fontFamily: 'Lato-Bold', fontSize: 24, color: WHITE }}>{e['fromJob.title']}</Text>
                 <View>
                   <Image
                     style={{ width: 58, height: 58, borderRadius: 58 }}
                     source={{ uri: `http://192.168.31.139:4000${e['userFrom.avatar']}` }}
                     alt="user"
                   />
-                  <Text style={{ fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff' }}>{`${e['userFrom.firstName']} ${e['userFrom.lastName']}`}</Text>
+                  <Text style={{ fontFamily: 'Lato-Bold', fontSize: 14, color: WHITE }}>{`${e['userFrom.firstName']} ${e['userFrom.lastName']}`}</Text>
                 </View>
               </View>
               <View>
                 <Text style={{
-                  fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff', marginBottom: 5,
+                  fontFamily: 'Lato-Bold', fontSize: 14, color: WHITE, marginBottom: 5,
                 }}
                 >
                   {moment(e.createdAt).format('YYYY-MM-DD HH:mm')}
                 </Text>
                 {e['userFrom.city'] && e['userFrom.country'] ? (
                   <Text style={{
-                    fontFamily: 'Lato-Bold', fontSize: 14, color: '#fff', marginBottom: 25,
+                    fontFamily: 'Lato-Bold', fontSize: 14, color: WHITE, marginBottom: 25,
                   }}
                   >
                     {e['userFrom.city']}
@@ -76,13 +76,13 @@ function Offer({ navigation }) {
                   width: '100%', border: '1px solid #E17A01', backgroundColor: ORANGE, padding: 10, borderRadius: 108, marginTop: 50,
                 }}
                 >
-                  <Text style={{ fontFamily: 'Roboto-Regular', color: '#fff', textAlign: 'center' }}>Confirm</Text>
+                  <Text style={{ fontFamily: 'Roboto-Regular', color: WHITE, textAlign: 'center' }}>Confirm</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{
-                  width: '100%', borderColor: '#fff', borderStyle: 'solid', borderWidth: 1, backgroundColor: 'transparent', padding: 10, borderRadius: 108, marginTop: 10,
+                  width: '100%', borderColor: WHITE, borderStyle: 'solid', borderWidth: 1, backgroundColor: 'transparent', padding: 10, borderRadius: 108, marginTop: 10,
                 }}
                 >
-                  <Text style={{ fontFamily: 'Roboto-Regular', color: '#fff', textAlign: 'center' }}>Delete</Text>
+                  <Text style={{ fontFamily: 'Roboto-Regular', color: WHITE, textAlign: 'center' }}>Delete</Text>
                 </TouchableOpacity>
               </View>
             </View>

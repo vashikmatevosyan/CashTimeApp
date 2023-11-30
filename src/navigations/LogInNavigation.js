@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useSelector } from 'react-redux';
 import ProfileNavigation from './ProfileNavigation';
 import OfferNavigation from './OfferNavigation';
 import MessagesNavigation from './MessagesNavigation';
@@ -13,12 +14,15 @@ import SvgComponentCircleIcon from '../components/imagesSvgComponents/SvgCompone
 import Main from '../screens/Main';
 
 function LogInNavigation() {
+  const bottomTabVisible = useSelector((state) => state.app.tabBarIsVisible);
   const Tab = createBottomTabNavigator();
   const screenOptions = {
     headerShown: false,
     tabBarHideOnKeyboard: true,
-    tabBarStyle: {
+    tabBarStyle: bottomTabVisible ? {
       padding: 10, height: 70, display: 'flex', flexDirection: 'row', alignItems: 'center',
+    } : {
+      display: 'none',
     },
   };
 
