@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MainNavigation from './MainNavigation';
+import { useSelector } from 'react-redux';
 import ProfileNavigation from './ProfileNavigation';
 import OfferNavigation from './OfferNavigation';
 import MessagesNavigation from './MessagesNavigation';
@@ -11,14 +11,18 @@ import SvgComponentMessagesIcon from '../components/imagesSvgComponents/SvgCompo
 import BottomIconTitle from '../components/global/BottomIconTitle';
 import CreateNavigation from './CreateNavigation';
 import SvgComponentCircleIcon from '../components/imagesSvgComponents/SvgComponentCircleIcon';
+import Main from '../screens/Main';
 
 function LogInNavigation() {
+  const bottomTabVisible = useSelector((state) => state.app.tabBarIsVisible);
   const Tab = createBottomTabNavigator();
   const screenOptions = {
     headerShown: false,
     tabBarHideOnKeyboard: true,
-    tabBarStyle: {
+    tabBarStyle: bottomTabVisible ? {
       padding: 10, height: 70, display: 'flex', flexDirection: 'row', alignItems: 'center',
+    } : {
+      display: 'none',
     },
   };
 
@@ -26,7 +30,7 @@ function LogInNavigation() {
     <Tab.Navigator screenOptions={screenOptions} initialRouteName="MainNavigation">
       <Tab.Screen
         name="MainNavigation"
-        component={MainNavigation}
+        component={Main}
         options={{
           title: (props) => <BottomIconTitle text="Main" active={props.focused} />,
           tabBarIcon: (props) => <SvgComponentMainIcon active={props.focused} />,
@@ -46,6 +50,7 @@ function LogInNavigation() {
         options={{
           title: () => null,
           tabBarIcon: () => <SvgComponentCircleIcon />,
+          tabBarStyle: { display: 'none' },
         }}
       />
       <Tab.Screen

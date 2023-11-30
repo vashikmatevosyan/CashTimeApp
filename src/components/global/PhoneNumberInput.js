@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef, useCallback, useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,14 +12,18 @@ import { RH, RW } from '../../helpers/ratio';
 import { BLACK, WHITE } from '../../theme/colors';
 // import { Colors } from "react-native/Libraries/NewAppScreen";
 
-function PhoneNumberInput() {
+function PhoneNumberInput({ setData, data }) {
   const [value, setValue] = useState('');
   const [formattedValue, setFormattedValue] = useState('');
   const [valid, setValid] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const phoneInput = useRef(null);
+  useEffect(() => {
+    setData({ ...data, phone: value });
+    console.log(value);
+  }, [value]);
   const input = {
-    width: RW(335),
+    width: '100%',
     height: RH(45),
     // backgroundColor: WHITE,
     borderColor: '#FFFFFF',
@@ -141,7 +145,6 @@ const styles = StyleSheet.create({
     height: RH(37),
     backgroundColor: WHITE,
     borderColor: '#FFFFFF',
-    // marginBottom: RH(15),
     color: BLACK,
     borderRadius: 8,
     overflow: 'hidden',

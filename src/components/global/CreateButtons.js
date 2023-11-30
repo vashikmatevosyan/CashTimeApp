@@ -3,7 +3,6 @@ import {
   StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import { WHITE } from '../../theme/colors';
-import { RH } from '../../helpers/ratio';
 
 function CreateButtons({ handleChangeStep }) {
   return (
@@ -32,7 +31,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 'auto',
-    marginBottom: RH(20),
+    // marginBottom: RH(20),
   },
 });
 
