@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import LogOutNavigation from './LogOutNavigation';
 import LogInNavigation from './LogInNavigation';
 import NoInternetScreen from '../screens/NoInternetScreen';
 import { getProfile } from '../store/actions/users';
 
 function AppNavigator() {
-  // const token = useSelector((state) => state.users.token);
-  const token = true;
+  const token = useSelector((state) => state.users.token);
+  // const token = true;
+  // const token = false;
   const [isConnected, setIsConnected] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {
