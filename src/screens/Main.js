@@ -32,12 +32,19 @@ function Main() {
   const [hourlyCheckbox, setHourlyCheckbox] = useState(true);
   const [selectedDay, setSelectedDay] = useState([]);
   const [singleJobShow, setSingleJobShow] = useState(false);
+  const [city, setCity] = useState({
+    latitude: 40.17779403680006,
+    longitude: 44.512565494382685,
+    fullAddress: '',
+    country: '',
+    city: 'Yerevan',
+  });
   const [checkBoxStates, setCheckBoxStates] = useState(
     experienceLevel.map(() => false),
   );
   useEffect(() => {
-    dispatch(jobListFromUsersMap({ city: 'Gyumri' }));
-  }, []);
+    dispatch(jobListFromUsersMap({ city: city.city }));
+  }, [city.city]);
   const handleCheckBoxPress = (index) => {
     const newCheckBoxStates = [...checkBoxStates];
     newCheckBoxStates[index] = !newCheckBoxStates[index];
@@ -95,6 +102,7 @@ function Main() {
     }
     return '';
   };
+
   return (
     <>
       <View style={styles.main}>
@@ -134,15 +142,22 @@ function Main() {
             <View style={styles.main__map}>
               <View style={styles.map__input__block}>
                 <SvgComponentSearchIcon style={styles.map__input__icon} />
-                <AddressAutocomplete defaultValue="" marginTop={0} height={150} bg={GREY} code="AM" />
+                <AddressAutocomplete setAddress={setCity} defaultValue="" marginTop={0} height={150} bg={GREY} code="AM" />
                 {/* <TextInput placeholder="Location" style={styles.map__input} /> */}
               </View>
               <View style={styles.main__map__block}>
                 <MapView
+                  minZoomLevel={11}
+                  region={{
+                    latitude: city.latitude,
+                    longitude: city.longitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                  }}
                   onPress={() => handleSeenSingleJob('', true, false)}
                   initialRegion={{
-                    latitude: 40.17779403680006,
-                    longitude: 44.512565494382685,
+                    latitude: city.latitude,
+                    longitude: city.longitude,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   }}
