@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  Image,
+  Image, PermissionsAndroid,
   ScrollView,
   StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
@@ -8,6 +8,8 @@ import MapView, { Marker } from 'react-native-maps';
 import { CheckBox } from 'react-native-elements';
 import Calendar from 'react-native-calendars/src/calendar';
 import { useDispatch, useSelector } from 'react-redux';
+import Geolocation from '@react-native-community/geolocation';
+import { GET_CITY, AUTOCOMPLETE_KEY } from '@env';
 import SvgComponentAvatar from '../components/imagesSvgComponents/SvgComponentAvatar';
 import {
   DARK_BLUE, GREY, INDIGO_BLUE, ORANGE, WHITE,
@@ -25,6 +27,13 @@ import SvgComponentLocation from '../components/imagesSvgComponents/SvgComponent
 const experienceLevel = ['Entry Level', 'Intermediate', 'Expert'];
 
 function Main() {
+  useEffect(() => {
+    PermissionsAndroid.requestMultiple([
+      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    ]);
+  }, []);
+
   const dispatch = useDispatch();
   const [selectedJob, setSelectedJob] = useState('');
   const [activeComponent, setActiveComponent] = useState('map');
@@ -33,12 +42,38 @@ function Main() {
   const [selectedDay, setSelectedDay] = useState([]);
   const [singleJobShow, setSingleJobShow] = useState(false);
   const [city, setCity] = useState({
-    latitude: 40.17779403680006,
-    longitude: 44.512565494382685,
+    latitude: 40.8312966,
+    longitude: 43.8255485,
     fullAddress: '',
     country: '',
     city: 'Yerevan',
   });
+  useEffect(() => {
+    Geolocation.getCurrentPosition(async (info) => {
+      if (info.coords.latitude && info.coords.longitude) {
+        setCity({
+          ...city,
+          latitude: info.coords.latitude,
+          longitude: info.coords.longitude,
+        });
+        try {
+          const response = await fetch(
+            `${GET_CITY}${info.coords.latitude},${info.coords.longitude}&key=${AUTOCOMPLETE_KEY}`,
+          );
+          const data = await response.json();
+          const userCity = data.results[0].address_components.find(
+            (component) => component.types.includes('locality'),
+          );
+          setCity({
+            ...city,
+            city: userCity?.long_name || 'Yerevan',
+          });
+        } catch (error) {
+          console.error('Ошибка при запросе обратного геокодирования', error);
+        }
+      }
+    });
+  }, []);
   const [checkBoxStates, setCheckBoxStates] = useState(
     experienceLevel.map(() => false),
   );
@@ -102,7 +137,6 @@ function Main() {
     }
     return '';
   };
-
   return (
     <>
       <View style={styles.main}>
@@ -147,6 +181,8 @@ function Main() {
               </View>
               <View style={styles.main__map__block}>
                 <MapView
+                  followsUserLocation
+                  showsUserLocation
                   minZoomLevel={11}
                   region={{
                     latitude: city.latitude,
