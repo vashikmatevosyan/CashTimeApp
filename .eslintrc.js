@@ -43,5 +43,6 @@ module.exports = {
     camelcase: 'off',
     'no-nested-ternary': 'off',
     'react/jsx-no-useless-fragment': 'off',
+    'react/no-unstable-nested-components': 'off',
   },
 };

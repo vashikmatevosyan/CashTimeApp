@@ -2,14 +2,13 @@ import React from 'react';
 import {
   StatusBar, StyleSheet, Text, View,
 } from 'react-native';
-import SlideToUnlock from '../../components/no-sign-up-screens-components/unlcokScreenComponents/SlideToUnlock';
+import SlideToUnlock from '../../components/no-sign-up-screens-components/SlideToUnlock';
 import LogoView from '../../components/global/LogoView';
 import { INDIGO_BLUE, WHITE } from '../../theme/colors';
 import SvgComponentMainImage from '../../components/imagesSvgComponents/SvgComponentMainImage';
 import { RW } from '../../helpers/ratio';
 
 function UnLock() {
-  console.log(StatusBar.currentHeight);
   return (
     <View style={styles.unLock}>
       <View style={styles.container}>
@@ -31,7 +30,7 @@ const styles = StyleSheet.create({
   unLock: {
     flex: 1,
     backgroundColor: INDIGO_BLUE,
-    paddingTop: StatusBar.currentHeight || 0,
+    paddingTop: StatusBar.currentHeight + 10,
   },
   container: {
     width: '90%',
@@ -55,6 +54,7 @@ const styles = StyleSheet.create({
   imagesContainer: {
     flex: 1,
     width: '100%',
+    marginTop: 20,
     alignItems: 'center',
   },
 });

@@ -1,15 +1,12 @@
-import React from 'react';
-import {
-  StatusBar, StyleSheet, Text, TouchableOpacity, View,
+import React from 'react'; import {
+  StatusBar,
+  StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import {
+import { useNavigation } from '@react-navigation/native'; import {
   BLACK, DARK_BLUE, INDIGO_BLUE, WHITE,
 } from '../../theme/colors';
-import LogoView from '../../components/global/LogoView';
-import SvgComponentSignUpMethodScreen
-  from '../../components/imagesSvgComponents/SvgComponentSignUpMethodScreen';
-import { RW } from '../../helpers/ratio';
+import LogoView from '../../components/global/LogoView'; import SvgComponentSignUpMethodScreen
+  from '../../components/imagesSvgComponents/SvgComponentSignUpMethodScreen'; import { RW } from '../../helpers/ratio';
 
 function SignUpMethod() {
   const navigation = useNavigation();
@@ -41,7 +38,7 @@ function SignUpMethod() {
           <Text style={styles.loginText}>
             Already have an Account?
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Text style={[styles.loginText, { textDecorationLine: 'underline', marginLeft: 5 }]}>
               Log in
             </Text>
@@ -51,11 +48,10 @@ function SignUpMethod() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   signUpMethod: {
     backgroundColor: INDIGO_BLUE,
-    paddingTop: StatusBar.currentHeight || 0,
+    paddingTop: StatusBar.currentHeight + 10,
     flex: 1,
   },
   container: {
@@ -72,6 +68,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
   },
   textContainer: {
+    marginTop: 20,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -113,5 +110,4 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
   },
 });
-
 export default SignUpMethod;
