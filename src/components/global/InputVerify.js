@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  StyleSheet, TextInput,
+  StyleSheet, TextInput, View,
 } from 'react-native';
 import { RH, RW } from '../../helpers/ratio';
 import { WHITE } from '../../theme/colors';
@@ -11,7 +11,7 @@ function InputVerify(props) {
   const [code, setCode] = useState('');
 
   const handleInputChange = (index, e) => {
-    const { value } = e.target;
+    const value = e;
     if (value?.length === 1 && index < inputs.current.length - 1) {
       inputs.current[index + 1].focus();
     }
@@ -32,28 +32,27 @@ function InputVerify(props) {
   };
 
   return (
-    <div className="input__verify__div">
+    <View style={styles.input__verify__div}>
       {Array.from({ length: 4 }, (_, index) => (
         <TextInput
           style={styles.input}
           key={index}
           ref={(ref) => {
-            inputs.current[index] = ref; return null;
+            inputs.current[index] = ref;
+            return null;
           }}
-          type="text"
           maxLength={1}
           onKeyPress={(e) => {
             if (!/^\d$/.test(e.key)) {
               e.preventDefault();
             }
           }}
-          onChange={(e) => handleInputChange(index, e)}
+          onChangeText={(text) => handleInputChange(index, text)}
           onKeyDown={(e) => handleKeyDown(index, e)}
         />
       ))}
-      {' '}
 
-    </div>
+    </View>
   );
 }
 
@@ -63,6 +62,11 @@ const styles = StyleSheet.create({
     height: RH(45),
     backgroundColor: WHITE,
     marginHorizontal: 3,
+  },
+  input__verify__div: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });
 

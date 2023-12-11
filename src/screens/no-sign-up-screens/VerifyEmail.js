@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Text, View, StyleSheet, TouchableOpacity, ScrollView,
 } from 'react-native';
@@ -9,6 +9,7 @@ import InputVerify from '../../components/global/InputVerify';
 
 function VerifyEmail() {
   const [text, setText] = useState();
+  console.log(text);
   return (
     <ScrollView contentContainerStyle={{ flex: 1 }} style={{ flex: 1 }}>
       <View style={styles.verify}>
@@ -19,7 +20,7 @@ function VerifyEmail() {
         <Text style={styles.text}>
           Please enter the 4 digit Code Sent to  Your Email Youremailexaple.com
         </Text>
-        <View style={styles.inputView}>
+        <View>
           <InputVerify onData={setText} />
         </View>
         <TouchableOpacity style={styles.resentCode}>
@@ -60,17 +61,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato-Semi Bold',
     fontWeight: '600',
     fontSize: 14,
-  },
-  input: {
-    width: RW(45),
-    height: RH(45),
-    backgroundColor: WHITE,
-    marginHorizontal: 3,
-  },
-  inputView: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
   },
   verify: {
     backgroundColor: INDIGO_BLUE,
