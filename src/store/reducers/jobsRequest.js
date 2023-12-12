@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
-  createJobRequestFromPending, jobListFromUsersMap, singleJobInfo,
+  createJobRequestFromPending, jobListFromUsersFilter, jobListFromUsersMap, singleJobInfo,
 } from '../actions/jobsRequest';
 
 const initialState = {
@@ -50,13 +50,16 @@ export default createReducer(initialState, (builder) => {
       const { jobs } = action.payload;
       state.jobListFromUsers = jobs;
     })
-  // .addCase(jobListFromUsersFilter.fulfilled, (state, action) => {
-  //   const { jobs, currentPage, totalPages } = action.payload;
-  //   state.jobsFromUsersFilter = jobs;
-  //   state.currentPageUsers = currentPage;
-  //   state.totalPagesUsers = totalPages;
-  //   state.jobsListStatus = 'ok';
-  // })
+    .addCase(jobListFromUsersFilter.fulfilled, (state, action) => {
+      const { jobs, currentPage, totalPages } = action.payload;
+      jobs.forEach((e) => {
+        console.log(e.title);
+      });
+      state.jobsFromUsersFilter = jobs;
+      state.currentPageUsers = currentPage;
+      state.totalPagesUsers = totalPages;
+      state.jobsListStatus = 'ok';
+    })
   // .addCase(jobListFromUsersFilter.pending, (state) => {
   //   state.jobsListStatus = 'pending';
   // })

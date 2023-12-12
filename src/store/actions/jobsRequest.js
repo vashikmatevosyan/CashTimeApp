@@ -48,14 +48,14 @@ export const jobListFromUsersMap = createAsyncThunk('/jobsRequest/jobListFromUse
     return thunkAPI.rejectWithValue(e.response.data);
   }
 });
-// export const jobListFromUsersFilter = createAsyncThunk('/jobsRequest/jobListFromUsersFilter', async (payload, thunkAPI) => {
-//   try {
-//     const { data } = await Api.jobListFromUsersFilter(payload);
-//     return data;
-//   } catch (e) {
-//     return thunkAPI.rejectWithValue(e.response.data);
-//   }
-// });
+export const jobListFromUsersFilter = createAsyncThunk('/jobsRequest/jobListFromUsersFilter', async (payload, thunkAPI) => {
+  try {
+    const { data } = await Api.jobListFromUsersFilter(payload);
+    return data;
+  } catch (e) {
+    return thunkAPI.rejectWithValue(e.response.data);
+  }
+});
 export const singleJobInfo = createAsyncThunk('/jobsRequest/singleJobInfo', async (payload, thunkAPI) => {
   try {
     const { data } = await Api.singleJobInfo(payload);

@@ -16,6 +16,16 @@ api.interceptors.request.use((config) => {
 }, (error) => Promise.reject(error));
 
 class Api {
+  static jobListFromUsersFilter({
+    filter,
+    limit,
+    page,
+    city,
+    order,
+  }) {
+    return api.post(`/jobs/jobs-list-filter?page=${page}&limit=${limit}&city=${city}&order=${order}`, filter);
+  }
+
   static singleJobInfo(id) {
     return api.get(`/jobs/job-singe-info?id=${id}`);
   }

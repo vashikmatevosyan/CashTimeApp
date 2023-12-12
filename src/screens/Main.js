@@ -17,14 +17,18 @@ import {
 import { RH, RW } from '../helpers/ratio';
 import SvgComponentFilterIcon from '../components/imagesSvgComponents/SvgComponentFilterIcon';
 import AddressAutocomplete from '../components/global/AddressAutocomplete';
-import { jobListFromUsersMap, singleJobInfo } from '../store/actions/jobsRequest';
+import {
+  jobListFromUsersFilter,
+  jobListFromUsersMap,
+  singleJobInfo,
+} from '../store/actions/jobsRequest';
 import SvgComponentMapMarker from '../components/imagesSvgComponents/SvgComponentMapMarker';
 import SvgComponentSearchIcon from '../components/imagesSvgComponents/SvgComponentSearchIcon';
 import { tabBarVisible } from '../store/actions/app';
 import SvgComponentPrice from '../components/imagesSvgComponents/SvgComponentPrice';
 import SvgComponentLocation from '../components/imagesSvgComponents/SvgComponentLocation';
 
-const experienceLevel = ['Entry Level', 'Intermediate', 'Expert'];
+const experienceLevel = ['Entry', 'Intermediate', 'Expert'];
 
 function Main() {
   useEffect(() => {
@@ -33,7 +37,23 @@ function Main() {
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
     ]);
   }, []);
-
+  const [experience_level, setExperience_level] = useState({
+    entryLevel: '',
+    intermediate: '',
+    expert: '',
+  });
+  const [date, setDate] = useState({
+    from: '',
+    to: '',
+  });
+  const [job_type, setJob_type] = useState({
+    hourly: '',
+    hour_min: '',
+    hour_max: '',
+    fixed: '',
+    salary_min: '',
+    salary_max: '',
+  });
   const dispatch = useDispatch();
   const [selectedJob, setSelectedJob] = useState('');
   const [activeComponent, setActiveComponent] = useState('map');
@@ -48,6 +68,16 @@ function Main() {
     country: '',
     city: 'Yerevan',
   });
+  const [cityFilter, setCityFilter] = useState({
+    latitude: '',
+    longitude: '',
+    fullAddress: '',
+    country: '',
+    city: '',
+  });
+  const [priceMin, setPriceMin] = useState('');
+  const [priceMax, setPriceMax] = useState('');
+  const [title, setTitle] = useState('');
   useEffect(() => {
     Geolocation.getCurrentPosition(async (info) => {
       if (info.coords.latitude && info.coords.longitude) {
@@ -85,12 +115,29 @@ function Main() {
     newCheckBoxStates[index] = !newCheckBoxStates[index];
     setCheckBoxStates(newCheckBoxStates);
   };
-
+  useEffect(() => {
+    setExperience_level({
+      entryLevel: checkBoxStates[0] ? 'Entry' : '',
+      intermediate: checkBoxStates[1] ? 'Intermediate' : '',
+      expert: checkBoxStates[2] ? 'Expert' : '',
+    });
+    setDate({
+      from: selectedDay[0] ? selectedDay[0] : '',
+      to: selectedDay.length > 1 ? selectedDay[selectedDay.length - 1] : '',
+    });
+    setJob_type({
+      hourly: hourlyCheckbox ? 'Hourly Rate' : '',
+      fixed: !hourlyCheckbox ? 'Project Budget' : '',
+      hour_max: priceMax || '',
+      hour_min: priceMin || '',
+      salary_max: priceMax || '',
+      salary_min: priceMin || '',
+    });
+  }, [checkBoxStates, selectedDay, hourlyCheckbox, priceMin, priceMax]);
   const markedDates = selectedDay.reduce((acc, date) => {
     acc[date] = { selected: true, selectedColor: ORANGE };
     return acc;
   }, {});
-
   const handleCalendarDayPress = (day) => {
     if (!selectedDay[0]) {
       setSelectedDay([day.dateString]);
@@ -137,6 +184,20 @@ function Main() {
     }
     return '';
   };
+  useEffect(() => {
+    dispatch(jobListFromUsersFilter({
+      filter: {
+        title,
+        date,
+        experience_level,
+        job_type,
+      },
+      page: 1,
+      limit: 1000000,
+      city: cityFilter.city,
+      order: 'Newest',
+    }));
+  }, [title, date, experience_level, job_type, cityFilter.city]);
   return (
     <>
       <View style={styles.main}>
@@ -503,7 +564,7 @@ function Main() {
               Experience level
             </Text>
             {experienceLevel.map((e, index) => (
-              <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: -15 }}>
+              <View key={e} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: -15 }}>
                 <CheckBox
                   onPress={() => handleCheckBoxPress(index)}
                   checked={checkBoxStates[index]}
@@ -553,6 +614,8 @@ function Main() {
             {hourlyCheckbox ? (
               <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: RW(25) }}>
                 <TextInput
+                  value={priceMin}
+                  onChangeText={setPriceMin}
                   keyboardType="numeric"
                   placeholder="min"
                   style={{
@@ -563,6 +626,8 @@ function Main() {
                 <TextInput
                   keyboardType="numeric"
                   placeholder="max"
+                  value={priceMax}
+                  onChangeText={setPriceMax}
                   style={{
                     width: RW(70), height: RH(30), padding: 5, backgroundColor: WHITE,
                   }}
@@ -614,7 +679,7 @@ function Main() {
             >
               Client Location
             </Text>
-            <AddressAutocomplete bg={WHITE} height={200} defaultValue="" marginTop={0} />
+            <AddressAutocomplete setAddress={setCityFilter} radius={8} bg={WHITE} height={200} defaultValue="" marginTop={0} />
           </View>
           <View style={{
             width: '80%', marginTop: RH(30), marginBottom: 20, marginLeft: RW(25),
@@ -624,10 +689,12 @@ function Main() {
               fontFamily: 'Lato-Regular', fontSize: RW(20), color: WHITE, marginBottom: RH(10),
             }}
             >
-              Categories
+              Title
             </Text>
             <TextInput
-              placeholder="Select a Category"
+              value={title}
+              onChangeText={setTitle}
+              placeholder="Select job title"
               style={{
                 width: '100%', height: 50, padding: 5, backgroundColor: WHITE, borderRadius: 8,
               }}
