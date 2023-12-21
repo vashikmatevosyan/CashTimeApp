@@ -10,8 +10,6 @@ import { getProfile } from '../store/actions/users';
 
 function AppNavigator() {
   const token = useSelector((state) => state.users.token);
-  // const token = true;
-  // const token = false;
   const [isConnected, setIsConnected] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {
