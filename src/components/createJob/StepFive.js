@@ -18,6 +18,7 @@ function StepFive({ onData }) {
       <CreateJobsTitles title="Describe your job" align="center" />
       <View style={styles.inputContainer}>
         <TextInput
+          textAlignVertical="top"
           value={description}
           onChangeText={setDescription}
           multiline

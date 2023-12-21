@@ -7,7 +7,7 @@ function Create() {
   const role = 'gorcTvox';
   return (
     <View style={{ flex: 1 }}>
-      {role === 'gorfcTvox' ? <CreateJob /> : <CreateCv />}
+      {role === 'gorcTvox' ? <CreateJob /> : <CreateCv />}
     </View>
   );
 }
