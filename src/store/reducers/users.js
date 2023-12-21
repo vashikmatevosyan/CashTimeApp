@@ -1,5 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
+  activate,
   getProfile,
   loginRequest, registerRequest,
 } from '../actions/users';
@@ -23,10 +24,17 @@ export default createReducer(initialState, (builder) => {
     })
     .addCase(registerRequest.fulfilled, (state, action) => {
       const { token, user } = action.payload;
+      console.log(user);
       if (token) {
         storage.set('token', token);
       }
       state.profile = user;
+      state.token = token;
+    })
+    .addCase(activate.fulfilled, (state, action) => {
+      const { token } = action.payload;
+      console.log(token);
+      storage.set('token', token);
       state.token = token;
     });
 });

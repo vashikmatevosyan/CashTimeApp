@@ -1,10 +1,10 @@
 import React, { useCallback, useRef, useState } from 'react';
-import SelectDropdown from 'react-native-select-dropdown';
 import {
   View, Text, StyleSheet,
   TextInput, TouchableOpacity, ScrollView, StatusBar,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
+import Toast from 'react-native-toast-message';
 import {
   BLACK, DARK_BLUE, INDIGO_BLUE, WHITE,
 } from '../../theme/colors';
@@ -16,25 +16,40 @@ import SvgComponentGradientSignUp from '../../components/imagesSvgComponents/Svg
 import SvgComponentGradientSignUpLeft from '../../components/imagesSvgComponents/SvgComponentGradientSignUpLeft';
 import SvgComponentGoogle from '../../components/imagesSvgComponents/SvgComponentGoogle';
 import { registerRequest } from '../../store/actions/users';
+import AddressAutocomplete from '../../components/global/AddressAutocomplete';
 
-function SignUp({ route }) {
+function SignUp({ route, navigation }) {
   const { params } = route;
-  const [errorText, setErrorText] = useState(false);
+  const [address, setAddress] = useState({
+    latitude: '',
+    longitude: '',
+    fullAddress: '',
+    country: '',
+    city: '',
+  });
   const [data, setData] = useState({
     firstName: '',
     lastName: '',
     password: '',
     confirmPassword: '',
     email: '',
-    address: '',
     phone: '',
+    role: params.method,
   });
   const dispatch = useDispatch();
-  const handleRegister = useCallback(() => {
-    console.log(data);
-    dispatch(registerRequest(data));
+  const handleRegister = useCallback(async () => {
+    const { payload } = await dispatch(registerRequest({ ...data, address }));
+    const { validationCode } = payload.user;
+    if (payload.status === 'ok') {
+      navigation.navigate('VerifyEmail', { validationCode });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: payload.message,
+        topOffset: RH(200),
+      });
+    }
   }, [data]);
-  console.log(data);
   const ref = useRef();
   return (
     <ScrollView ref={ref} style={styles.signUp}>
@@ -50,7 +65,6 @@ function SignUp({ route }) {
           <View style={styles.input}>
             <PhoneNumberInput setData={setData} data={data} />
           </View>
-          <Text style={styles.errorText}>{errorText || ''}</Text>
           <TextInput
             placeholder="First Name"
             placeholderTextColor="black"
@@ -58,7 +72,6 @@ function SignUp({ route }) {
             onFocus={() => ref.current.scrollToEnd({ animated: true })}
             onChangeText={(text) => setData({ ...data, firstName: text })}
           />
-          <Text style={styles.errorText}>{errorText || ''}</Text>
           <TextInput
             placeholder="Last Name"
             placeholderTextColor="black"
@@ -66,7 +79,6 @@ function SignUp({ route }) {
             onFocus={() => ref.current.scrollToEnd({ animated: true })}
             onChangeText={(text) => setData({ ...data, lastName: text })}
           />
-          <Text style={styles.errorText}>{errorText || ''}</Text>
           <TextInput
             keyboardType="email-address"
             placeholder="Email"
@@ -75,7 +87,6 @@ function SignUp({ route }) {
             onFocus={() => ref.current.scrollToEnd({ animated: true })}
             onChangeText={(text) => setData({ ...data, email: text })}
           />
-          <Text style={styles.errorText}>{errorText || ''}</Text>
           <TextInput
             placeholder="Password"
             placeholderTextColor="black"
@@ -83,7 +94,6 @@ function SignUp({ route }) {
             onFocus={() => ref.current.scrollToEnd({ animated: true })}
             onChangeText={(text) => setData({ ...data, password: text })}
           />
-          <Text style={styles.errorText}>{errorText || ''}</Text>
           <TextInput
             placeholder="Confirm Password"
             placeholderTextColor="black"
@@ -91,15 +101,7 @@ function SignUp({ route }) {
             onFocus={() => ref.current.scrollToEnd({ animated: true })}
             onChangeText={(text) => setData({ ...data, confirmPassword: text })}
           />
-          <Text style={styles.errorText}>{errorText || ''}</Text>
-          <TextInput
-            placeholder="Location"
-            placeholderTextColor="black"
-            style={styles.input}
-            onFocus={() => ref.current.scrollToEnd({ animated: true })}
-            onChangeText={(text) => setData({ ...data, address: text })}
-          />
-          <Text style={styles.errorText}>{errorText || ''}</Text>
+          <AddressAutocomplete bg={WHITE} height={100} defaultValue="" marginTop={0} setAddress={setAddress} />
         </View>
         <View style={styles.gradientBox}>
           <SvgComponentGradientSignUp />
@@ -109,7 +111,8 @@ function SignUp({ route }) {
         <View style={styles.googleBtn}>
           <SvgComponentGoogle />
         </View>
-        <View>
+        <Toast />
+        <View style={{ height: 150 }}>
           <TouchableOpacity onPress={handleRegister} title="Create my Account" style={styles.createBtn}><Text style={styles.signUpText}>Create my Account</Text></TouchableOpacity>
         </View>
         <View>
@@ -154,7 +157,6 @@ const styles = StyleSheet.create({
     height: RH(45),
     backgroundColor: WHITE,
     borderColor: '#FFFFFF',
-    // marginBottom: RH(15),
     color: BLACK,
     borderRadius: 8,
     fontSize: 14,
@@ -164,7 +166,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     textDecorationLine: 'none',
     overflow: 'hidden',
-    // textDecorationLine: 'None',
+    marginBottom: RH(15),
   },
   gradientBox: {
     width: RW(335),
@@ -212,12 +214,6 @@ const styles = StyleSheet.create({
     fontSize: RW(14),
     color: '#FFF',
     marginBottom: RH(15),
-  },
-  errorText: {
-    fontFamily: 'Lato-Semi Bold',
-    fontSize: RW(14),
-    color: '#E31515',
-    // textAlign: 'center',
   },
 });
 

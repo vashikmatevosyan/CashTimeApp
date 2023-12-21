@@ -25,7 +25,14 @@ export const getProfile = createAsyncThunk('users/getProfile', async (payload, t
 export const registerRequest = createAsyncThunk('users/registerRequest', async (payload, thunkAPI) => {
   try {
     const { data } = await Api.register(payload);
-    console.log(payload);
+    return data;
+  } catch (e) {
+    return thunkAPI.rejectWithValue(e.response.data);
+  }
+});
+export const activate = createAsyncThunk('users/activate', async (payload, thunkAPI) => {
+  try {
+    const { data } = await Api.activate(payload);
     return data;
   } catch (e) {
     return thunkAPI.rejectWithValue(e.response.data);

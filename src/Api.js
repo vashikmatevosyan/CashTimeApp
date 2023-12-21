@@ -38,6 +38,10 @@ class Api {
     });
   }
 
+  static activate(data) {
+    return api.post('/users/activate', data);
+  }
+
   static getProfile() {
     return api.get('/users/profile');
   }
