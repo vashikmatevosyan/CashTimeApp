@@ -5,6 +5,12 @@ import {
 import { INDIGO_BLUE, WHITE } from '../theme/colors';
 import { RH, RW } from '../helpers/ratio';
 import LogoView from '../components/global/LogoView';
+import CreateCvFirst from '../components/createCv/CreateCvFirst';
+import CreateCvSecond from '../components/createCv/CreateCvSecond';
+import CreateCvThird from '../components/createCv/CreateCvThird';
+import CreateCvFourth from '../components/createCv/CreateCvFourth';
+import CreateCvFifth from '../components/createCv/CreateCvFifth';
+import CreateCvSixth from '../components/createCv/CreateCvSixth';
 
 function CreateCv() {
   const [count, setCount] = useState(1);
@@ -36,6 +42,13 @@ function CreateCv() {
   return (
     <View style={styles.container}>
       <LogoView />
+      {count === 1 && <CreateCvFirst title="What level of experience will it need?" levels={['Entry', 'Intermediate', 'Expert']} /> }
+      {count === 2 && <CreateCvFirst title="What’s Your Goal" levels={['To Earn Main Income', 'To Make Money On the Side', 'I Don’t Have a Goal in mind']} /> }
+      {count === 3 && <CreateCvSecond /> }
+      {count === 4 && <CreateCvThird /> }
+      {count === 5 && <CreateCvFourth /> }
+      {count === 6 && <CreateCvFifth /> }
+      {count === 7 && <CreateCvSixth /> }
       <View style={styles.btnBlock}>
         {count !== 1 && (
           <Text onPress={() => setCount(count - 1)} style={styles.btnText}>
