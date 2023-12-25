@@ -2,6 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import {
   getProfile,
   loginRequest,
+  editProfile,
 } from '../actions/users';
 import { storage } from '../../helpers/Storage';
 
@@ -20,5 +21,12 @@ export default createReducer(initialState, (builder) => {
     .addCase(getProfile.fulfilled, (state, action) => {
       const { user } = action.payload;
       return { ...state, profile: user };
+    })
+    .addCase(editProfile.fulfilled, (state, action) => {
+      const {
+        user,
+        cv,
+      } = action.payload;
+      state.profile = { ...user, createdCvs: cv };
     });
 });

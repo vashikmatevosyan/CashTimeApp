@@ -9,7 +9,7 @@ import NoInternetScreen from '../screens/NoInternetScreen';
 import { getProfile } from '../store/actions/users';
 
 function AppNavigator() {
-  const token = useSelector((state) => state.users.token) || true;
+  const token = useSelector((state) => state.users.token);
   const [isConnected, setIsConnected] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {

@@ -49,6 +49,14 @@ class Api {
       },
     });
   }
+
+  static editProfile(data) {
+    return api.put('users/edit-employee', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
 }
 
 export default Api;

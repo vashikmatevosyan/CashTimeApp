@@ -22,3 +22,12 @@ export const getProfile = createAsyncThunk('users/getProfile', async (payload, t
     return thunkAPI.rejectWithValue(e.response.data);
   }
 });
+
+export const editProfile = createAsyncThunk('users/editProfile', async (payload, thunkAPI) => {
+  try {
+    const { data } = await Api.editProfile(payload);
+    return data;
+  } catch (e) {
+    return thunkAPI.rejectWithValue(e.response.data);
+  }
+});
