@@ -6,11 +6,11 @@ import {
 } from 'react-native';
 import Profile from '../screens/Profile';
 import { RW } from '../helpers/ratio';
-import ProfileMenu from '../screens/ProfileMenu';
-import ProfileEdit from '../screens/ProfileEdit';
 import avatarImage from '../../assets/images/avatar.png';
 import Languages from '../screens/Languages';
 import Notification from '../screens/Notification';
+import profileEditModal from '../components/screenComponents/profileEditModal';
+
 
 function ProfileNavigation({ navigation }) {
   const Stack = createStackNavigator();
@@ -26,13 +26,13 @@ function ProfileNavigation({ navigation }) {
           </TouchableOpacity>
         ),
       }}
-      initialRouteName="Notification"
+      initialRouteName="Profile"
     >
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen options={{ headerShown: false }} name="ProfileMenu" component={ProfileMenu} />
+      <Stack.Screen options={{ headerShown: false }} name="profileEditModal" component={profileEditModal} />
       <Stack.Screen
         name="ProfileEdit"
-        component={ProfileEdit}
+        component={profileEditModal}
         options={{
           headerTitle: 'Settings',
           headerRight: () => (

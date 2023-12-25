@@ -1,19 +1,39 @@
 import React, { useState, useRef, useCallback } from 'react';
 import {
-  TextInput, View, StyleSheet, Text, TouchableOpacity, FlatList, Image,
+  TextInput, View, StyleSheet, Text, TouchableOpacity, FlatList, Image, ScrollView,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import PhoneInput from 'react-native-phone-number-input';
 import _ from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import PhoneNumberInput from '../global/PhoneNumberInput';
 import { RH, RW } from '../../helpers/ratio';
 import {
   BLACK, INDIGO_BLUE, ORANGE, WHITE,
 } from '../../theme/colors';
 import avatarImage from '../../../assets/images/avatar.png';
+import SvgComponentEditIconOrange from '../imagesSvgComponents/SvgComponentEditIconOrange';
+import { editProfile } from '../../store/actions/users';
 
 function ProfileEditModal(props) {
-  const { onpress } = props;
+  const userInfo = useSelector((state) => state.users.profile);
+  const cvInfo = userInfo.createdCvs;
+  const [userName, setUserName] = useState('' || userInfo.firstName);
+  const [surname, setSurname] = useState('' || userInfo.lastName);
+  const [education, setEducation] = useState('' || cvInfo.school);
+  const [subject, setSubject] = useState('' || cvInfo.degree);
+  const [selectedPhoto, setSelectedPhoto] = useState({
+    fileSrc: '',
+    file: null,
+  });
+  console.log(education, subject);
+  // const [skills, setSkills] = useState('');
+  // const [addSkill, setAddSkill] = useState([]);
+  console.log(cvInfo.phoneNumber);
+  // console.log(userInfo, cvInfo);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const countries = ['Egypt', 'Canada', 'Australia',
     'Ireland', 'Egypt', 'Canada', 'Australia', 'Ireland',
     'Egypt', 'Canada', 'Australia', 'Ireland', 'Egypt', 'Canada', 'Australia', 'Ireland'];
@@ -24,26 +44,56 @@ function ProfileEditModal(props) {
     'Advanced(Level C1)',
     'Mastery(Level C2)'];
   const [value, setValue] = useState('');
-  const [formattedValue, setFormattedValue] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('' || cvInfo.phoneNumber);
+  console.log(value, '-value', phoneNumber, '-formattedValue');
   const [skillInfo, setSkillInfo] = useState('');
-  const [skill, setSkill] = useState([]);
-  // const [valid, setValid] = useState(false);
-  // const [showMessage, setShowMessage] = useState(false);
-
+  const [addSkill, setAddSkill] = useState(cvInfo.skills || []);
+  console.log(cvInfo.skills, 7777777);
   const handleAddSkill = useCallback(() => {
     if (skillInfo.split(' ').join('')?.length !== 0) {
-      setSkill([...skill, { skill: skillInfo, id: _.uniqueId() }]);
+      setAddSkill([...addSkill, { skill: skillInfo, id: _.uniqueId() }]);
     }
     setSkillInfo('');
-  }, [skillInfo, skill]);
+  }, [skillInfo, addSkill]);
   const handleDeleteSkill = useCallback((id) => {
-    setSkill(skill.filter((e) => e.id !== id));
-  }, [skill]);
-
-  console.log(skill);
-  const sendUserInfo = useCallback(() => {
-    onpress(true);
-  }, []);
+    setAddSkill(addSkill.filter((e) => e.id !== id));
+  }, [addSkill]);
+  console.log(addSkill, 555);
+  const handleSendInfo = useCallback(() => {
+    // ev.preventDefault();
+    const addLanguages = [];
+    const address = {
+      latitude: '',
+      longitude: '',
+      fullAddress: '',
+      location: '',
+    };
+    const avatar = '';
+    const profession = { label: '' };
+    dispatch(editProfile({
+      userName,
+      surname,
+      addSkill,
+      education,
+      subject,
+      address,
+      addLanguages,
+      phoneNumber,
+      profession,
+      avatar: selectedPhoto.file,
+    }));
+    navigation.navigate('Profile');
+  }, [
+    userName,
+    surname,
+    addSkill,
+    education,
+    subject,
+    phoneNumber,
+  ]);
+  // const sendUserInfo = useCallback(() => {
+  //   onpress(true);
+  // }, []);
   const phoneInput = useRef(null);
   const input = {
     width: '100%',
@@ -142,149 +192,177 @@ function ProfileEditModal(props) {
     textAlign: 'left',
   };
   return (
-    <View style={styles.inputView}>
-      <View style={styles.imgView}>
-        <Image source={avatarImage} style={styles.imgViewImg} />
-      </View>
-      <View style={styles.plusViewForLanguages}>
-        <TouchableOpacity style={styles.avatarBtn}>
-          <Text style={styles.avatarBtnText}>Profile Avatar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.avatarBtn}>
-          <Text style={styles.avatarBtnText}>Delete Avatar</Text>
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.labelText}>First Name*</Text>
-      <TextInput style={styles.input} />
-      <Text style={styles.labelText}>Last Name*</Text>
-      <TextInput style={styles.input} />
-      <Text style={styles.labelText}>Cv Link*</Text>
-      <TextInput style={styles.input} />
-      <Text style={styles.labelText}>Expert*</Text>
-      <TextInput style={styles.input} />
-      <Text style={styles.labelText}>Specialized In*</Text>
-      <SelectDropdown
-        data={countries}
-        onSelect={(selectedItem, index) => {
-          console.log(selectedItem, index);
-        }}
-        style={styles.input}
-        // buttonStyle={{ backgroundColor: WHITE }}
-        rowStyle={rowStyles}
-        dropdownStyle={dropdownStyles}
-        buttonStyle={inputStyles}
-        defaultButtonText="Search of Servcie"
-        buttonTextStyle={{
-          fontSize: 14,
-          padding: 0,
-          marginTop: 10,
-          marginHorizontal: 0,
-          alignSelf: 'flex-start',
-        }}
-      />
-      <Text style={styles.labelText}>Phone Number*</Text>
-      <View style={styles.input}>
-
-        <PhoneInput
-          ref={phoneInput}
-          defaultValue={value}
-          defaultCode="AM"
-          layout="first"
-          onChangeText={(text) => {
-            setValue(text);
-          }}
-          onChangeFormattedText={(text) => {
-            setFormattedValue(text);
-          }}
-          withDarkTheme
-          withShadow
-          containerStyle={input}
-          textContainerStyle={container}
-          textInputStyle={textInput}
-          codeTextStyle={codeTextStyle}
-          placeholderTextColor="red"
-          // textInputProps={{
-          //   placeholder: 'Enter your phone number',
-          //   placeholderTextColor: 'gray', // Customize the color of the placeholder text
-          //   style: {
-          //     fontSize: 16, // Customize the font size
-          //     color: 'black', // Customize the color of the input text
-          //   },
-          // }}
-          placeholder="phone number"
-          textInputProps={{ placeholderTextColor: BLACK }}
-        />
-      </View>
-      <Text style={styles.labelText}>Skills*</Text>
-      <View style={styles.plusView}>
-        <TextInput value={skillInfo} style={styles.input} onChangeText={setSkillInfo} />
-        <TouchableOpacity onPress={handleAddSkill} style={styles.plusBtn}>
-          <Text style={styles.plusBtnText}>+</Text>
-        </TouchableOpacity>
-      </View>
-      {skill.length > 0 ? (
-        <View style={styles.skillView}>
-          {skill.map((e) => (
-            <View style={styles.skillViewSmall}>
-              <TouchableOpacity onPress={() => handleDeleteSkill(e.id)} style={styles.skillDeleteBtn}>
-                <Text style={styles.skillDeleteText}>X</Text>
-              </TouchableOpacity>
-              <Text style={styles.skillText} key={e.id}>{e.skill}</Text>
+    <ScrollView contentContainerStyle={styles.profileEdit}>
+      <View style={styles.container}>
+        <View style={styles.editBox}>
+          <View style={styles.inputView}>
+            <View style={styles.imgView}>
+              <Image
+                // source={avatarImage}
+                source={{ uri: `http://192.168.31.100:4000${userInfo.avatar}` }}
+                style={styles.imgViewImg}
+              />
             </View>
-          ))}
+            <View style={styles.plusViewForLanguages}>
+              <TouchableOpacity style={styles.avatarBtn}>
+                <Text style={styles.avatarBtnText}>Profile Avatar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.avatarBtn}>
+                <Text style={styles.avatarBtnText}>Delete Avatar</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.labelText}>First Name*</Text>
+            <TextInput onChangeText={setUserName} value={userName} style={styles.input} />
+            <Text style={styles.labelText}>Last Name*</Text>
+            <TextInput onChangeText={setSurname} value={surname} style={styles.input} />
+            <Text style={styles.labelText}>Cv Link*</Text>
+            <TextInput style={styles.input} />
+            <Text style={styles.labelText}>Specialized In*</Text>
+            <SelectDropdown
+              data={countries}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index);
+              }}
+              style={styles.input}
+              // buttonStyle={{ backgroundColor: WHITE }}
+              rowStyle={rowStyles}
+              dropdownStyle={dropdownStyles}
+              buttonStyle={inputStyles}
+              defaultButtonText="Search of Servcie"
+              buttonTextStyle={{
+                fontSize: 14,
+                padding: 0,
+                marginTop: 10,
+                marginHorizontal: 0,
+                alignSelf: 'flex-start',
+              }}
+            />
+            <Text style={styles.labelText}>Phone Number*</Text>
+            <View style={styles.input}>
 
-          {/* <FlatList */}
-          {/*   ListHeaderComponent={() => <View />} */}
-          {/*   ListFooterComponent={() => <View />} */}
-          {/*   data={skill} */}
-          {/*   renderItem={({ item }) => <Text style={{ color: 'black' }}>{item.skill}</Text>} */}
-          {/*   keyExtractor={(item) => item.id} */}
-          {/* /> */}
+              <PhoneInput
+                ref={phoneInput}
+                defaultValue={phoneNumber}
+                defaultCode="AM"
+                layout="first"
+                onChangeText={(text) => {
+                  setValue(text);
+                }}
+                onChangeFormattedText={(text) => {
+                  setPhoneNumber(text);
+                }}
+                withDarkTheme
+                withShadow
+                containerStyle={input}
+                textContainerStyle={container}
+                textInputStyle={textInput}
+                codeTextStyle={codeTextStyle}
+                placeholderTextColor="red"
+                placeholder="phone number"
+                textInputProps={{ placeholderTextColor: BLACK }}
+              />
+            </View>
+            <Text style={styles.labelText}>Skills*</Text>
+            <View style={styles.plusView}>
+              <TextInput value={skillInfo} style={styles.input} onChangeText={setSkillInfo} />
+              <TouchableOpacity onPress={handleAddSkill} style={styles.plusBtn}>
+                <Text style={styles.plusBtnText}>+</Text>
+              </TouchableOpacity>
+            </View>
+            {addSkill.length > 0 ? (
+              <View style={styles.skillView}>
+                {addSkill.map((e) => (
+                  <View key={e.id} style={styles.skillViewSmall}>
+                    <TouchableOpacity onPress={() => handleDeleteSkill(e.id)} style={styles.skillDeleteBtn}>
+                      <Text style={styles.skillDeleteText}>X</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.skillText} key={e.id}>{e.skill}</Text>
+                  </View>
+                ))}
+
+                {/* <FlatList */}
+                {/*   ListHeaderComponent={() => <View />} */}
+                {/*   ListFooterComponent={() => <View />} */}
+                {/*   data={skill} */}
+                {/*   renderItem={({ item }) => <Text style={{ color: 'black' }}>{item.skill}</Text>} */}
+                {/*   keyExtractor={(item) => item.id} */}
+                {/* /> */}
+              </View>
+            ) : null}
+            <Text style={styles.labelText}>Education*</Text>
+            <View style={styles.plusViewForLanguages}>
+              <TextInput value={education} onChangeText={setEducation} style={styles.inputForLanguages} />
+              <TextInput
+                value={
+                subject
+              }
+                onChangeText={setSubject}
+                style={styles.inputForLanguages}
+              />
+              <TouchableOpacity style={styles.plusBtn}>
+                <Text style={styles.plusBtnText}>+</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.labelText}>Languages*</Text>
+            <View style={styles.plusViewForLanguages}>
+              <SelectDropdown
+                data={options}
+                onSelect={(selectedItem, index) => {
+                  console.log(selectedItem, index);
+                }}
+                style={styles.dropdownInput}
+                // buttonStyle={{ backgroundColor: WHITE }}
+                rowStyle={dropdownRowStyles}
+                dropdownStyle={dropdownDropdownStyles}
+                buttonStyle={dropdownInputStyles}
+                defaultButtonText="Search of Servcie"
+                buttonTextStyle={{
+                  fontSize: 14,
+                  padding: 0,
+                  marginTop: 10,
+                  marginHorizontal: 0,
+                  alignSelf: 'flex-start',
+                }}
+              />
+              <TextInput style={styles.inputForLanguages} />
+              <TouchableOpacity style={styles.plusBtn}>
+                <Text style={styles.plusBtnText}>+</Text>
+              </TouchableOpacity>
+
+            </View>
+
+            <Text style={styles.labelText}>About*</Text>
+            <TextInput multiline textAlignVertical="top" style={[styles.input, { height: RH(250) }]} />
+
+            <TouchableOpacity onPress={handleSendInfo} style={styles.saveBtn}>
+              <Text style={styles.saveBtnText}>Save</Text>
+            </TouchableOpacity>
+          </View>
+
         </View>
-      ) : null}
-      <Text style={styles.labelText}>Education*</Text>
-      <View style={styles.plusViewForLanguages}>
-        <TextInput style={styles.inputForLanguages} />
-        <TextInput style={styles.inputForLanguages} />
-        <TouchableOpacity style={styles.plusBtn}>
-          <Text style={styles.plusBtnText}>+</Text>
-        </TouchableOpacity>
       </View>
-      <Text style={styles.labelText}>Languages*</Text>
-      <View style={styles.plusViewForLanguages}>
-        <SelectDropdown
-          data={options}
-          onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
-          }}
-          style={styles.dropdownInput}
-          // buttonStyle={{ backgroundColor: WHITE }}
-          rowStyle={dropdownRowStyles}
-          dropdownStyle={dropdownDropdownStyles}
-          buttonStyle={dropdownInputStyles}
-          defaultButtonText="Search of Servcie"
-          buttonTextStyle={{
-            fontSize: 14,
-            padding: 0,
-            marginTop: 10,
-            marginHorizontal: 0,
-            alignSelf: 'flex-start',
-          }}
-        />
-        <TextInput style={styles.inputForLanguages} />
-        <TouchableOpacity style={styles.plusBtn}>
-          <Text style={styles.plusBtnText}>+</Text>
-        </TouchableOpacity>
-      </View>
+    </ScrollView>
 
-      <TouchableOpacity onPress={sendUserInfo} style={styles.saveBtn}>
-        <Text style={styles.saveBtnText}>Save</Text>
-      </TouchableOpacity>
-    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  profileEdit: {
+    paddingTop: RH(25),
+    position: 'relative',
+    backgroundColor: WHITE,
+    minHeight: '100%',
+  },
+  container: {
+    width: '90%',
+    // height: '100%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  editBox: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
   inputView: {
     width: '100%',
     marginTop: RH(20),

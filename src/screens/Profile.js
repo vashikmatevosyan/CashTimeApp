@@ -21,7 +21,7 @@ function Profile() {
 
   const userInfo = useSelector((state) => state.users.profile);
   const cvInfo = userInfo.createdCvs;
-  console.log(cvInfo);
+  console.log(cvInfo.experience);
   return (
     <ScrollView contentContainerStyle={styles.profile}>
 
@@ -38,7 +38,7 @@ function Profile() {
               {userInfo.avatar ? (
                 <Image
                   style={styles.accountAvatar}
-                  source={{ uri: `http://192.168.31.100:4000${userInfo.avatar}` }}
+                  source={{ uri: `http://192.168.31.101:4000${userInfo.avatar}` }}
                 />
               )
 
@@ -70,6 +70,11 @@ function Profile() {
                 <Text style={styles.specialInfoText}>Specialized In</Text>
               </View>
             ) : null}
+            {cvInfo.bio ? (
+              <View>
+                <Text style={styles.bioText}>{cvInfo.bio}</Text>
+              </View>
+            ) : null}
             <Text style={styles.specialInfoTitleMargin}>Expert</Text>
             <Text style={styles.specialInfoTitleMargin}>Skills</Text>
             {cvInfo?.skills ? (
@@ -77,6 +82,9 @@ function Profile() {
                 {cvInfo?.skills.map((e) => (
                   <View key={e.id} style={styles.skillBox}>
                     <Text style={styles.skillText}>{e.skill}</Text>
+                    <TouchableOpacity style={styles.skillDelete}>
+                      <Text>X</Text>
+                    </TouchableOpacity>
                   </View>
                 ))}
               </View>
@@ -99,14 +107,18 @@ function Profile() {
                   <View key={e.id} style={styles.skillBox}>
                     <Text style={styles.skillText}>
                       {e.language}
-                      {e.level ? ` - ${e.level}` : null}
+                      {' '}
+                      {e.level.value ?? e.level}
                     </Text>
+                    <TouchableOpacity style={styles.skillDelete}>
+                      <Text>X</Text>
+                    </TouchableOpacity>
                   </View>
                 ))}
               </View>
             ) : null}
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('ProfileEdit')} style={styles.editBtn}>
+          <TouchableOpacity onPress={() => navigation.navigate('profileEditModal')} style={styles.editBtn}>
             <Text style={styles.editBtnText}>Edit profile</Text>
           </TouchableOpacity>
           <View style={styles.btnsBox}>
@@ -162,6 +174,8 @@ const styles = StyleSheet.create({
     marginRight: 5,
     borderRadius: 25,
     marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   skillText: {
     color: 'rgba(0, 0, 0, 0.50)',
@@ -171,6 +185,24 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     paddingVertical: 5,
     paddingHorizontal: 10,
+  },
+  bioText: {
+    color: 'rgba(0, 0, 0, 0.50)',
+    fontFamily: 'Lato-Regular',
+    fontSize: 14,
+    fontStyle: 'normal',
+    fontWeight: '400',
+    // paddingVertical: 5,
+    // paddingHorizontal: 10,
+  },
+  skillDelete: {
+    backgroundColor: 'red',
+    width: RW(20),
+    height: RH(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+    marginRight: RW(5),
   },
   accountInfo: {
     width: '100%',

@@ -2,7 +2,9 @@ import { createReducer } from '@reduxjs/toolkit';
 import {
   activate,
   getProfile,
-  loginRequest, registerRequest,
+  loginRequest,
+  registerRequest,
+  editProfile,
 } from '../actions/users';
 import { storage } from '../../helpers/Storage';
 
@@ -12,12 +14,13 @@ const initialState = {
 };
 
 export default createReducer(initialState, (builder) => {
-  builder.addCase(loginRequest.fulfilled, (state, action) => {
-    const { token, user } = action.payload;
-    storage.set('token', token);
-    state.profile = user;
-    state.token = token;
-  })
+  builder
+    .addCase(loginRequest.fulfilled, (state, action) => {
+      const { token, user } = action.payload;
+      storage.set('token', token);
+      state.profile = user;
+      state.token = token;
+    })
     .addCase(getProfile.fulfilled, (state, action) => {
       const { user } = action.payload;
       return { ...state, profile: user };
@@ -36,5 +39,9 @@ export default createReducer(initialState, (builder) => {
       console.log(token);
       storage.set('token', token);
       state.token = token;
+    })
+    .addCase(editProfile.fulfilled, (state, action) => {
+      const { user, cv } = action.payload;
+      state.profile = { ...user, createdCvs: cv };
     });
 });
