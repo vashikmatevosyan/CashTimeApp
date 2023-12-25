@@ -4,7 +4,7 @@ import CreateJob from '../layouts/CreateJob';
 import CreateCv from './CreateCv';
 
 function Create() {
-  const role = 'gorcTvox';
+  const role = 'gocTvox';
   return (
     <View style={{ flex: 1 }}>
       {role === 'gorcTvox' ? <CreateJob /> : <CreateCv />}

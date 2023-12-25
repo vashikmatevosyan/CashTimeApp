@@ -35,7 +35,7 @@ function AppNavigator() {
   return (
     <NavigationContainer>
       <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
-      {token ? <LogInNavigation /> : <LogOutNavigation />}
+      {!token ? <LogInNavigation /> : <LogOutNavigation />}
     </NavigationContainer>
 
   );

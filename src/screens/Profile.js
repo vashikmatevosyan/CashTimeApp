@@ -21,7 +21,7 @@ function Profile() {
 
   const userInfo = useSelector((state) => state.users.profile);
   const cvInfo = userInfo.createdCvs;
-  console.log(cvInfo.experience);
+  console.log(cvInfo?.experience);
   return (
     <ScrollView contentContainerStyle={styles.profile}>
 
@@ -70,7 +70,7 @@ function Profile() {
                 <Text style={styles.specialInfoText}>Specialized In</Text>
               </View>
             ) : null}
-            {cvInfo.bio ? (
+            {cvInfo?.bio ? (
               <View>
                 <Text style={styles.bioText}>{cvInfo.bio}</Text>
               </View>
