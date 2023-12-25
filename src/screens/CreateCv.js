@@ -11,6 +11,8 @@ import CreateCvThird from '../components/createCv/CreateCvThird';
 import CreateCvFourth from '../components/createCv/CreateCvFourth';
 import CreateCvFifth from '../components/createCv/CreateCvFifth';
 import CreateCvSixth from '../components/createCv/CreateCvSixth';
+import CreateCvSeventh from '../components/createCv/CreateCvSeventh';
+import CreateCvFinal from '../components/createCv/CreateCvFinal';
 
 function CreateCv() {
   const [count, setCount] = useState(1);
@@ -49,15 +51,19 @@ function CreateCv() {
       {count === 5 && <CreateCvFourth /> }
       {count === 6 && <CreateCvFifth /> }
       {count === 7 && <CreateCvSixth /> }
+      {count === 8 && <CreateCvSeventh /> }
+      {count === 9 && <CreateCvFinal /> }
       <View style={styles.btnBlock}>
         {count !== 1 && (
           <Text onPress={() => setCount(count - 1)} style={styles.btnText}>
             Go Back
           </Text>
         )}
+        {count <= 8 && (
         <Text onPress={() => setCount(count + 1)} style={{ ...styles.btnText, marginLeft: 'auto' }}>
           Skip For Now
         </Text>
+        )}
       </View>
     </View>
   );

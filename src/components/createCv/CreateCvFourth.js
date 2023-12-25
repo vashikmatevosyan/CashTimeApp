@@ -5,7 +5,7 @@ import {
 import _ from 'lodash';
 import { RH, RW } from '../../helpers/ratio';
 import {
-  BLACK, DARK_GREY, GREY, LIGHT_GREY, ORANGE, WHITE,
+  BLACK, DARK_GREY, GREY, INPUT, LIGHT_GREY, ORANGE, WHITE,
 } from '../../theme/colors';
 
 function CreateCvFourth() {
@@ -24,14 +24,20 @@ function CreateCvFourth() {
   const handleSkillDelete = useCallback((e) => {
     setSelectedSkills(selectedSkills.filter((item) => item.id !== e));
   }, [selectedSkills]);
+  const handleAdd = () => {
+    if (inputValue.length > 0) {
+      setSelectedSkills([...selectedSkills, { id: _.uniqueId(), skill: inputValue }]);
+    }
+    setInputValue('');
+  };
   return (
     <View style={styles.container}>
       <View style={styles.contentBlock}>
         <Text style={styles.title}>Add Your Skills</Text>
         <Text style={styles.text}>Your Skills*</Text>
         <View style={styles.inputBlock}>
-          <TextInput onChangeText={(e) => setInputValue(e)} style={styles.input} />
-          <TouchableOpacity onPress={() => (inputValue.length > 0 ? setSelectedSkills([...selectedSkills, { id: _.uniqueId(), skill: inputValue }]) : null)} style={styles.addTextBlock}><Text style={styles.plusText}>+</Text></TouchableOpacity>
+          <TextInput value={inputValue} onChangeText={(e) => setInputValue(e)} style={styles.input} />
+          <TouchableOpacity onPress={() => handleAdd()} style={styles.addTextBlock}><Text style={styles.plusText}>+</Text></TouchableOpacity>
         </View>
         <View style={{ height: 'auto', flex: 0.6 }}>
           <ScrollView style={{ flex: 1 }}>
@@ -114,8 +120,8 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    backgroundColor: LIGHT_GREY,
-    borderColor: LIGHT_GREY,
+    backgroundColor: INPUT,
+    borderColor: INPUT,
     width: '90%',
     paddingLeft: RW(20),
     borderRadius: RW(8),
@@ -129,8 +135,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    backgroundColor: LIGHT_GREY,
-    borderColor: LIGHT_GREY,
+    backgroundColor: INPUT,
+    borderColor: INPUT,
     width: '100%',
     borderRadius: RW(8),
     fontFamily: 'Lato-Regular',

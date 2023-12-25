@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { RH, RW } from '../../helpers/ratio';
 import {
-  BLACK, DARK_GREY, GREY, LIGHT_GREY, WHITE,
+  BLACK, DARK_GREY, GREY, INPUT, LIGHT_GREY, WHITE,
 } from '../../theme/colors';
 import LineForeSixthStep from './LineForeSixthStep';
 
@@ -33,32 +33,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: RW(15),
     paddingTop: RH(30),
     // overflow: 'hidden',
-  },
-  input: {
-    borderWidth: 1,
-    backgroundColor: LIGHT_GREY,
-    borderColor: LIGHT_GREY,
-    width: '90%',
-    paddingLeft: RW(20),
-    borderRadius: RW(8),
-    fontFamily: 'Lato-Regular',
-    color: DARK_GREY,
-    fontSize: RW(16),
-  },
-  inputBlock: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    backgroundColor: LIGHT_GREY,
-    borderColor: LIGHT_GREY,
-    width: '100%',
-    borderRadius: RW(8),
-    fontFamily: 'Lato-Regular',
-    color: DARK_GREY,
-    fontSize: RW(16),
-    paddingRight: RW(5),
   },
   text: {
     color: BLACK,
