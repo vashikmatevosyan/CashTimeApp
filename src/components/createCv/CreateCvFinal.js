@@ -1,17 +1,40 @@
 import React from 'react';
 import {
-  StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput,
+  StyleSheet, View, Text, TouchableOpacity,
 } from 'react-native';
 import { RH, RW } from '../../helpers/ratio';
 import {
-  BLACK, DARK_GREY, INPUT, LIGHT_GREY, ORANGE, WHITE,
+  BLACK, DARK_BLUE, DARK_GREY, ORANGE, WHITE,
 } from '../../theme/colors';
+import SvgOne from './SvgOne';
+import SvgComponentPain from '../imagesSvgComponents/SvgComponentPain';
 
 function CreateCvFinal() {
   return (
     <View style={styles.container}>
       <View style={styles.contentBlock}>
-        <View />
+        <View style={styles.firstBlock}>
+          <SvgOne />
+          <SvgComponentPain />
+        </View>
+        <Text style={{ ...styles.text, marginBottom: RH(25) }}>Name, Surname</Text>
+        <Text style={{ ...styles.text, marginBottom: RH(25), fontSize: RW(20) }}>10$/hr</Text>
+        <Text style={styles.text}>Category</Text>
+        <Text style={{ ...styles.text, marginBottom: RH(10), color: DARK_GREY }}>Social Media Marketing</Text>
+        <Text style={{ ...styles.text, marginBottom: RH(15) }}>Skills</Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: RH(25) }}>
+          <Text style={styles.skillText}>Wireframe</Text>
+          <Text style={styles.skillText}>Figma</Text>
+        </View>
+        <Text style={styles.text}>Scope</Text>
+        <Text style={{ ...styles.text, marginBottom: RH(17), color: DARK_GREY }}>Intermediate</Text>
+        <Text style={styles.text}>Location</Text>
+        <Text style={{ ...styles.text, marginBottom: RH(17), color: DARK_GREY }}>Armenia, Yerevan</Text>
+        <Text style={styles.text}>Education</Text>
+        <Text style={{ ...styles.text, marginBottom: RH(17), color: DARK_GREY }}>Bachelor's degree</Text>
+        <Text style={{ ...styles.text, marginBottom: RW(25) }}>Bio</Text>
+        <Text style={{ ...styles.text, marginBottom: RW(75) }}>Address</Text>
+        <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>Post This Job</Text></TouchableOpacity>
       </View>
     </View>
   );
@@ -31,107 +54,29 @@ const styles = StyleSheet.create({
     borderRadius: RW(20),
     paddingHorizontal: RW(15),
     paddingTop: RH(30),
-    // overflow: 'hidden',
   },
-  addSkillBtn: {
-    backgroundColor: ORANGE,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    marginTop: 10,
-  },
-  singleSkill: {
-    fontFamily: 'Lato-SemiBold',
-    color: BLACK,
-    fontSize: 16,
-    fontStyle: 'normal',
-  },
-  addBtnText: {
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    color: WHITE,
-    fontSize: 24,
-    fontFamily: 'Roboto-Medium',
-    fontStyle: 'normal',
-  },
-  input: {
-    borderWidth: 1,
-    backgroundColor: INPUT,
-    borderColor: INPUT,
-    width: '90%',
-    paddingLeft: RW(20),
-    borderRadius: RW(8),
-    fontFamily: 'Lato-Regular',
-    color: DARK_GREY,
-    fontSize: RW(16),
-  },
-  inputBlock: {
-    display: 'flex',
+  firstBlock: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    backgroundColor: INPUT,
-    borderColor: INPUT,
-    width: '100%',
-    borderRadius: RW(8),
-    fontFamily: 'Lato-Regular',
-    color: DARK_GREY,
-    fontSize: RW(16),
-    paddingRight: RW(5),
-  },
-  addTextBlock: {
-    width: '10%',
-    height: RH(40),
-    borderRadius: RW(25),
-    backgroundColor: ORANGE,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  plusText: {
-    color: WHITE,
-    fontSize: RW(28),
+    justifyContent: 'space-between',
+    marginBottom: RW(10),
   },
   skillText: {
-    fontFamily: 'Lato-SemiBold',
-    color: WHITE,
-    fontSize: 16,
-    fontStyle: 'normal',
-  },
-  skillBtn: {
-    padding: 10,
-    backgroundColor: ORANGE,
-    marginRight: 5,
-    borderRadius: 20,
-    marginTop: 20,
-    flexDirection: 'row',
-  },
-  notFoundBlock: {
-    marginTop: RH(30),
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  addedSkills: {
-    backgroundColor: LIGHT_GREY,
-    paddingVertical: RW(10),
-    paddingHorizontal: RW(10),
-    margin: 5,
-    flexDirection: 'row',
-    borderRadius: RW(100),
-  },
-  addedSkillText: {
-    color: DARK_GREY,
-    fontFamily: 'Lato-SemiBold',
+    color: BLACK,
+    width: 'contentWidth',
+    fontFamily: 'Lato-Regular',
     fontSize: RW(14),
-    fontStyle: 'normal',
+    paddingVertical: RW(4),
+    paddingLeft: RW(12),
+    paddingRight: RW(30),
+    backgroundColor: ORANGE,
+    borderRadius: RW(22),
+    marginRight: RW(10),
   },
   text: {
     color: BLACK,
-    fontFamily: 'Lato-Regular',
+    fontFamily: 'Lato-Bold',
     fontSize: RW(14),
-    marginBottom: RW(5),
   },
   skillBtnBlock: {
     flex: 1,
@@ -141,6 +86,18 @@ const styles = StyleSheet.create({
     fontSize: RW(24),
     color: BLACK,
     marginBottom: RH(35),
+  },
+  btn: {
+    backgroundColor: DARK_BLUE,
+    paddingVertical: RH(10),
+    borderRadius: RW(100),
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  btnText: {
+    color: WHITE,
+    fontFamily: 'Lato-Regular',
+    fontSize: RW(14),
   },
 });
 

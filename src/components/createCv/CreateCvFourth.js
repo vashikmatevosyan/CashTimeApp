@@ -5,7 +5,7 @@ import {
 import _ from 'lodash';
 import { RH, RW } from '../../helpers/ratio';
 import {
-  BLACK, DARK_GREY, GREY, INPUT, LIGHT_GREY, ORANGE, WHITE,
+  BLACK, DARK_GREY, INPUT, LIGHT_GREY, ORANGE, WHITE,
 } from '../../theme/colors';
 
 function CreateCvFourth() {
