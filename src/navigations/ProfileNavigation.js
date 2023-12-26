@@ -26,7 +26,7 @@ function ProfileNavigation({ navigation }) {
           </TouchableOpacity>
         ),
       }}
-      initialRouteName="Notification"
+      initialRouteName="Profile"
     >
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen options={{ headerShown: false }} name="ProfileMenu" component={ProfileMenu} />
